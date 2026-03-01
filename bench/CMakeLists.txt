@@ -1,0 +1,131 @@
+cmake_minimum_required(VERSION 3.18)
+project(palloc-bench C)
+
+set(CMAKE_C_STANDARD 11)
+
+# ---------------------------------------------------------------------------
+# Build type
+# ---------------------------------------------------------------------------
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
+endif()
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+
+# ---------------------------------------------------------------------------
+# Locate palloc (sibling build)
+# ---------------------------------------------------------------------------
+set(PALLOC_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/.."
+    CACHE PATH "Root of the palloc source tree")
+
+find_library(PALLOC_LIB
+  NAMES palloc
+  HINTS "${PALLOC_ROOT}/out/release" "${PALLOC_ROOT}/build"
+  DOC   "palloc shared library")
+find_path(PALLOC_INCLUDE
+  NAMES palloc.h
+  HINTS "${PALLOC_ROOT}/include"
+  DOC   "palloc include directory")
+
+if(NOT PALLOC_LIB OR NOT PALLOC_INCLUDE)
+  message(FATAL_ERROR "Could not find palloc library/headers. "
+    "Build palloc first ('cmake + make' in the repo root) "
+    "or set PALLOC_ROOT.")
+endif()
+message(STATUS "palloc: ${PALLOC_LIB} (include: ${PALLOC_INCLUDE})")
+
+# ---------------------------------------------------------------------------
+# Common compile options
+# ---------------------------------------------------------------------------
+set(BENCH_COMMON_FLAGS
+  -O3 -g -Wall -Wextra
+  -march=native          # enable AVX2 etc. if CPU supports it
+  -pthread
+)
+
+set(BENCH_COMMON_SOURCES
+  bench_scenarios.c
+  bench_main.c
+)
+set(BENCH_COMMON_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR})
+
+# ---------------------------------------------------------------------------
+# Helper macro to register a benchmark target
+# ---------------------------------------------------------------------------
+macro(add_bench TARGET DEFINE LINK_LIBS)
+  add_executable(${TARGET} ${BENCH_COMMON_SOURCES})
+  target_include_directories(${TARGET} PRIVATE ${BENCH_COMMON_INCLUDES} ${PALLOC_INCLUDE})
+  target_compile_options(${TARGET} PRIVATE ${BENCH_COMMON_FLAGS})
+  target_compile_definitions(${TARGET} PRIVATE ${DEFINE})
+  target_link_libraries(${TARGET} PRIVATE ${LINK_LIBS} m pthread)
+  message(STATUS "Benchmark target: ${TARGET}  (${DEFINE})")
+endmacro()
+
+# ---------------------------------------------------------------------------
+# palloc target (always available)
+# ---------------------------------------------------------------------------
+add_bench(bench-palloc "BENCH_USE_PALLOC" "${PALLOC_LIB}")
+
+# ---------------------------------------------------------------------------
+# system malloc baseline
+# ---------------------------------------------------------------------------
+add_bench(bench-system "" "")
+
+# ---------------------------------------------------------------------------
+# mimalloc (optional)
+# ---------------------------------------------------------------------------
+find_library(MIMALLOC_LIB  NAMES mimalloc  DOC "mimalloc shared library")
+find_path(MIMALLOC_INCLUDE NAMES mimalloc.h PATH_SUFFIXES mimalloc DOC "mimalloc include dir")
+if(MIMALLOC_LIB AND MIMALLOC_INCLUDE)
+  add_bench(bench-mimalloc "BENCH_USE_MIMALLOC" "${MIMALLOC_LIB}")
+  target_include_directories(bench-mimalloc PRIVATE ${MIMALLOC_INCLUDE})
+else()
+  message(WARNING "mimalloc not found — skipping bench-mimalloc. "
+    "Install: sudo apt-get install libmimalloc-dev")
+endif()
+
+# ---------------------------------------------------------------------------
+# jemalloc (optional)
+# ---------------------------------------------------------------------------
+find_library(JEMALLOC_LIB  NAMES jemalloc  DOC "jemalloc shared library")
+find_path(JEMALLOC_INCLUDE NAMES jemalloc/jemalloc.h DOC "jemalloc include dir")
+if(JEMALLOC_LIB AND JEMALLOC_INCLUDE)
+  add_bench(bench-jemalloc "BENCH_USE_JEMALLOC" "${JEMALLOC_LIB}")
+  target_include_directories(bench-jemalloc PRIVATE ${JEMALLOC_INCLUDE})
+else()
+  message(WARNING "jemalloc not found — skipping bench-jemalloc. "
+    "Install: sudo apt-get install libjemalloc-dev")
+endif()
+
+# ---------------------------------------------------------------------------
+# tcmalloc (optional — uses LD_PRELOAD override + link)
+# ---------------------------------------------------------------------------
+find_library(TCMALLOC_LIB
+  NAMES tcmalloc_minimal tcmalloc
+  DOC   "tcmalloc shared library")
+if(TCMALLOC_LIB)
+  add_bench(bench-tcmalloc "BENCH_USE_TCMALLOC" "${TCMALLOC_LIB}")
+else()
+  message(WARNING "tcmalloc not found — skipping bench-tcmalloc. "
+    "Install: sudo apt-get install libgoogle-perftools-dev")
+endif()
+
+# ---------------------------------------------------------------------------
+# Install convenience copies
+# ---------------------------------------------------------------------------
+install(TARGETS bench-palloc bench-system DESTINATION bin)
+
+# ---------------------------------------------------------------------------
+# Summary
+# ---------------------------------------------------------------------------
+message(STATUS "")
+message(STATUS "Benchmark targets configured:")
+get_property(_targets DIRECTORY PROPERTY BUILDSYSTEM_TARGETS)
+foreach(_t ${_targets})
+  if(_t MATCHES "^bench-")
+    message(STATUS "  make ${_t}")
+  endif()
+endforeach()
+message(STATUS "")
+message(STATUS "Quick start:")
+message(STATUS "  cmake -B build -S . && cmake --build build -j$(nproc)")
+message(STATUS "  cd build && bash ../run_bench.sh")
