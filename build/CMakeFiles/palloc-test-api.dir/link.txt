@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG "CMakeFiles/palloc-test-api.dir/test/test-api.c.o" -o palloc-test-api  libpalloc.a -lpthread -lrt -latomic 

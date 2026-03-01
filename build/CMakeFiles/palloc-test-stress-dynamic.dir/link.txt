@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG "CMakeFiles/palloc-test-stress-dynamic.dir/test/test-stress.c.o" -o palloc-test-stress-dynamic  -lpthread -lrt -latomic 

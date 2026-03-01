@@ -1,0 +1,235 @@
+Start testing: Mar 01 12:50 +07
+----------------------------------------------------------
+1/4 Testing: test-api
+1/4 Test: test-api
+Command: "/home/autocookie/pomaieco/palloc/build/palloc-test-api"
+Directory: /home/autocookie/pomaieco/palloc/build
+"test-api" start time: Mar 01 12:50 +07
+Output:
+----------------------------------------------------------
+test: malloc-aligned9a...  ok.
+test: malloc-zero...  ok.
+test: malloc-nomem1...  ok.
+test: malloc-null...  ok.
+test: calloc-overflow...  ok.
+test: calloc0...  ok.
+test: malloc-large...  ok.
+test: posix_memalign1...  ok.
+test: posix_memalign_no_align...  ok.
+test: posix_memalign_zero...  ok.
+test: posix_memalign_nopow2...  ok.
+test: posix_memalign_nomem...  ok.
+test: malloc-aligned1...  ok.
+test: malloc-aligned2...  ok.
+test: malloc-aligned3...  ok.
+test: malloc-aligned4...  ok.
+test: malloc-aligned5...  ok.
+test: malloc-aligned7...  ok.
+test: malloc-aligned8...  ok.
+test: malloc-aligned9...  ok.
+test: malloc-aligned10...  ok.
+test: malloc_aligned11...  ok.
+test: palloc-aligned12...  ok.
+test: palloc-aligned13...  ok.
+test: malloc-aligned-at1...  ok.
+test: malloc-aligned-at2...  ok.
+test: memalign1...  ok.
+test: zalloc-aligned-small1...  ok.
+test: rezalloc_aligned-small1...  ok.
+test: realloc-null...  ok.
+test: realloc-null-sizezero...  ok.
+test: realloc-sizezero...  ok.
+test: reallocarray-null-sizezero...  ok.
+test: umalloc1...  ok.
+test: heap_destroy...  ok.
+test: heap_delete...  ok.
+test: realpath...  ok.
+test: stl_allocator1...  ok.
+test: stl_allocator2...  ok.
+test: stl_heap_allocator1...  ok.
+test: stl_heap_allocator2...  ok.
+test: stl_heap_allocator3...  ok.
+test: stl_heap_allocator4...  ok.
+
+
+---------------------------------------------
+succeeded: 43
+failed   : 0
+
+malloc_aligned5: usable size: 8192
+<end of output>
+Test time =   0.87 sec
+----------------------------------------------------------
+Test Passed.
+"test-api" end time: Mar 01 12:50 +07
+"test-api" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/4 Testing: test-api-fill
+2/4 Test: test-api-fill
+Command: "/home/autocookie/pomaieco/palloc/build/palloc-test-api-fill"
+Directory: /home/autocookie/pomaieco/palloc/build
+"test-api-fill" start time: Mar 01 12:50 +07
+Output:
+----------------------------------------------------------
+test: zeroinit-zalloc-small...  ok.
+test: zeroinit-zalloc-large...  ok.
+test: zeroinit-zalloc_small...  ok.
+test: zeroinit-calloc-small...  ok.
+test: zeroinit-calloc-large...  ok.
+test: zeroinit-rezalloc-small...  ok.
+test: zeroinit-rezalloc-large...  ok.
+test: zeroinit-recalloc-small...  ok.
+test: zeroinit-recalloc-large...  ok.
+test: zeroinit-zalloc_aligned-small...  ok.
+test: zeroinit-zalloc_aligned-large...  ok.
+test: zeroinit-calloc_aligned-small...  ok.
+test: zeroinit-calloc_aligned-large...  ok.
+test: zeroinit-rezalloc_aligned-small...  ok.
+test: zeroinit-rezalloc_aligned-large...  ok.
+test: zeroinit-recalloc_aligned-small...  ok.
+test: zeroinit-recalloc_aligned-large...  ok.
+
+
+---------------------------------------------
+succeeded: 17
+failed   : 0
+
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test-api-fill" end time: Mar 01 12:50 +07
+"test-api-fill" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/4 Testing: test-stress
+3/4 Test: test-stress
+Command: "/home/autocookie/pomaieco/palloc/build/palloc-test-stress"
+Directory: /home/autocookie/pomaieco/palloc/build
+"test-stress" start time: Mar 01 12:50 +07
+Output:
+----------------------------------------------------------
+heap stats:     peak       total     current       block      total#   
+  reserved:     2.0 GiB     2.0 GiB     2.0 GiB                          
+ committed:     1.2 GiB     2.0 GiB   -11.0 GiB                          
+     reset:     0      
+    purged:    13.0 Gi 
+   touched:    64.2 KiB    69.9 MiB   -12.9 GiB                          
+  segments:     2           2.6 Ki      1                                not all freed
+-abandoned:    31           1.5 Ki      0                                ok
+   -cached:     0           0           0                                ok
+     pages:     0           0        -113.5 Ki                           not all freed
+-abandoned:   488          38.8 Ki      0                                ok
+ -extended:     0      
+   -retire:     0      
+    arenas:     2      
+ -rollback:     0      
+     mmaps:    34      
+   commits:     0      
+    resets:     0      
+    purges:     2.0 Ki 
+   guarded:     0      
+   threads:    32           1.5 Ki      0                                ok
+  searches:     0.0 avg
+numa nodes:     1
+   elapsed:     4.146 s
+   process: user: 25.506 s, system: 1.840 s, faults: 0, peak rss: 470.5 MiB, peak commit: 1.2 GiB
+Using 32 threads with a 50% load-per-thread and 50 iterations 
+<end of output>
+Test time =   4.15 sec
+----------------------------------------------------------
+Test Passed.
+"test-stress" end time: Mar 01 12:50 +07
+"test-stress" time elapsed: 00:00:04
+----------------------------------------------------------
+
+4/4 Testing: test-stress-dynamic
+4/4 Test: test-stress-dynamic
+Command: "/usr/bin/cmake" "-E" "env" "PALLOC_VERBOSE=1" "LD_PRELOAD=/home/autocookie/pomaieco/palloc/build/libpalloc.so.2.2" "/home/autocookie/pomaieco/palloc/build/palloc-test-stress-dynamic"
+Directory: /home/autocookie/pomaieco/palloc/build
+"test-stress-dynamic" start time: Mar 01 12:50 +07
+Output:
+----------------------------------------------------------
+palloc: v2.2.7, release (built on Mar  1 2026, 12:50:13)
+palloc: option 'show_errors': 0 
+palloc: option 'show_stats': 0 
+palloc: option 'verbose': 1 
+palloc: option 'eager_commit': 1 
+palloc: option 'arena_eager_commit': 2 
+palloc: option 'purge_decommits': 1 
+palloc: option 'allow_large_os_pages': 0 
+palloc: option 'reserve_huge_os_pages': 0 
+palloc: option 'reserve_huge_os_pages_at': -1 
+palloc: option 'reserve_os_memory': 0 KiB
+palloc: option 'deprecated_segment_cache': 0 
+palloc: option 'deprecated_page_reset': 0 
+palloc: option 'abandoned_page_purge': 0 
+palloc: option 'deprecated_segment_reset': 0 
+palloc: option 'eager_commit_delay': 1 
+palloc: option 'purge_delay': 10 
+palloc: option 'use_numa_nodes': 0 
+palloc: option 'disallow_os_alloc': 0 
+palloc: option 'os_tag': 100 
+palloc: option 'max_errors': 32 
+palloc: option 'max_warnings': 32 
+palloc: option 'max_segment_reclaim': 10 
+palloc: option 'destroy_on_exit': 0 
+palloc: option 'arena_reserve': 1048576 KiB
+palloc: option 'arena_purge_mult': 10 
+palloc: option 'purge_extend_delay': 1 
+palloc: option 'abandoned_reclaim_on_free': 0 
+palloc: option 'disallow_arena_alloc': 0 
+palloc: option 'retry_on_oom': 400 
+palloc: option 'visit_abandoned': 0 
+palloc: option 'guarded_min': 0 
+palloc: option 'guarded_max': 1073741824 
+palloc: option 'guarded_precise': 0 
+palloc: option 'guarded_sample_rate': 0 
+palloc: option 'guarded_sample_seed': 0 
+palloc: option 'target_segments_per_thread': 0 
+palloc: option 'generic_collect': 10000 
+palloc: option 'allow_thp': 1 
+palloc: debug level : 0
+palloc: secure level: 0
+palloc: mem tracking: none
+palloc: process init: 0x7A00B47A4740
+palloc: using 1 numa regions
+palloc: reserved 1048576 KiB memory
+palloc: reserved 1048576 KiB memory
+heap stats:     peak       total     current       block      total#   
+  reserved:     2.0 GiB     2.0 GiB     2.0 GiB                          
+ committed:     1.9 GiB     2.0 GiB   -11.3 GiB                          
+     reset:     0      
+    purged:    13.3 Gi 
+   touched:    64.2 KiB    71.5 MiB   -13.0 GiB                          
+  segments:     1           2.6 Ki      1                                not all freed
+-abandoned:    32           1.5 Ki     17                                not all freed
+   -cached:     0           0           0                                ok
+     pages:     0           0        -113.7 Ki                           not all freed
+-abandoned:   488          38.3 Ki     90                                not all freed
+ -extended:     0      
+   -retire:     0      
+    arenas:     2      
+ -rollback:     0      
+     mmaps:    34      
+   commits:     0      
+    resets:     0      
+    purges:     2.2 Ki 
+   guarded:     0      
+   threads:    32           1.5 Ki      0                                ok
+  searches:     0.0 avg
+numa nodes:     1
+   elapsed:     4.195 s
+   process: user: 25.784 s, system: 1.907 s, faults: 0, peak rss: 460.2 MiB, peak commit: 1.9 GiB
+palloc: process done: 0x7A00B47A4740
+Using 32 threads with a 50% load-per-thread and 50 iterations 
+<end of output>
+Test time =   4.23 sec
+----------------------------------------------------------
+Test Passed.
+"test-stress-dynamic" end time: Mar 01 12:50 +07
+"test-stress-dynamic" time elapsed: 00:00:04
+----------------------------------------------------------
+
+End testing: Mar 01 12:50 +07
