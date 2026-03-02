@@ -24,6 +24,13 @@
 /* SIMD alignment for vector ops (match PA_ARENA_VECTOR_ALIGN) */
 #define BENCH_VECTOR_ALIGN  64
 
+/* Edge-safe hard limit: arena must NEVER exceed this (Zero-OOM guarantee). */
+#define BENCH_ARENA_MAX_CAPACITY_BYTES  (512ULL * 1024ULL * 1024ULL)  /* 512 MiB */
+
+static inline size_t bench_arena_cap(size_t requested) {
+  return (requested > BENCH_ARENA_MAX_CAPACITY_BYTES) ? (size_t)BENCH_ARENA_MAX_CAPACITY_BYTES : requested;
+}
+
 /* =========================================================================
  * Allocator dispatch (backing store for bump arena when not using Palloc)
  * ====================================================================== */
@@ -40,11 +47,11 @@
 #endif
 
 #if defined(BENCH_USE_JEMALLOC)
-#  include <jemalloc/jemalloc.h>
-#  define bench_malloc(s)       je_malloc(s)
-#  define bench_calloc(n,s)     je_calloc(n,s)
-#  define bench_realloc(p,s)    je_realloc(p,s)
-#  define bench_free(p)         je_free(p)
+/* Link with -ljemalloc; use standard names so we get jemalloc's malloc/free */
+#  define bench_malloc(s)       malloc(s)
+#  define bench_calloc(n,s)     calloc(n,s)
+#  define bench_realloc(p,s)    realloc(p,s)
+#  define bench_free(p)         free(p)
 #  define ALLOC_NAME            "jemalloc"
 
 #elif defined(BENCH_USE_MIMALLOC)
@@ -180,7 +187,7 @@ void bench_alloc_free_same_thread(bench_result_t* r, const bench_config_t* cfg) 
   uint64_t rng = 0xdeadbeef12345678ULL;
 
   size_t max_bytes = (size_t)(cfg->size_hi) * BENCH_VECTOR_ELEMSZ * 2; /* 2 vectors per iter */
-  size_t capacity = n * max_bytes + (4 * 1024 * 1024);
+  size_t capacity = bench_arena_cap(n * max_bytes + (4 * 1024 * 1024));
   g_bench_arena = bench_arena_create(capacity);
   if (!g_bench_arena) { r->n = 0; r->rss_bytes_after = bench_rss_bytes(); return; }
 
@@ -188,6 +195,7 @@ void bench_alloc_free_same_thread(bench_result_t* r, const bench_config_t* cfg) 
     size_t dim = _rand_dim(&rng, cfg->size_lo, cfg->size_hi);
     bench_reset_arena();
     void* p = bench_vector_alloc(dim);
+    if (!p) break;  /* boundary reached */
     bench_vector_free(p);
   }
 
@@ -197,10 +205,11 @@ void bench_alloc_free_same_thread(bench_result_t* r, const bench_config_t* cfg) 
     uint64_t t0 = bench_clock_ns();
     bench_reset_arena();
     void* p = bench_vector_alloc(dim);
+    if (!p) { r->n = i; bench_reset_arena(); break; }  /* fuse: record count, don't crash */
     bench_vector_free(p);
     r->samples[i] = bench_clock_ns() - t0;
   }
-  r->n = n;
+  if (r->n == 0) r->n = n;  /* no NULL hit */
   bench_arena_destroy(g_bench_arena);
   g_bench_arena = NULL;
   r->rss_bytes_after = bench_rss_bytes();
@@ -220,22 +229,30 @@ void bench_alloc_free_batch(bench_result_t* r, const bench_config_t* cfg) {
   if (rounds > BENCH_MAX_SAMPLES) rounds = BENCH_MAX_SAMPLES;
 
   size_t max_vec_bytes = (size_t)(cfg->size_hi) * BENCH_VECTOR_ELEMSZ;
-  g_bench_arena = bench_arena_create(BATCH_SIZE * max_vec_bytes + 1024 * 1024);
+  g_bench_arena = bench_arena_create(bench_arena_cap(BATCH_SIZE * max_vec_bytes + 1024 * 1024));
   if (!g_bench_arena) { r->n = 0; r->rss_bytes_after = bench_rss_bytes(); return; }
 
-  for (size_t i = 0; i < BATCH_SIZE; i++)
+  size_t filled = 0;
+  for (size_t i = 0; i < BATCH_SIZE; i++) {
     ptrs[i] = bench_vector_alloc(_rand_dim(&rng, cfg->size_lo, cfg->size_hi));
-  for (size_t i = 0; i < BATCH_SIZE; i++) bench_vector_free(ptrs[i]);
+    if (!ptrs[i]) { filled = i; bench_reset_arena(); break; }
+    filled = i + 1;
+  }
+  for (size_t i = 0; i < filled; i++) bench_vector_free(ptrs[i]);
   bench_reset_arena();
 
   rng = 0x1234567890abcdefULL;
   for (size_t round = 0; round < rounds; round++) {
     uint64_t t0 = bench_clock_ns();
-    for (size_t i = 0; i < BATCH_SIZE; i++)
+    filled = 0;
+    for (size_t i = 0; i < BATCH_SIZE; i++) {
       ptrs[i] = bench_vector_alloc(_rand_dim(&rng, cfg->size_lo, cfg->size_hi));
-    for (size_t i = 0; i < BATCH_SIZE; i++) bench_vector_free(ptrs[i]);
+      if (!ptrs[i]) { filled = i; bench_reset_arena(); break; }
+      filled = i + 1;
+    }
+    for (size_t i = 0; i < filled; i++) bench_vector_free(ptrs[i]);
     bench_reset_arena();
-    r->samples[round] = (bench_clock_ns() - t0) / BATCH_SIZE;
+    r->samples[round] = (filled > 0) ? ((bench_clock_ns() - t0) / filled) : 0;
   }
   r->n = rounds;
   bench_arena_destroy(g_bench_arena);
@@ -251,13 +268,14 @@ void bench_latency_small(bench_result_t* r, const bench_config_t* cfg) {
   size_t n = cfg->iterations < BENCH_MAX_SAMPLES ? cfg->iterations : BENCH_MAX_SAMPLES;
   uint64_t rng = 0xfeed1234cafebabe;
 
-  size_t capacity = n * (size_t)(cfg->size_hi) * BENCH_VECTOR_ELEMSZ * 2 + 1024 * 1024;
+  size_t capacity = bench_arena_cap(n * (size_t)(cfg->size_hi) * BENCH_VECTOR_ELEMSZ * 2 + 1024 * 1024);
   g_bench_arena = bench_arena_create(capacity);
   if (!g_bench_arena) { r->n = 0; r->rss_bytes_after = bench_rss_bytes(); return; }
 
   for (size_t i = 0; i < cfg->warmup; i++) {
     size_t dim = 8 + (size_t)(_lcg(&rng) % 248);
     void* p = bench_vector_alloc(dim);
+    if (!p) break;
     bench_vector_free(p);
     bench_reset_arena();
   }
@@ -266,10 +284,11 @@ void bench_latency_small(bench_result_t* r, const bench_config_t* cfg) {
     uint64_t t0 = bench_clock_ns();
     void* p = bench_vector_alloc(dim);
     uint64_t t1 = bench_clock_ns();
+    if (!p) { r->n = i; bench_reset_arena(); break; }
     bench_vector_free(p);
     r->samples[i] = t1 - t0;
   }
-  r->n = n;
+  if (r->n == 0) r->n = n;
   bench_arena_destroy(g_bench_arena);
   g_bench_arena = NULL;
   r->rss_bytes_after = bench_rss_bytes();
@@ -288,11 +307,12 @@ void bench_latency_large(bench_result_t* r, const bench_config_t* cfg) {
   if (n > BENCH_MAX_SAMPLES) n = BENCH_MAX_SAMPLES;
   size_t dim = LATENCY_LARGE_DIM;
 
-  g_bench_arena = bench_arena_create(n * dim * BENCH_VECTOR_ELEMSZ + 2 * 1024 * 1024);
+  g_bench_arena = bench_arena_create(bench_arena_cap(n * dim * BENCH_VECTOR_ELEMSZ + 2 * 1024 * 1024));
   if (!g_bench_arena) { r->n = 0; r->rss_bytes_after = bench_rss_bytes(); return; }
 
   for (size_t i = 0; i < 10; i++) {
     void* p = bench_vector_alloc(dim);
+    if (!p) break;
     bench_vector_free(p);
     bench_reset_arena();
   }
@@ -300,11 +320,12 @@ void bench_latency_large(bench_result_t* r, const bench_config_t* cfg) {
     uint64_t t0 = bench_clock_ns();
     void* p = bench_vector_alloc(dim);
     uint64_t t1 = bench_clock_ns();
-    if (p) { _touch((volatile uint8_t*)p, dim * BENCH_VECTOR_ELEMSZ); }
+    if (!p) { r->n = i; bench_reset_arena(); break; }
+    if (p) _touch((volatile uint8_t*)p, dim * BENCH_VECTOR_ELEMSZ);
     bench_vector_free(p);
     r->samples[i] = t1 - t0;
   }
-  r->n = n;
+  if (r->n == 0) r->n = n;
   bench_arena_destroy(g_bench_arena);
   g_bench_arena = NULL;
   r->rss_bytes_after = bench_rss_bytes();
@@ -318,7 +339,7 @@ void bench_calloc_scenario(bench_result_t* r, const bench_config_t* cfg) {
   size_t n = cfg->iterations < BENCH_MAX_SAMPLES ? cfg->iterations : BENCH_MAX_SAMPLES;
   uint64_t rng = 0xabcd1234;
 
-  size_t capacity = n * (size_t)(cfg->size_hi) * BENCH_VECTOR_ELEMSZ * 2 + 1024 * 1024;
+  size_t capacity = bench_arena_cap(n * (size_t)(cfg->size_hi) * BENCH_VECTOR_ELEMSZ * 2 + 1024 * 1024);
   g_bench_arena = bench_arena_create(capacity);
   if (!g_bench_arena) { r->n = 0; r->rss_bytes_after = bench_rss_bytes(); return; }
 
@@ -327,9 +348,10 @@ void bench_calloc_scenario(bench_result_t* r, const bench_config_t* cfg) {
     uint64_t t0 = bench_clock_ns();
     void* p = bench_vector_alloc(dim);
     r->samples[i] = bench_clock_ns() - t0;
+    if (!p) { r->n = i; bench_reset_arena(); break; }
     bench_vector_free(p);
   }
-  r->n = n;
+  if (r->n == 0) r->n = n;
   bench_arena_destroy(g_bench_arena);
   g_bench_arena = NULL;
   r->rss_bytes_after = bench_rss_bytes();
@@ -344,7 +366,7 @@ void bench_realloc_scenario(bench_result_t* r, const bench_config_t* cfg) {
   size_t n = cfg->iterations < BENCH_MAX_SAMPLES ? cfg->iterations : BENCH_MAX_SAMPLES;
   uint64_t rng = 0x7654321abcdef;
 
-  size_t capacity = n * (size_t)(cfg->size_hi) * BENCH_VECTOR_ELEMSZ + 2 * 1024 * 1024;
+  size_t capacity = bench_arena_cap(n * (size_t)(cfg->size_hi) * BENCH_VECTOR_ELEMSZ + 2 * 1024 * 1024);
   g_bench_arena = bench_arena_create(capacity);
   if (!g_bench_arena) { r->n = 0; r->rss_bytes_after = bench_rss_bytes(); return; }
 
@@ -354,10 +376,11 @@ void bench_realloc_scenario(bench_result_t* r, const bench_config_t* cfg) {
     uint64_t t0 = bench_clock_ns();
     void* q = bench_vector_alloc(dim);
     r->samples[i] = bench_clock_ns() - t0;
-    if (q) { p = q; }
+    if (!q) { r->n = i; bench_reset_arena(); break; }
+    p = q;
   }
   bench_vector_free(p);
-  r->n = n;
+  if (r->n == 0) r->n = n;
   bench_arena_destroy(g_bench_arena);
   g_bench_arena = NULL;
   r->rss_bytes_after = bench_rss_bytes();
@@ -377,11 +400,15 @@ void bench_fragmentation_churn(bench_result_t* r, const bench_config_t* cfg) {
   size_t n = cfg->iterations < BENCH_MAX_SAMPLES ? cfg->iterations : BENCH_MAX_SAMPLES;
 
   size_t max_vec = (size_t)(cfg->size_hi) * BENCH_VECTOR_ELEMSZ;
-  g_bench_arena = bench_arena_create(FRAG_SLOTS * max_vec + 4 * 1024 * 1024);
+  g_bench_arena = bench_arena_create(bench_arena_cap(FRAG_SLOTS * max_vec + 4 * 1024 * 1024));
   if (!g_bench_arena) { free(ptrs); r->n = 0; r->rss_bytes_after = bench_rss_bytes(); return; }
 
-  for (int i = 0; i < FRAG_SLOTS; i++)
+  int filled_slots = 0;
+  for (int i = 0; i < FRAG_SLOTS; i++) {
     ptrs[i] = bench_vector_alloc(_rand_dim(&rng, cfg->size_lo, cfg->size_hi));
+    if (!ptrs[i]) { filled_slots = i; bench_reset_arena(); break; }
+    filled_slots = i + 1;
+  }
 
   for (size_t i = 0; i < n; i++) {
     if (i % FRAG_SLOTS == 0 && i > 0)
@@ -392,9 +419,10 @@ void bench_fragmentation_churn(bench_result_t* r, const bench_config_t* cfg) {
     uint64_t t0 = bench_clock_ns();
     ptrs[idx] = bench_vector_alloc(dim);
     r->samples[i] = bench_clock_ns() - t0;
+    if (!ptrs[idx]) bench_reset_arena();  /* boundary: leave slot NULL, continue */
   }
 
-  for (int i = 0; i < FRAG_SLOTS; i++) bench_vector_free(ptrs[i]);
+  for (int i = 0; i < filled_slots; i++) bench_vector_free(ptrs[i]);
   bench_arena_destroy(g_bench_arena);
   g_bench_arena = NULL;
   free(ptrs);
@@ -411,7 +439,7 @@ void bench_mixed_sizes(bench_result_t* r, const bench_config_t* cfg) {
   size_t n = cfg->iterations < BENCH_MAX_SAMPLES ? cfg->iterations : BENCH_MAX_SAMPLES;
   uint64_t rng = 0x9988776655443322ULL;
 
-  size_t capacity = n * (1024 * 1024 / BENCH_VECTOR_ELEMSZ) * BENCH_VECTOR_ELEMSZ + 8 * 1024 * 1024;
+  size_t capacity = bench_arena_cap(n * (1024 * 1024 / BENCH_VECTOR_ELEMSZ) * BENCH_VECTOR_ELEMSZ + 8 * 1024 * 1024);
   g_bench_arena = bench_arena_create(capacity);
   if (!g_bench_arena) { r->n = 0; r->rss_bytes_after = bench_rss_bytes(); return; }
 
@@ -425,10 +453,11 @@ void bench_mixed_sizes(bench_result_t* r, const bench_config_t* cfg) {
 
     uint64_t t0 = bench_clock_ns();
     void* p = bench_vector_alloc(dim);
-    bench_vector_free(p);
     r->samples[i] = bench_clock_ns() - t0;
+    if (!p) { r->n = i; bench_reset_arena(); break; }
+    bench_vector_free(p);
   }
-  r->n = n;
+  if (r->n == 0) r->n = n;
   bench_arena_destroy(g_bench_arena);
   g_bench_arena = NULL;
   r->rss_bytes_after = bench_rss_bytes();
@@ -463,13 +492,13 @@ static void* _mt_alloc_free_worker(void* arg) {
   for (size_t i = 0; i < a->warmup; i++) {
     size_t dim = _rand_dim(&rng, a->size_lo, a->size_hi);
     bench_arena_reset(ar);
-    { void* _p = bench_arena_alloc_vector(ar, dim, BENCH_VECTOR_ELEMSZ); (void)_p; }
+    if (!bench_arena_alloc_vector(ar, dim, BENCH_VECTOR_ELEMSZ)) break;
   }
   for (size_t i = 0; i < max_n; i++) {
     size_t dim = _rand_dim(&rng, a->size_lo, a->size_hi);
     uint64_t t0 = bench_clock_ns();
     bench_arena_reset(ar);
-    { void* _p = bench_arena_alloc_vector(ar, dim, BENCH_VECTOR_ELEMSZ); (void)_p; }
+    if (!bench_arena_alloc_vector(ar, dim, BENCH_VECTOR_ELEMSZ)) { a->n_samples = i; return NULL; }
     a->samples[i] = bench_clock_ns() - t0;
   }
   a->n_samples = max_n;
@@ -485,7 +514,7 @@ static void _run_threads(bench_result_t* r, const bench_config_t* cfg,
   bench_arena_t* arenas = (bench_arena_t*) malloc((size_t)nt * sizeof(bench_arena_t));
   size_t per_thread_iters = cfg->iterations / (size_t)nt;
   size_t max_vec_bytes    = (size_t)(cfg->size_hi) * BENCH_VECTOR_ELEMSZ * 2;
-  size_t arena_cap        = per_thread_iters * max_vec_bytes + 4 * 1024 * 1024;
+  size_t arena_cap        = bench_arena_cap(per_thread_iters * max_vec_bytes + 4 * 1024 * 1024);
 
   r->rss_bytes_before = bench_rss_bytes();
 
@@ -551,6 +580,7 @@ static void* _producer(void* arg) {
   for (size_t i = 0; i < ctx->n_iter; i++) {
     size_t dim = _rand_dim(&rng, ctx->size_lo, ctx->size_hi);
     void* p = ctx->arena ? bench_arena_alloc_vector((bench_arena_t)ctx->arena, dim, BENCH_VECTOR_ELEMSZ) : NULL;
+    if (!p && ctx->arena) break;  /* boundary reached: stop producing */
     int tail;
     do { tail = atomic_load_explicit(&ctx->tail, memory_order_relaxed); }
     while (((tail + 1) % RING_SIZE) == atomic_load_explicit(&ctx->head, memory_order_acquire));
@@ -598,7 +628,7 @@ void bench_cross_thread(bench_result_t* r, const bench_config_t* cfg) {
   atomic_init(&ctx.done, 0);
 
   size_t max_vec = (size_t)(cfg->size_hi) * BENCH_VECTOR_ELEMSZ;
-  ctx.arena = bench_arena_create_shared(ctx.n_iter * max_vec + 1024 * 1024, 1);
+  ctx.arena = bench_arena_create_shared(bench_arena_cap(ctx.n_iter * max_vec + 1024 * 1024), 1);
 
   pthread_t prod_tid, cons_tid;
   pthread_create(&prod_tid, NULL, _producer, &ctx);
@@ -654,12 +684,12 @@ static void* _pool_worker(void* arg) {
 
   for (size_t i = 0; i < a->warmup; i++) {
     bench_arena_reset(ar);
-    { void* _p = bench_arena_alloc_vector(ar, dim, BENCH_VECTOR_ELEMSZ); (void)_p; }
+    if (!bench_arena_alloc_vector(ar, dim, BENCH_VECTOR_ELEMSZ)) break;
   }
   for (size_t i = 0; i < n; i++) {
     uint64_t t0 = bench_clock_ns();
     bench_arena_reset(ar);
-    { void* _p = bench_arena_alloc_vector(ar, dim, BENCH_VECTOR_ELEMSZ); (void)_p; }
+    if (!bench_arena_alloc_vector(ar, dim, BENCH_VECTOR_ELEMSZ)) { a->n_samples = i; return NULL; }
     a->samples[i] = bench_clock_ns() - t0;
   }
   a->n_samples = n;
@@ -681,18 +711,21 @@ void bench_peak_rss(bench_result_t* r, const bench_config_t* cfg) {
   r->rss_bytes_before = bench_rss_bytes();
 
   size_t max_vec = (size_t)(cfg->size_hi) * BENCH_VECTOR_ELEMSZ;
-  g_bench_arena = bench_arena_create(N * max_vec + 4 * 1024 * 1024);
+  g_bench_arena = bench_arena_create(bench_arena_cap(N * max_vec + 4 * 1024 * 1024));
   if (!g_bench_arena) { free(ptrs); r->n = 0; r->rss_bytes_after = bench_rss_bytes(); return; }
 
+  size_t filled = 0;
   for (size_t i = 0; i < N; i++) {
     size_t dim = _rand_dim(&rng, cfg->size_lo, cfg->size_hi);
     ptrs[i] = bench_vector_alloc(dim);
-    if (ptrs[i]) _touch((volatile uint8_t*)ptrs[i], dim * BENCH_VECTOR_ELEMSZ);
+    if (!ptrs[i]) { filled = i; bench_reset_arena(); break; }
+    _touch((volatile uint8_t*)ptrs[i], dim * BENCH_VECTOR_ELEMSZ);
+    filled = i + 1;
   }
   long rss_peak = bench_rss_bytes();
 
   uint64_t t0 = bench_clock_ns();
-  for (size_t i = 0; i < N; i++) bench_vector_free(ptrs[i]);
+  for (size_t i = 0; i < filled; i++) bench_vector_free(ptrs[i]);
   bench_reset_arena();
   bench_arena_destroy(g_bench_arena);
   g_bench_arena = NULL;
