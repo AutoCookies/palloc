@@ -1,5 +1,0 @@
-test-api 1 0.867922
-test-api-fill 1 0.00281556
-test-stress 1 4.14828
-test-stress-dynamic 1 4.22756
----

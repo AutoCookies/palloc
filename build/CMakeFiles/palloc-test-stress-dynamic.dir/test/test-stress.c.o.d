@@ -1,6 +1,6 @@
 CMakeFiles/palloc-test-stress-dynamic.dir/test/test-stress.c.o: \
- /home/autocookie/pomaieco/palloc/test/test-stress.c \
- /usr/include/stdc-predef.h /usr/include/stdio.h \
+ /root/pomaieco/palloc/test/test-stress.c /usr/include/stdc-predef.h \
+ /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \

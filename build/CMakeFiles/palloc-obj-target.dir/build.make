@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/autocookie/pomaieco/palloc
+CMAKE_SOURCE_DIR = /root/pomaieco/palloc
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/autocookie/pomaieco/palloc/build
+CMAKE_BINARY_DIR = /root/pomaieco/palloc/build
 
 # Utility rule file for palloc-obj-target.
 
@@ -69,8 +69,8 @@ include CMakeFiles/palloc-obj-target.dir/progress.make
 CMakeFiles/palloc-obj-target: palloc.o
 
 palloc.o:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/autocookie/pomaieco/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating palloc.o"
-	/usr/bin/cmake -E copy /home/autocookie/pomaieco/palloc/build/CMakeFiles/palloc-obj.dir/src/static.c.o /home/autocookie/pomaieco/palloc/build/palloc.o
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/root/pomaieco/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating palloc.o"
+	/usr/bin/cmake -E copy /root/pomaieco/palloc/build/CMakeFiles/palloc-obj.dir/src/static.c.o /root/pomaieco/palloc/build/palloc.o
 
 palloc-obj-target: CMakeFiles/palloc-obj-target
 palloc-obj-target: palloc.o
@@ -86,6 +86,6 @@ CMakeFiles/palloc-obj-target.dir/clean:
 .PHONY : CMakeFiles/palloc-obj-target.dir/clean
 
 CMakeFiles/palloc-obj-target.dir/depend:
-	cd /home/autocookie/pomaieco/palloc/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/autocookie/pomaieco/palloc /home/autocookie/pomaieco/palloc /home/autocookie/pomaieco/palloc/build /home/autocookie/pomaieco/palloc/build /home/autocookie/pomaieco/palloc/build/CMakeFiles/palloc-obj-target.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /root/pomaieco/palloc/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/pomaieco/palloc /root/pomaieco/palloc /root/pomaieco/palloc/build /root/pomaieco/palloc/build /root/pomaieco/palloc/build/CMakeFiles/palloc-obj-target.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/palloc-obj-target.dir/depend
 

@@ -1,6 +1,6 @@
 CMakeFiles/palloc-test-stress.dir/test/test-stress.c.o: \
- /home/autocookie/pomaieco/palloc/test/test-stress.c \
- /usr/include/stdc-predef.h /usr/include/stdio.h \
+ /root/pomaieco/palloc/test/test-stress.c /usr/include/stdc-predef.h \
+ /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -66,10 +66,9 @@ CMakeFiles/palloc-test-stress.dir/test/test-stress.c.o: \
  /usr/include/strings.h \
  /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
  /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
- /usr/include/assert.h /home/autocookie/pomaieco/palloc/include/palloc.h \
- /home/autocookie/pomaieco/palloc/include/palloc-stats.h \
- /usr/include/pthread.h /usr/include/sched.h \
- /usr/include/x86_64-linux-gnu/bits/sched.h \
+ /usr/include/assert.h /root/pomaieco/palloc/include/palloc.h \
+ /root/pomaieco/palloc/include/palloc-stats.h /usr/include/pthread.h \
+ /usr/include/sched.h /usr/include/x86_64-linux-gnu/bits/sched.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
  /usr/include/x86_64-linux-gnu/bits/cpu-set.h /usr/include/time.h \
  /usr/include/x86_64-linux-gnu/bits/time.h \

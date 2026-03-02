@@ -1,6 +1,6 @@
 CMakeFiles/palloc-test-api.dir/test/test-api.c.o: \
- /home/autocookie/pomaieco/palloc/test/test-api.c \
- /usr/include/stdc-predef.h /usr/include/assert.h /usr/include/features.h \
+ /root/pomaieco/palloc/test/test-api.c /usr/include/stdc-predef.h \
+ /usr/include/assert.h /usr/include/features.h \
  /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
  /usr/include/x86_64-linux-gnu/bits/timesize.h \
@@ -21,13 +21,12 @@ CMakeFiles/palloc-test-api.dir/test/test-api.c.o: \
  /usr/include/x86_64-linux-gnu/bits/errno.h /usr/include/linux/errno.h \
  /usr/include/x86_64-linux-gnu/asm/errno.h \
  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
- /home/autocookie/pomaieco/palloc/include/palloc.h \
+ /root/pomaieco/palloc/include/palloc.h \
  /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h \
- /home/autocookie/pomaieco/palloc/include/palloc/types.h \
- /home/autocookie/pomaieco/palloc/include/palloc-stats.h \
- /home/autocookie/pomaieco/palloc/include/palloc/atomic.h \
- /usr/include/pthread.h /usr/include/sched.h \
- /usr/include/x86_64-linux-gnu/bits/types/time_t.h \
+ /root/pomaieco/palloc/include/palloc/types.h \
+ /root/pomaieco/palloc/include/palloc-stats.h \
+ /root/pomaieco/palloc/include/palloc/atomic.h /usr/include/pthread.h \
+ /usr/include/sched.h /usr/include/x86_64-linux-gnu/bits/types/time_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h \
  /usr/include/x86_64-linux-gnu/bits/endian.h \
  /usr/include/x86_64-linux-gnu/bits/endianness.h \
@@ -74,7 +73,7 @@ CMakeFiles/palloc-test-api.dir/test/test-api.c.o: \
  /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib.h \
- /home/autocookie/pomaieco/palloc/test/testhelper.h /usr/include/stdio.h \
+ /root/pomaieco/palloc/test/testhelper.h /usr/include/stdio.h \
  /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h \
  /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
