@@ -409,6 +409,8 @@ typedef enum pa_option_e {
   pa_option_generic_collect,            // collect heaps every N (=10000) generic allocation calls
   pa_option_allow_thp,                  // allow transparent huge pages? (=1) (on Android =0 by default). Set to 0 to disable THP for the process.
   pa_option_adaptive_purge,             // adaptively adjust purge delay based on workload churn (=1)
+  pa_option_purge_background,           // purge memory in the background? (0=disabled, 1=enabled)
+  pa_option_zero_background,            // pre-zero memory in the background? (0=disabled, 1=enabled)
   _pa_option_last,
   // legacy option names
   pa_option_large_os_pages = pa_option_allow_large_os_pages,

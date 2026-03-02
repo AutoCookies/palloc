@@ -39,7 +39,6 @@ extern inline void* _pa_page_malloc_zero(pa_heap_t* heap, pa_page_t* page, size_
     return _pa_malloc_generic(heap, size, zero, 0, usable);
   }
   pa_assert_internal(block != NULL && _pa_ptr_page(block) == page);
-  if (usable != NULL) { *usable = pa_page_usable_block_size(page); };
   // pop from the free list
   pa_block_t* const next = pa_block_next(page, block);
   page->free = next;
@@ -47,21 +46,23 @@ extern inline void* _pa_page_malloc_zero(pa_heap_t* heap, pa_page_t* page, size_
   if (next != NULL) { pa_prefetch(next); }
   pa_assert_internal(page->free == NULL || _pa_ptr_page(page->free) == page);
   pa_assert_internal(page->block_size < PA_MAX_ALIGN_SIZE || _pa_is_aligned(block, PA_MAX_ALIGN_SIZE));
+  _pa_page_finish_alloc(heap, page, block, size, zero, usable);
+  return block;
+}
 
+// Shared post-pop setup: usable size, track, zero, stats, padding (used by page free list and thread cache).
+void _pa_page_finish_alloc(pa_heap_t* heap, pa_page_t* page, pa_block_t* block, size_t size, bool zero, size_t* usable) {
+  PA_UNUSED(heap);
+  PA_UNUSED(size);
+  if (usable != NULL) { *usable = pa_page_usable_block_size(page); }
   #if PA_DEBUG>3
   if (page->free_is_zero && size > sizeof(*block)) {
     pa_assert_expensive(pa_mem_is_zero(block+1,size - sizeof(*block)));
   }
   #endif
-
-  // allow use of the block internally
-  // note: when tracking we need to avoid ever touching the PA_PADDING since
-  // that is tracked by valgrind etc. as non-accessible (through the red-zone, see `palloc/track.h`)
   pa_track_mem_undefined(block, pa_page_usable_block_size(page));
-
-  // zero the block? note: we need to zero the full block size (issue #63)
   if pa_unlikely(zero) {
-    pa_assert_internal(page->block_size != 0); // do not call with zero'ing for huge blocks (see _pa_malloc_generic)
+    pa_assert_internal(page->block_size != 0);
     #if PA_PADDING
     pa_assert_internal(page->block_size >= PA_PADDING_SIZE);
     #endif
@@ -73,47 +74,43 @@ extern inline void* _pa_page_malloc_zero(pa_heap_t* heap, pa_page_t* page, size_
       _pa_memzero_aligned(block, page->block_size - PA_PADDING_SIZE);
     }
   }
-
   #if (PA_DEBUG>0) && !PA_TRACK_ENABLED && !PA_TSAN
   if (!zero && !pa_page_is_huge(page)) {
     memset(block, PA_DEBUG_UNINIT, pa_page_usable_block_size(page));
   }
   #elif (PA_SECURE!=0)
-  if (!zero) { block->next = 0; } // don't leak internal data
+  if (!zero) { block->next = 0; }
   #endif
-
   #if (PA_STAT>0)
   const size_t bsize = pa_page_usable_block_size(page);
   if (bsize <= PA_MEDIUM_OBJ_SIZE_MAX) {
     pa_heap_stat_increase(heap, malloc_normal, bsize);
     pa_heap_stat_counter_increase(heap, malloc_normal_count, 1);
     #if (PA_STAT>1)
-    const size_t bin = _pa_bin(bsize);
-    pa_heap_stat_increase(heap, malloc_bins[bin], 1);
+    pa_heap_stat_increase(heap, malloc_bins[_pa_bin(bsize)], 1);
     pa_heap_stat_increase(heap, malloc_requested, size - PA_PADDING_SIZE);
     #endif
   }
   #endif
-
-  #if PA_PADDING // && !PA_TRACK_ENABLED
+  #if PA_PADDING
+  {
     pa_padding_t* const padding = (pa_padding_t*)((uint8_t*)block + pa_page_usable_block_size(page));
     ptrdiff_t delta = ((uint8_t*)padding - (uint8_t*)block - (size - PA_PADDING_SIZE));
     #if (PA_DEBUG>=2)
     pa_assert_internal(delta >= 0 && pa_page_usable_block_size(page) >= (size - PA_PADDING_SIZE + delta));
     #endif
-    pa_track_mem_defined(padding,sizeof(pa_padding_t));  // note: re-enable since pa_page_usable_block_size may set noaccess
+    pa_track_mem_defined(padding,sizeof(pa_padding_t));
     padding->canary = pa_ptr_encode_canary(page,block,page->keys);
     padding->delta  = (uint32_t)(delta);
     #if PA_PADDING_CHECK
     if (!pa_page_is_huge(page)) {
       uint8_t* fill = (uint8_t*)padding - delta;
-      const size_t maxpad = (delta > PA_MAX_ALIGN_SIZE ? PA_MAX_ALIGN_SIZE : delta); // set at most N initial padding bytes
+      const size_t maxpad = (delta > PA_MAX_ALIGN_SIZE ? PA_MAX_ALIGN_SIZE : (size_t)delta);
       for (size_t i = 0; i < maxpad; i++) { fill[i] = PA_DEBUG_PADDING; }
     }
     #endif
+  }
   #endif
-
-  return block;
 }
 
 // extra entries for improved efficiency in `alloc-aligned.c`.
@@ -203,7 +200,11 @@ pa_decl_nodiscard extern inline pa_decl_restrict void* pa_heap_malloc(pa_heap_t*
 }
 
 pa_decl_nodiscard extern inline pa_decl_restrict void* pa_malloc(size_t size) pa_attr_noexcept {
-  return pa_heap_malloc(pa_prim_get_default_heap(), size);
+  pa_heap_t* heap = pa_prim_get_default_heap();
+  if pa_likely(size <= PA_SMALL_SIZE_MAX) {
+    return pa_heap_malloc_small_zero(heap, size, false, NULL);
+  }
+  return _pa_heap_malloc_zero(heap, size, false);
 }
 
 // zero initialized small block
@@ -223,7 +224,10 @@ pa_decl_nodiscard pa_decl_restrict void* pa_zalloc(size_t size) pa_attr_noexcept
 pa_decl_nodiscard extern inline pa_decl_restrict void* pa_heap_calloc(pa_heap_t* heap, size_t count, size_t size) pa_attr_noexcept {
   size_t total;
   if (pa_count_size_overflow(count,size,&total)) return NULL;
-  return pa_heap_zalloc(heap,total);
+  if pa_likely(total <= PA_SMALL_SIZE_MAX) {
+    return pa_heap_malloc_small_zero(heap, total, true, NULL);
+  }
+  return _pa_heap_malloc_zero(heap, total, true);
 }
 
 pa_decl_nodiscard pa_decl_restrict void* pa_calloc(size_t count, size_t size) pa_attr_noexcept {

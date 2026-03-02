@@ -266,6 +266,9 @@ CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 //Git command line client
 GIT_EXECUTABLE:FILEPATH=/usr/bin/git
 
+//No help, variable specified on the command line.
+PA_BUILD_BENCH:UNINITIALIZED=ON
+
 //Build object library
 PA_BUILD_OBJECT:BOOL=ON
 

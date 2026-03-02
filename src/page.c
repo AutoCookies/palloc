@@ -886,7 +886,9 @@ static inline pa_page_t* pa_find_free_page(pa_heap_t* heap, size_t size) {
     else
    #endif
     {
-      _pa_page_free_collect(page,false);
+      if (page->free == NULL) {
+        _pa_page_free_collect(page, false);
+      }
     }
 
     if (pa_page_immediate_available(page)) {
@@ -997,6 +999,23 @@ static pa_page_t* pa_find_page(pa_heap_t* heap, size_t size, size_t huge_alignme
   }
 }
 
+// Refill thread cache from page after we took one block (tcmalloc-style batch refill).
+static void pa_heap_cache_refill(pa_heap_t* heap, pa_page_t* page) {
+  if (page == NULL || pa_page_is_huge(page)) return;
+  const size_t bsize = pa_page_block_size(page);
+  const size_t bin = _pa_bin(bsize);
+  if (bin >= PA_CACHE_BINS) return;
+  for (unsigned i = 0; i < PA_CACHE_REFILL && heap->cache_count[bin] < PA_CACHE_MAX_PER_BIN; i++) {
+    if (page->free == NULL) _pa_page_free_collect(page, false);
+    if (page->free == NULL) break;
+    pa_block_t* block = page->free;
+    page->free = pa_block_next(page, block);
+    pa_block_set_nextx(heap, block, heap->cache_head[bin], heap->keys);
+    heap->cache_head[bin] = block;
+    heap->cache_count[bin]++;
+  }
+}
+
 // Generic allocation routine if the fast path (`alloc.c:pa_page_malloc`) does not succeed.
 // Note: in debug mode the size includes PA_PADDING_SIZE and might have overflowed.
 // The `huge_alignment` is normally 0 but is set to a multiple of PA_SLICE_SIZE for
@@ -1011,6 +1030,26 @@ void* _pa_malloc_generic(pa_heap_t* heap, size_t size, bool zero, size_t huge_al
     if pa_unlikely(!pa_heap_is_initialized(heap)) { return NULL; }
   }
   pa_assert_internal(pa_heap_is_initialized(heap));
+
+  // Thread cache (tcmalloc/jemalloc-style): pop from per-bin cache when possible.
+  // For calloc: use cache only for small sizes so large calloc can get zero pages and skip memset.
+  #define PA_CALLOC_CACHE_MAX  (2048 + PA_PADDING_SIZE)  // above this, skip cache for zero so we prefer zero pages
+  const bool use_cache = (huge_alignment == 0 && size <= PA_MEDIUM_OBJ_SIZE_MAX + PA_PADDING_SIZE) &&
+                        (!zero || size <= PA_CALLOC_CACHE_MAX);
+  if pa_likely(use_cache) {
+    const size_t bin = _pa_bin_fast(size);
+    if (bin < PA_BIN_HUGE) {
+      pa_block_t* block = heap->cache_head[bin];
+      if pa_likely(block != NULL && heap->cache_count[bin] > 0) {
+        heap->cache_head[bin] = pa_block_nextx(heap, block, heap->keys);
+        heap->cache_count[bin]--;
+        pa_page_t* page = _pa_ptr_page(block);
+        page->used++;
+        _pa_page_finish_alloc(heap, page, block, size, zero, usable);
+        return block;
+      }
+    }
+  }
 
   // do administrative tasks every N generic mallocs
   if pa_unlikely(++heap->generic_count >= 100) {
@@ -1049,6 +1088,10 @@ void* _pa_malloc_generic(pa_heap_t* heap, size_t size, bool zero, size_t huge_al
   // and try again, this time succeeding! (i.e. this should never recurse through _pa_page_malloc)
   void* const p = _pa_page_malloc_zero(heap, page, size, zero, usable);
   pa_assert_internal(p != NULL);
+
+  // Batch refill thread cache from this page (tcmalloc-style) so future allocs hit cache
+  if (huge_alignment == 0 && size <= PA_MEDIUM_OBJ_SIZE_MAX + PA_PADDING_SIZE)
+    pa_heap_cache_refill(heap, page);
 
   // move singleton pages to the full queue
   if (page->reserved == page->used) {

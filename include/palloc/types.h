@@ -226,6 +226,9 @@ typedef int32_t  pa_ssize_t;
 // Process at most this many cross-thread delayed frees per partial call to reduce contention (alloc_free_mt / thread_scale)
 #define PA_DELAYED_FREE_BATCH             (32)
 
+// Size-to-bin lookup table: for alloc sizes in [0, PA_SIZE2BIN_LOOKUP_MAX) use O(1) table instead of pa_bin() (mixed_sizes / latency).
+#define PA_SIZE2BIN_LOOKUP_MAX            (8192)
+
 // we never allocate more than PTRDIFF_MAX (see also <https://sourceware.org/ml/libc-announce/2019/msg00001.html>)
 // on 64-bit+ systems we also limit the maximum allocation size such that the slice count fits in 32-bits. (issue #877)
 #if (PTRDIFF_MAX > INT32_MAX) && (PTRDIFF_MAX >= (PA_SEGMENT_SLIZE_SIZE * UINT32_MAX))
@@ -558,6 +561,10 @@ typedef struct pa_padding_s {
 
 #define PA_PAGES_DIRECT   (PA_SMALL_WSIZE_MAX + PA_PADDING_WSIZE + 1)
 
+// Thread cache (tcmalloc-style): per-bin free lists to avoid touching page queues on hot path.
+#define PA_CACHE_BINS           (PA_BIN_HUGE + 1)
+#define PA_CACHE_MAX_PER_BIN    (48)
+#define PA_CACHE_REFILL         (16)   // batch refill from page when we miss (tcmalloc-style)
 
 // A heap owns a set of pages.
 struct pa_heap_s {
@@ -584,6 +591,9 @@ struct pa_heap_s {
   #endif
   pa_page_t*            pages_free_direct[PA_PAGES_DIRECT];  // optimize: array where every entry points a page with possibly free blocks in the corresponding queue for that size.
   pa_page_queue_t       pages[PA_BIN_FULL + 1];              // queue of pages for each size class (or "bin")
+  // Thread cache: same-thread alloc/free hot path (tcmalloc-style)
+  pa_block_t*           cache_head[PA_CACHE_BINS];
+  uint8_t               cache_count[PA_CACHE_BINS];
 };
 
 

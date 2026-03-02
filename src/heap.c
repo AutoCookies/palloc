@@ -267,13 +267,15 @@ uintptr_t _pa_heap_random_next(pa_heap_t* heap) {
   return _pa_random_next(&heap->random);
 }
 
-// zero out the page queues
+// zero out the page queues and thread cache
 static void pa_heap_reset_pages(pa_heap_t* heap) {
   pa_assert_internal(heap != NULL);
   pa_assert_internal(pa_heap_is_initialized(heap));
   // TODO: copy full empty heap instead?
   memset(&heap->pages_free_direct, 0, sizeof(heap->pages_free_direct));
   _pa_memcpy_aligned(&heap->pages, &_pa_heap_empty.pages, sizeof(heap->pages));
+  memset(heap->cache_head, 0, sizeof(heap->cache_head));
+  memset(heap->cache_count, 0, sizeof(heap->cache_count));
   heap->thread_delayed_free = NULL;
   heap->page_count = 0;
 }
@@ -371,7 +373,49 @@ static bool _pa_heap_page_destroy(pa_heap_t* heap, pa_page_queue_t* pq, pa_page_
   return true; // keep going
 }
 
+// Flush from thread cache only blocks belonging to this page (so page can be retired safely).
+void pa_heap_cache_flush_page(pa_heap_t* heap, pa_page_t* page) {
+  const size_t bsize = pa_page_block_size(page);
+  const size_t bin = _pa_bin(bsize);
+  if (bin >= PA_CACHE_BINS) return;
+  pa_block_t* prev = NULL;
+  pa_block_t* block = heap->cache_head[bin];
+  while (block != NULL) {
+    pa_block_t* next = pa_block_nextx(heap, block, heap->keys);
+    if (_pa_ptr_page(block) == page) {
+      if (prev == NULL)
+        heap->cache_head[bin] = next;
+      else
+        pa_block_set_nextx(heap, prev, next, heap->keys);
+      pa_block_set_next(page, block, page->local_free);
+      page->local_free = block;
+      pa_assert_internal(heap->cache_count[bin] > 0);
+      heap->cache_count[bin]--;
+    } else {
+      prev = block;
+    }
+    block = next;
+  }
+}
+
+// Flush thread cache back to pages so destroy can free all blocks
+static void pa_heap_cache_flush(pa_heap_t* heap) {
+  for (size_t bin = 0; bin < PA_CACHE_BINS; bin++) {
+    pa_block_t* block = heap->cache_head[bin];
+    while (block != NULL) {
+      pa_block_t* next = pa_block_nextx(heap, block, heap->keys);
+      pa_page_t* page = _pa_ptr_page(block);
+      pa_block_set_next(page, block, page->local_free);
+      page->local_free = block;
+      block = next;
+    }
+    heap->cache_head[bin] = NULL;
+    heap->cache_count[bin] = 0;
+  }
+}
+
 void _pa_heap_destroy_pages(pa_heap_t* heap) {
+  pa_heap_cache_flush(heap);
   pa_heap_visit_pages(heap, &_pa_heap_page_destroy, NULL, NULL);
   pa_heap_reset_pages(heap);
 }

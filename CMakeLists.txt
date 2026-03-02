@@ -459,6 +459,8 @@ if(CMAKE_C_COMPILER_ID MATCHES "AppleClang|Clang|GNU|Intel" AND NOT CMAKE_SYSTEM
       endif()
     elseif(PA_ARCH STREQUAL "arm64")
       set(PA_OPT_ARCH_FLAGS "-march=armv8.1-a")  # fast atomics
+    elseif(PA_ARCH STREQUAL "x64")
+      set(PA_OPT_ARCH_FLAGS "-march=native")  # max throughput: AVX2, FSRM, etc.
     endif()
   endif()
 endif()
