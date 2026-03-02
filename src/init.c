@@ -644,6 +644,11 @@ void _pa_memzero_aligned_avx2(void* dst, size_t n) {
     p += 64;
     n -= 64;
   }
+  if (n >= 32) {
+    _mm256_store_si256((__m256i*)p, z);
+    p += 32;
+    n -= 32;
+  }
   if (n > 0) _pa_memzero(p, n);
 }
 #else

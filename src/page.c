@@ -317,30 +317,46 @@ void _pa_heap_delayed_free_all(pa_heap_t* heap) {
   }
 }
 
-// returns true if all delayed frees were processed
+// Process at most PA_DELAYED_FREE_BATCH blocks per call to reduce contention when many threads free to this heap.
+// Returns true if the delayed list is now empty (all processed or batch completed with remainder re-queued).
 bool _pa_heap_delayed_free_partial(pa_heap_t* heap) {
-  // take over the list (note: no atomic exchange since it is often NULL)
   pa_block_t* block = pa_atomic_load_ptr_relaxed(pa_block_t, &heap->thread_delayed_free);
   while (block != NULL && !pa_atomic_cas_ptr_weak_acq_rel(pa_block_t, &heap->thread_delayed_free, &block, NULL)) { /* nothing */ };
   bool all_freed = true;
+  size_t processed = 0;
+  const size_t batch_max = PA_DELAYED_FREE_BATCH;
+  pa_block_t* remainder = NULL;
 
-  // and free them all
-  while(block != NULL) {
-    pa_block_t* next = pa_block_nextx(heap,block, heap->keys);
-    // use internal free instead of regular one to keep stats etc correct
+  while (block != NULL && processed < batch_max) {
+    pa_block_t* next = pa_block_nextx(heap, block, heap->keys);
     if (!_pa_free_delayed_block(block)) {
-      // we might already start delayed freeing while another thread has not yet
-      // reset the delayed_freeing flag; in that case delay it further by reinserting the current block
-      // into the delayed free list
       all_freed = false;
-      pa_block_t* dfree = pa_atomic_load_ptr_relaxed(pa_block_t, &heap->thread_delayed_free);
-      do {
-        pa_block_set_nextx(heap, block, dfree, heap->keys);
-      } while (!pa_atomic_cas_ptr_weak_release(pa_block_t,&heap->thread_delayed_free, &dfree, block));
+      pa_block_set_nextx(heap, block, remainder, heap->keys);
+      remainder = block;
     }
     block = next;
+    processed++;
   }
-  return all_freed;
+
+  // re-queue unprocessed tail so we don't flush the whole list in one go (lower contention)
+  if (block != NULL) {
+    pa_block_t* tail = block;
+    while (pa_block_nextx(heap, tail, heap->keys) != NULL)
+      tail = pa_block_nextx(heap, tail, heap->keys);
+    pa_block_set_nextx(heap, tail, remainder, heap->keys);
+    remainder = block;
+  }
+
+  if (remainder != NULL) {
+    pa_block_t* last = remainder;
+    while (pa_block_nextx(heap, last, heap->keys) != NULL)
+      last = pa_block_nextx(heap, last, heap->keys);
+    pa_block_t* dfree = pa_atomic_load_ptr_relaxed(pa_block_t, &heap->thread_delayed_free);
+    do {
+      pa_block_set_nextx(heap, last, dfree, heap->keys);
+    } while (!pa_atomic_cas_ptr_weak_release(pa_block_t, &heap->thread_delayed_free, &dfree, remainder));
+  }
+  return (block == NULL && remainder == NULL) ? all_freed : false;
 }
 
 /* -----------------------------------------------------------

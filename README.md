@@ -75,6 +75,18 @@ Static and shared libraries will still be built; only the runtime redirect for o
 | `PA_BUILD_TESTS` | ON | Build test executables |
 | `PA_OVERRIDE` | ON | Enable malloc/free override (see platform notes above) |
 | `PA_WIN_REDIRECT` | ON (Windows) | Use redirect DLL for override on Windows; set OFF if `bin/` redirect DLLs are missing |
+| `PA_OPT_ARCH` | OFF (x64), ON (arm64) | Architecture-specific optimizations (e.g. arm64: fast atomics) |
+| `PA_PADDING` | OFF | Extra padding per block (detect overflow; costs throughput) |
+| `PA_SECURE` | OFF | Security mitigations (costs throughput) |
+| `PA_DEBUG` / `PA_DEBUG_FULL` | OFF | Assertions and invariant checks (costs throughput) |
+
+**Maximum throughput (benchmarks):** Use the `release-maxperf` preset so padding, secure, and debug are off and `PA_OPT_ARCH` is on:
+
+```bash
+cmake --preset release-maxperf && cmake --build build
+```
+
+See [doc/PERFORMANCE.md](doc/PERFORMANCE.md) for the full performance guide and an improvement roadmap for weak scenarios.
 
 Run `cmake -B build -L` to list all cache variables.
 

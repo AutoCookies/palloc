@@ -332,7 +332,7 @@ PA_NO_USE_CXX:BOOL=OFF
 
 //Only for optimized builds: turn on architecture specific optimizations
 // (for arm64: '-march=armv8.1-a' (2016))
-PA_OPT_ARCH:BOOL=OFF
+PA_OPT_ARCH:BOOL=ON
 
 //Use interpose to override standard malloc on macOS
 PA_OSX_INTERPOSE:BOOL=ON
