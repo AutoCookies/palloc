@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/autocookie/pomaieco/palloc/test/test-api-fill.c" "CMakeFiles/palloc-test-api-fill.dir/test/test-api-fill.c.o" "gcc" "CMakeFiles/palloc-test-api-fill.dir/test/test-api-fill.c.o.d"
+  "/root/pomaieco/palloc/test/test-api-fill.c" "CMakeFiles/palloc-test-api-fill.dir/test/test-api-fill.c.o" "gcc" "CMakeFiles/palloc-test-api-fill.dir/test/test-api-fill.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

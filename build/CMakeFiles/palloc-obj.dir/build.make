@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/autocookie/pomaieco/palloc
+CMAKE_SOURCE_DIR = /root/pomaieco/palloc
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/autocookie/pomaieco/palloc/build
+CMAKE_BINARY_DIR = /root/pomaieco/palloc/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/palloc-obj.dir/depend.make
@@ -70,18 +70,18 @@ include CMakeFiles/palloc-obj.dir/progress.make
 include CMakeFiles/palloc-obj.dir/flags.make
 
 CMakeFiles/palloc-obj.dir/src/static.c.o: CMakeFiles/palloc-obj.dir/flags.make
-CMakeFiles/palloc-obj.dir/src/static.c.o: /home/autocookie/pomaieco/palloc/src/static.c
+CMakeFiles/palloc-obj.dir/src/static.c.o: /root/pomaieco/palloc/src/static.c
 CMakeFiles/palloc-obj.dir/src/static.c.o: CMakeFiles/palloc-obj.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/autocookie/pomaieco/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/palloc-obj.dir/src/static.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc-obj.dir/src/static.c.o -MF CMakeFiles/palloc-obj.dir/src/static.c.o.d -o CMakeFiles/palloc-obj.dir/src/static.c.o -c /home/autocookie/pomaieco/palloc/src/static.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/pomaieco/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/palloc-obj.dir/src/static.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc-obj.dir/src/static.c.o -MF CMakeFiles/palloc-obj.dir/src/static.c.o.d -o CMakeFiles/palloc-obj.dir/src/static.c.o -c /root/pomaieco/palloc/src/static.c
 
 CMakeFiles/palloc-obj.dir/src/static.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc-obj.dir/src/static.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/autocookie/pomaieco/palloc/src/static.c > CMakeFiles/palloc-obj.dir/src/static.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/pomaieco/palloc/src/static.c > CMakeFiles/palloc-obj.dir/src/static.c.i
 
 CMakeFiles/palloc-obj.dir/src/static.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc-obj.dir/src/static.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/autocookie/pomaieco/palloc/src/static.c -o CMakeFiles/palloc-obj.dir/src/static.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/pomaieco/palloc/src/static.c -o CMakeFiles/palloc-obj.dir/src/static.c.s
 
 palloc-obj: CMakeFiles/palloc-obj.dir/src/static.c.o
 palloc-obj: CMakeFiles/palloc-obj.dir/build.make
@@ -96,6 +96,6 @@ CMakeFiles/palloc-obj.dir/clean:
 .PHONY : CMakeFiles/palloc-obj.dir/clean
 
 CMakeFiles/palloc-obj.dir/depend:
-	cd /home/autocookie/pomaieco/palloc/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/autocookie/pomaieco/palloc /home/autocookie/pomaieco/palloc /home/autocookie/pomaieco/palloc/build /home/autocookie/pomaieco/palloc/build /home/autocookie/pomaieco/palloc/build/CMakeFiles/palloc-obj.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /root/pomaieco/palloc/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/pomaieco/palloc /root/pomaieco/palloc /root/pomaieco/palloc/build /root/pomaieco/palloc/build /root/pomaieco/palloc/build/CMakeFiles/palloc-obj.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/palloc-obj.dir/depend
 
