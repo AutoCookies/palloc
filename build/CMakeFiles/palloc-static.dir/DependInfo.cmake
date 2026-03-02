@@ -12,6 +12,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/root/pomaieco/palloc/src/alloc-posix.c" "CMakeFiles/palloc-static.dir/src/alloc-posix.c.o" "gcc" "CMakeFiles/palloc-static.dir/src/alloc-posix.c.o.d"
   "/root/pomaieco/palloc/src/alloc.c" "CMakeFiles/palloc-static.dir/src/alloc.c.o" "gcc" "CMakeFiles/palloc-static.dir/src/alloc.c.o.d"
   "/root/pomaieco/palloc/src/arena.c" "CMakeFiles/palloc-static.dir/src/arena.c.o" "gcc" "CMakeFiles/palloc-static.dir/src/arena.c.o.d"
+  "/root/pomaieco/palloc/src/arena_pomai.c" "CMakeFiles/palloc-static.dir/src/arena_pomai.c.o" "gcc" "CMakeFiles/palloc-static.dir/src/arena_pomai.c.o.d"
   "/root/pomaieco/palloc/src/bitmap.c" "CMakeFiles/palloc-static.dir/src/bitmap.c.o" "gcc" "CMakeFiles/palloc-static.dir/src/bitmap.c.o.d"
   "/root/pomaieco/palloc/src/heap.c" "CMakeFiles/palloc-static.dir/src/heap.c.o" "gcc" "CMakeFiles/palloc-static.dir/src/heap.c.o.d"
   "/root/pomaieco/palloc/src/init.c" "CMakeFiles/palloc-static.dir/src/init.c.o" "gcc" "CMakeFiles/palloc-static.dir/src/init.c.o.d"

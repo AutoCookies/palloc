@@ -15,23 +15,82 @@ palloc is a general purpose allocator with excellent performance characteristics
 
 ## Quick Start
 
-### Building on Linux/macOS
+### Building on Linux / macOS
 
 ```bash
 mkdir -p build
 cd build
 cmake ..
-make
-sudo make install
+cmake --build .
+sudo cmake --install .
 ```
+
+Using Ninja for a faster build:
+
+```bash
+cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+sudo cmake --install build
+```
+
+### Building on Windows
+
+**Using Visual Studio (MSVC):**
+
+1. Open a **Developer Command Prompt for VS** or ensure `cl` and `cmake` are on `PATH`.
+2. From the repo root:
+
+```cmd
+cmake -B build -G "Visual Studio 17 2022" -A x64
+cmake --build build --config Release
+cmake --install build --prefix C:\palloc-install
+```
+
+For 32-bit use `-A Win32`; for ARM64 use `-A ARM64`.
+
+**Using MinGW (GCC on Windows):**
+
+```cmd
+cmake -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
+cmake --build build
+cmake --install build
+```
+
+**Windows DLL override:** To use palloc as a drop-in replacement (override `malloc`/`free`) when building the **shared** library, the build uses a redirect DLL. If **bin/** does not already contain `palloc-redirect.dll` and `palloc-redirect.lib`, they are **built from source** (see [bin/BUILD.md](bin/BUILD.md)). To build without the redirect (no override), use:
+
+```cmd
+cmake -B build -DPA_WIN_REDIRECT=OFF ...
+```
+
+Static and shared libraries will still be built; only the runtime redirect for overriding other DLLs is disabled.
+
+**Effective build options (Linux and Windows):**
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `CMAKE_BUILD_TYPE` | Release | `Release`, `Debug`, `RelWithDebInfo` |
+| `CMAKE_INSTALL_PREFIX` | system-dependent | Install location (e.g. `/usr/local`, `C:\palloc`) |
+| `PA_BUILD_SHARED` | ON | Build shared library (`.so` / `.dll`) |
+| `PA_BUILD_STATIC` | ON | Build static library (`.a` / `.lib`) |
+| `PA_BUILD_TESTS` | ON | Build test executables |
+| `PA_OVERRIDE` | ON | Enable malloc/free override (see platform notes above) |
+| `PA_WIN_REDIRECT` | ON (Windows) | Use redirect DLL for override on Windows; set OFF if `bin/` redirect DLLs are missing |
+
+Run `cmake -B build -L` to list all cache variables.
+
+CI builds and tests palloc on **Linux** (Ninja) and **Windows** (MSVC and MinGW) on every push; see [.github/workflows/build.yml](.github/workflows/build.yml).
 
 ### Usage
 
-Link with `libpalloc` and include `<palloc.h>` (or use `LD_PRELOAD` for dynamic overriding).
+- **Linux/macOS:** Link with `libpalloc` and include `<palloc.h>`. For process-wide override without recompiling, use `LD_PRELOAD` (Linux) or `DYLD_INSERT_LIBRARIES` (macOS).
+- **Windows:** Link with `palloc.lib` (or use the static library), include `<palloc.h>`, and ensure `palloc.dll` (and, if using override, `palloc-redirect.dll`) are next to your executable. See [bin/readme.md](bin/readme.md) for override details.
 
 ```bash
-# Example compilation
+# Example (Linux/macOS)
 gcc -o myprogram myfile.c -lpalloc
+
+# Example (Windows, MSVC: link with palloc and ensure palloc.dll is in the same folder)
+cl myfile.c /I path\to\palloc-install\include path\to\palloc-install\lib\palloc.lib
 ```
 
 For more detailed documentation, please refer to the `doc/` directory or visit the [project documentation](https://microsoft.github.io/palloc).

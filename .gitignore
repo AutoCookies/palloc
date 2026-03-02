@@ -85,4 +85,8 @@ dist/
 .env
 .env.local
 *.local
-bin/
+
+# bin/: keep source (BUILD.md, readme.md, CMakeLists.txt, palloc-redirect.c); do not commit prebuilt binaries
+bin/*.dll
+bin/*.lib
+bin/*.exe

@@ -147,5 +147,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/palloc-test-api.dir/DependInfo.cmake"
   "CMakeFiles/palloc-test-api-fill.dir/DependInfo.cmake"
   "CMakeFiles/palloc-test-stress.dir/DependInfo.cmake"
+  "CMakeFiles/palloc-test-arena-pomai.dir/DependInfo.cmake"
+  "CMakeFiles/palloc-test-basic.dir/DependInfo.cmake"
   "CMakeFiles/palloc-test-stress-dynamic.dir/DependInfo.cmake"
   )

@@ -8,6 +8,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/palloc.dir/src/alloc.c.o.d"
   "CMakeFiles/palloc.dir/src/arena.c.o"
   "CMakeFiles/palloc.dir/src/arena.c.o.d"
+  "CMakeFiles/palloc.dir/src/arena_pomai.c.o"
+  "CMakeFiles/palloc.dir/src/arena_pomai.c.o.d"
   "CMakeFiles/palloc.dir/src/bitmap.c.o"
   "CMakeFiles/palloc.dir/src/bitmap.c.o.d"
   "CMakeFiles/palloc.dir/src/heap.c.o"

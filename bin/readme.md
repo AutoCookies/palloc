@@ -1,5 +1,9 @@
 # Windows Override
 
+**Building:** To build the redirect DLL and the main library on Windows, see [BUILD.md](BUILD.md). If you don’t have prebuilt `palloc-redirect*.dll`/`.lib` in **bin/**, they are built from **bin/palloc-redirect.c** when you run the main CMake build with `PA_WIN_REDIRECT=ON`.
+
+---
+
 <span id="override_on_windows">We use a separate redirection DLL to override palloc on Windows</span> 
 such that we redirect all malloc/free calls that go through the (dynamic) C runtime allocator, 
 including those from other DLL's or libraries. As it intercepts all allocation calls on a low level, 
