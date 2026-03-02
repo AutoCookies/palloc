@@ -121,154 +121,47 @@ bash run_bench.sh                    # full run (or --iter=50000 for a quick run
 
 # palloc Benchmark Results
 
-| Scenario                           | Metric     |       jemalloc |       mimalloc |         palloc |         system |       tcmalloc |
-|------------------------------------|------------|----------------|----------------|----------------|----------------|----------------|
-| alloc_free_batch                   | ops/sec    |     9.86 Mop/s |    19.28 Mop/s |    15.20 Mop/s |     2.62 Mop/s |     8.95 Mop/s |
-| alloc_free_batch                   | p99 ns     |       970.0 ns |       456.0 ns |       471.0 ns |        2.96 µs |        2.42 µs |
-| alloc_free_batch                   | RSS        |       31.6 MiB |       19.3 MiB |       19.9 MiB |       17.7 MiB |       24.7 MiB |
-| alloc_free_mt                      | ops/sec    |    15.26 Mop/s |     1.36 Mop/s |     6.99 Mop/s |     6.20 Mop/s |    15.44 Mop/s |
-| alloc_free_mt                      | p99 ns     |       100.0 ns |       500.0 ns |       200.0 ns |       100.0 ns |       100.0 ns |
-| alloc_free_mt                      | RSS        |       48.1 MiB |       39.3 MiB |       43.9 MiB |       43.9 MiB |       52.6 MiB |
-| alloc_free_same_thread             | ops/sec    |    23.35 Mop/s |    10.05 Mop/s |     8.86 Mop/s |    17.96 Mop/s |     7.32 Mop/s |
-| alloc_free_same_thread             | p99 ns     |       100.0 ns |       300.0 ns |       300.0 ns |       100.0 ns |       100.0 ns |
-| alloc_free_same_thread             | RSS        |       21.6 MiB |       11.3 MiB |       11.5 MiB |        9.9 MiB |       16.6 MiB |
-| calloc_bench                       | ops/sec    |    21.77 Mop/s |   302.20 Kop/s |   147.25 Kop/s |     4.21 Mop/s |    12.45 Mop/s |
-| calloc_bench                       | p99 ns     |       100.0 ns |       12.10 µs |       29.80 µs |       200.0 ns |       100.0 ns |
-| calloc_bench                       | RSS        |       32.0 MiB |       20.0 MiB |       20.1 MiB |       18.5 MiB |       25.5 MiB |
-| cross_thread                       | ops/sec    |     2.41 Mop/s |     4.89 Mop/s |     8.99 Mop/s |   718.35 Kop/s |     3.90 Mop/s |
-| cross_thread                       | p99 ns     |       500.0 ns |       500.0 ns |       400.0 ns |        2.90 µs |        1.10 µs |
-| cross_thread                       | RSS        |       48.1 MiB |       39.3 MiB |       43.9 MiB |       43.9 MiB |       52.6 MiB |
-| fragmentation_churn                | ops/sec    |     4.75 Mop/s |     7.55 Mop/s |    10.70 Mop/s |     2.09 Mop/s |     7.63 Mop/s |
-| fragmentation_churn                | p99 ns     |       400.0 ns |       600.0 ns |       600.0 ns |        1.50 µs |       500.0 ns |
-| fragmentation_churn                | RSS        |       32.1 MiB |       30.0 MiB |       30.1 MiB |       28.1 MiB |       36.0 MiB |
-| latency_large                      | ops/sec    |     2.07 Mop/s |     2.19 Mop/s |     2.12 Mop/s |     1.51 Mop/s |     4.69 Mop/s |
-| latency_large                      | p99 ns     |        1.10 µs |        1.30 µs |        1.50 µs |       500.0 ns |       700.0 ns |
-| latency_large                      | RSS        |       32.0 MiB |       20.0 MiB |       20.1 MiB |       18.5 MiB |       25.5 MiB |
-| latency_small                      | ops/sec    |    33.29 Mop/s |    17.41 Mop/s |    11.71 Mop/s |     7.78 Mop/s |     9.22 Mop/s |
-| latency_small                      | p99 ns     |       100.0 ns |       300.0 ns |       300.0 ns |       100.0 ns |       100.0 ns |
-| latency_small                      | RSS        |       31.6 MiB |       19.3 MiB |       19.9 MiB |       17.7 MiB |       24.7 MiB |
-| mixed_sizes                        | ops/sec    |    16.14 Mop/s |     1.09 Mop/s |     3.01 Mop/s |    11.22 Mop/s |    15.83 Mop/s |
-| mixed_sizes                        | p99 ns     |       200.0 ns |        1.10 µs |        1.70 µs |       100.0 ns |       100.0 ns |
-| mixed_sizes                        | RSS        |       32.1 MiB |       39.3 MiB |       43.9 MiB |       36.2 MiB |       44.5 MiB |
-| object_pool                        | ops/sec    |    22.27 Mop/s |     5.44 Mop/s |     9.80 Mop/s |    13.49 Mop/s |    22.02 Mop/s |
-| object_pool                        | p99 ns     |       100.0 ns |       300.0 ns |       200.0 ns |       100.0 ns |       100.0 ns |
-| object_pool                        | RSS        |      106.9 MiB |      115.4 MiB |      116.2 MiB |       65.7 MiB |      131.0 MiB |
-| peak_rss                           | ops/sec    |     19.83 op/s |    126.93 op/s |      0.19 op/s |      2.69 op/s |     48.33 op/s |
-| peak_rss                           | p99 ns     |       50.43 ms |        7.88 ms |         5.26 s |      371.66 ms |       20.69 ms |
-| peak_rss                           | RSS        |        2.4 GiB |        2.2 GiB |        2.3 GiB |        2.0 GiB |        2.1 GiB |
-| realloc_bench                      | ops/sec    |   524.45 Kop/s |   631.12 Kop/s |   306.16 Kop/s |     1.67 Mop/s |   608.55 Kop/s |
-| realloc_bench                      | p99 ns     |        5.90 µs |       10.30 µs |       16.30 µs |       600.0 ns |        7.30 µs |
-| realloc_bench                      | RSS        |       32.0 MiB |       23.9 MiB |       22.2 MiB |       18.5 MiB |       26.4 MiB |
-| thread_scale                       | ops/sec    |    30.00 Mop/s |    10.00 Mop/s |    10.00 Mop/s |    60.00 Mop/s |    60.00 Mop/s |
-| thread_scale                       | p99 ns     |       100.0 ns |       100.0 ns |       100.0 ns |       100.0 ns |       100.0 ns |
-| thread_scale                       | RSS        |      106.9 MiB |      115.4 MiB |      116.2 MiB |       65.7 MiB |      131.0 MiB |
-
-
-
-### Visual: Throughput by Scenario
-
-#### Cross-Thread Performance (Throughput)
-```
-alloc_free_batch
-        mimalloc  ██████████████████████████████  19.28 Mop/s ★
-          palloc  ████████████████████████░░░░░░  15.20 Mop/s  
-        jemalloc  ███████████████░░░░░░░░░░░░░░░  9.86 Mop/s  
-        tcmalloc  ██████████████░░░░░░░░░░░░░░░░  8.95 Mop/s  
-          system  ████░░░░░░░░░░░░░░░░░░░░░░░░░░  2.62 Mop/s  
-
-  alloc_free_mt
-        tcmalloc  ██████████████████████████████  15.44 Mop/s ★
-        jemalloc  ██████████████████████████████  15.26 Mop/s  
-          palloc  ██████████████░░░░░░░░░░░░░░░░  6.99 Mop/s  
-          system  ████████████░░░░░░░░░░░░░░░░░░  6.20 Mop/s  
-        mimalloc  ███░░░░░░░░░░░░░░░░░░░░░░░░░░░  1.36 Mop/s  
-
-  alloc_free_same_thread
-        jemalloc  ██████████████████████████████  23.35 Mop/s ★
-          system  ███████████████████████░░░░░░░  17.96 Mop/s  
-        mimalloc  █████████████░░░░░░░░░░░░░░░░░  10.05 Mop/s  
-          palloc  ███████████░░░░░░░░░░░░░░░░░░░  8.86 Mop/s  
-        tcmalloc  █████████░░░░░░░░░░░░░░░░░░░░░  7.32 Mop/s  
-
-  calloc_bench
-        jemalloc  ██████████████████████████████  21.77 Mop/s ★
-        tcmalloc  █████████████████░░░░░░░░░░░░░  12.45 Mop/s  
-          system  ██████░░░░░░░░░░░░░░░░░░░░░░░░  4.21 Mop/s  
-        mimalloc  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  302.20 Kop/s  
-          palloc  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  147.25 Kop/s  
-
-  cross_thread
-          palloc  ██████████████████████████████  8.99 Mop/s ★
-        mimalloc  ████████████████░░░░░░░░░░░░░░  4.89 Mop/s  
-        tcmalloc  █████████████░░░░░░░░░░░░░░░░░  3.90 Mop/s  
-        jemalloc  ████████░░░░░░░░░░░░░░░░░░░░░░  2.41 Mop/s  
-          system  ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░  718.35 Kop/s  
-
-  fragmentation_churn
-          palloc  ██████████████████████████████  10.70 Mop/s ★
-        tcmalloc  █████████████████████░░░░░░░░░  7.63 Mop/s  
-        mimalloc  █████████████████████░░░░░░░░░  7.55 Mop/s  
-        jemalloc  █████████████░░░░░░░░░░░░░░░░░  4.75 Mop/s  
-          system  ██████░░░░░░░░░░░░░░░░░░░░░░░░  2.09 Mop/s  
-
-  latency_large
-        tcmalloc  ██████████████████████████████  4.69 Mop/s ★
-        mimalloc  ██████████████░░░░░░░░░░░░░░░░  2.19 Mop/s  
-          palloc  ██████████████░░░░░░░░░░░░░░░░  2.12 Mop/s  
-        jemalloc  █████████████░░░░░░░░░░░░░░░░░  2.07 Mop/s  
-          system  ██████████░░░░░░░░░░░░░░░░░░░░  1.51 Mop/s  
-
-  latency_small
-        jemalloc  ██████████████████████████████  33.29 Mop/s ★
-        mimalloc  ████████████████░░░░░░░░░░░░░░  17.41 Mop/s  
-          palloc  ███████████░░░░░░░░░░░░░░░░░░░  11.71 Mop/s  
-        tcmalloc  ████████░░░░░░░░░░░░░░░░░░░░░░  9.22 Mop/s  
-          system  ███████░░░░░░░░░░░░░░░░░░░░░░░  7.78 Mop/s  
-
-  mixed_sizes
-        jemalloc  ██████████████████████████████  16.14 Mop/s ★
-        tcmalloc  █████████████████████████████░  15.83 Mop/s  
-          system  █████████████████████░░░░░░░░░  11.22 Mop/s  
-          palloc  ██████░░░░░░░░░░░░░░░░░░░░░░░░  3.01 Mop/s  
-        mimalloc  ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░  1.09 Mop/s  
-
-  object_pool
-        jemalloc  ██████████████████████████████  22.27 Mop/s ★
-        tcmalloc  ██████████████████████████████  22.02 Mop/s  
-          system  ██████████████████░░░░░░░░░░░░  13.49 Mop/s  
-          palloc  █████████████░░░░░░░░░░░░░░░░░  9.80 Mop/s  
-        mimalloc  ███████░░░░░░░░░░░░░░░░░░░░░░░  5.44 Mop/s  
-
-  peak_rss
-        mimalloc  ██████████████████████████████  126.93 op/s ★
-        tcmalloc  ███████████░░░░░░░░░░░░░░░░░░░  48.33 op/s  
-        jemalloc  █████░░░░░░░░░░░░░░░░░░░░░░░░░  19.83 op/s  
-          system  █░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  2.69 op/s  
-          palloc  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0.19 op/s  
-
-  realloc_bench
-          system  ██████████████████████████████  1.67 Mop/s ★
-        mimalloc  ███████████░░░░░░░░░░░░░░░░░░░  631.12 Kop/s  
-        tcmalloc  ███████████░░░░░░░░░░░░░░░░░░░  608.55 Kop/s  
-        jemalloc  █████████░░░░░░░░░░░░░░░░░░░░░  524.45 Kop/s  
-          palloc  ██████░░░░░░░░░░░░░░░░░░░░░░░░  306.16 Kop/s  
-
-  thread_scale
-          system  ██████████████████████████████  60.00 Mop/s ★
-        tcmalloc  ██████████████████████████████  60.00 Mop/s ★
-        jemalloc  ███████████████░░░░░░░░░░░░░░░  30.00 Mop/s  
-        mimalloc  █████░░░░░░░░░░░░░░░░░░░░░░░░░  10.00 Mop/s  
-          palloc  █████░░░░░░░░░░░░░░░░░░░░░░░░░  10.00 Mop/s  
-
-
-── Overall ranking (wins per allocator) ─────────────────────────────
-
-  🥇 jemalloc       ████████░░░░░░░░░░░░  5/13 scenarios (38%)
-  🥈 mimalloc       ███░░░░░░░░░░░░░░░░░  2/13 scenarios (15%)
-  🥉 palloc         ███░░░░░░░░░░░░░░░░░  2/13 scenarios (15%)
-     system         ███░░░░░░░░░░░░░░░░░  2/13 scenarios (15%)
-     tcmalloc       ███░░░░░░░░░░░░░░░░░  2/13 scenarios (15%)
-```
+| Scenario                           | Metric     |         palloc |
+|------------------------------------|------------|----------------|
+| alloc_free_batch                   | ops/sec    |    55.40 Mop/s |
+| alloc_free_batch                   | p99 ns     |        32.0 ns |
+| alloc_free_batch                   | RSS        |       21.4 MiB |
+| alloc_free_mt                      | ops/sec    |   832.12 Kop/s |
+| alloc_free_mt                      | p99 ns     |        1.30 µs |
+| alloc_free_mt                      | RSS        |      522.6 MiB |
+| alloc_free_same_thread             | ops/sec    |     1.48 Mop/s |
+| alloc_free_same_thread             | p99 ns     |        1.00 µs |
+| alloc_free_same_thread             | RSS        |       13.4 MiB |
+| calloc_bench                       | ops/sec    |    13.40 Mop/s |
+| calloc_bench                       | p99 ns     |       100.0 ns |
+| calloc_bench                       | RSS        |      522.6 MiB |
+| cross_thread                       | ops/sec    |     8.18 Mop/s |
+| cross_thread                       | p99 ns     |       100.0 ns |
+| cross_thread                       | RSS        |      522.6 MiB |
+| fragmentation_churn                | ops/sec    |    18.55 Mop/s |
+| fragmentation_churn                | p99 ns     |       100.0 ns |
+| fragmentation_churn                | RSS        |      522.6 MiB |
+| latency_large                      | ops/sec    |     3.84 Mop/s |
+| latency_large                      | p99 ns     |        1.20 µs |
+| latency_large                      | RSS        |      522.6 MiB |
+| latency_small                      | ops/sec    |    24.80 Mop/s |
+| latency_small                      | p99 ns     |       100.0 ns |
+| latency_small                      | RSS        |       21.4 MiB |
+| mixed_sizes                        | ops/sec    |    16.34 Mop/s |
+| mixed_sizes                        | p99 ns     |       300.0 ns |
+| mixed_sizes                        | RSS        |      522.6 MiB |
+| object_pool                        | ops/sec    |     1.26 Mop/s |
+| object_pool                        | p99 ns     |        1.00 µs |
+| object_pool                        | RSS        |      522.6 MiB |
+| peak_rss                           | ops/sec    |    738.23 op/s |
+| peak_rss                           | p99 ns     |        1.35 ms |
+| peak_rss                           | RSS        |      580.0 MiB |
+| realloc_bench                      | ops/sec    |    12.32 Mop/s |
+| realloc_bench                      | p99 ns     |       100.0 ns |
+| realloc_bench                      | RSS        |      522.6 MiB |
+| thread_scale                       | ops/sec    |     1.54 Mop/s |
+| thread_scale                       | p99 ns     |       700.0 ns |
+| thread_scale                       | RSS        |      522.6 MiB |
 
 *Bars are scaled to the best result in each scenario. Results from a typical run on a multi-core Linux machine.*
 
