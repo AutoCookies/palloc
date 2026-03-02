@@ -6,5 +6,5 @@ C_DEFINES = -DPA_BUILD_RELEASE -DPA_CMAKE_BUILD_TYPE=release -DPA_MALLOC_OVERRID
 
 C_INCLUDES = -I/root/pomaieco/palloc/include
 
-C_FLAGS = -O3 -DNDEBUG -std=gnu11 -fPIC -Wall -Wextra -Wno-unknown-pragmas -fvisibility=hidden -Wstrict-prototypes -ftls-model=initial-exec -fno-builtin-malloc -march=native
+C_FLAGS = -O3 -DNDEBUG -std=gnu11 -fPIC -Wall -Wextra -Wno-unknown-pragmas -fvisibility=hidden -Wstrict-prototypes -ftls-model=initial-exec -fno-builtin-malloc
 

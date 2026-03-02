@@ -266,9 +266,6 @@ CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 //Git command line client
 GIT_EXECUTABLE:FILEPATH=/usr/bin/git
 
-//No help, variable specified on the command line.
-PA_BUILD_BENCH:UNINITIALIZED=ON
-
 //Build object library
 PA_BUILD_OBJECT:BOOL=ON
 
@@ -335,7 +332,7 @@ PA_NO_USE_CXX:BOOL=OFF
 
 //Only for optimized builds: turn on architecture specific optimizations
 // (for arm64: '-march=armv8.1-a' (2016))
-PA_OPT_ARCH:BOOL=ON
+PA_OPT_ARCH:BOOL=OFF
 
 //Use interpose to override standard malloc on macOS
 PA_OSX_INTERPOSE:BOOL=ON
