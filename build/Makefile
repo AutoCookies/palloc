@@ -263,6 +263,32 @@ palloc-test-stress/fast:
 .PHONY : palloc-test-stress/fast
 
 #=============================================================================
+# Target rules for targets named palloc-test-arena-pomai
+
+# Build rule for target.
+palloc-test-arena-pomai: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 palloc-test-arena-pomai
+.PHONY : palloc-test-arena-pomai
+
+# fast build rule for target.
+palloc-test-arena-pomai/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-arena-pomai.dir/build.make CMakeFiles/palloc-test-arena-pomai.dir/build
+.PHONY : palloc-test-arena-pomai/fast
+
+#=============================================================================
+# Target rules for targets named palloc-test-basic
+
+# Build rule for target.
+palloc-test-basic: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 palloc-test-basic
+.PHONY : palloc-test-basic
+
+# fast build rule for target.
+palloc-test-basic/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-basic.dir/build.make CMakeFiles/palloc-test-basic.dir/build
+.PHONY : palloc-test-basic/fast
+
+#=============================================================================
 # Target rules for targets named palloc-test-stress-dynamic
 
 # Build rule for target.
@@ -382,6 +408,33 @@ src/arena.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/arena.c.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/arena.c.s
 .PHONY : src/arena.c.s
+
+src/arena_pomai.o: src/arena_pomai.c.o
+.PHONY : src/arena_pomai.o
+
+# target to build an object file
+src/arena_pomai.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/arena_pomai.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/arena_pomai.c.o
+.PHONY : src/arena_pomai.c.o
+
+src/arena_pomai.i: src/arena_pomai.c.i
+.PHONY : src/arena_pomai.i
+
+# target to preprocess a source file
+src/arena_pomai.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/arena_pomai.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/arena_pomai.c.i
+.PHONY : src/arena_pomai.c.i
+
+src/arena_pomai.s: src/arena_pomai.c.s
+.PHONY : src/arena_pomai.s
+
+# target to generate assembly for a file
+src/arena_pomai.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/arena_pomai.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/arena_pomai.c.s
+.PHONY : src/arena_pomai.c.s
 
 src/bitmap.o: src/bitmap.c.o
 .PHONY : src/bitmap.o
@@ -779,6 +832,54 @@ test/test-api.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-api.dir/build.make CMakeFiles/palloc-test-api.dir/test/test-api.c.s
 .PHONY : test/test-api.c.s
 
+test/test-arena-pomai.o: test/test-arena-pomai.c.o
+.PHONY : test/test-arena-pomai.o
+
+# target to build an object file
+test/test-arena-pomai.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-arena-pomai.dir/build.make CMakeFiles/palloc-test-arena-pomai.dir/test/test-arena-pomai.c.o
+.PHONY : test/test-arena-pomai.c.o
+
+test/test-arena-pomai.i: test/test-arena-pomai.c.i
+.PHONY : test/test-arena-pomai.i
+
+# target to preprocess a source file
+test/test-arena-pomai.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-arena-pomai.dir/build.make CMakeFiles/palloc-test-arena-pomai.dir/test/test-arena-pomai.c.i
+.PHONY : test/test-arena-pomai.c.i
+
+test/test-arena-pomai.s: test/test-arena-pomai.c.s
+.PHONY : test/test-arena-pomai.s
+
+# target to generate assembly for a file
+test/test-arena-pomai.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-arena-pomai.dir/build.make CMakeFiles/palloc-test-arena-pomai.dir/test/test-arena-pomai.c.s
+.PHONY : test/test-arena-pomai.c.s
+
+test/test-basic.o: test/test-basic.c.o
+.PHONY : test/test-basic.o
+
+# target to build an object file
+test/test-basic.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-basic.dir/build.make CMakeFiles/palloc-test-basic.dir/test/test-basic.c.o
+.PHONY : test/test-basic.c.o
+
+test/test-basic.i: test/test-basic.c.i
+.PHONY : test/test-basic.i
+
+# target to preprocess a source file
+test/test-basic.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-basic.dir/build.make CMakeFiles/palloc-test-basic.dir/test/test-basic.c.i
+.PHONY : test/test-basic.c.i
+
+test/test-basic.s: test/test-basic.c.s
+.PHONY : test/test-basic.s
+
+# target to generate assembly for a file
+test/test-basic.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-basic.dir/build.make CMakeFiles/palloc-test-basic.dir/test/test-basic.c.s
+.PHONY : test/test-basic.c.s
+
 test/test-stress.o: test/test-stress.c.o
 .PHONY : test/test-stress.o
 
@@ -825,6 +926,8 @@ help:
 	@echo "... palloc-static"
 	@echo "... palloc-test-api"
 	@echo "... palloc-test-api-fill"
+	@echo "... palloc-test-arena-pomai"
+	@echo "... palloc-test-basic"
 	@echo "... palloc-test-stress"
 	@echo "... palloc-test-stress-dynamic"
 	@echo "... src/alloc-aligned.o"
@@ -839,6 +942,9 @@ help:
 	@echo "... src/arena.o"
 	@echo "... src/arena.i"
 	@echo "... src/arena.s"
+	@echo "... src/arena_pomai.o"
+	@echo "... src/arena_pomai.i"
+	@echo "... src/arena_pomai.s"
 	@echo "... src/bitmap.o"
 	@echo "... src/bitmap.i"
 	@echo "... src/bitmap.s"
@@ -884,6 +990,12 @@ help:
 	@echo "... test/test-api.o"
 	@echo "... test/test-api.i"
 	@echo "... test/test-api.s"
+	@echo "... test/test-arena-pomai.o"
+	@echo "... test/test-arena-pomai.i"
+	@echo "... test/test-arena-pomai.s"
+	@echo "... test/test-basic.o"
+	@echo "... test/test-basic.i"
+	@echo "... test/test-basic.s"
 	@echo "... test/test-stress.o"
 	@echo "... test/test-stress.i"
 	@echo "... test/test-stress.s"

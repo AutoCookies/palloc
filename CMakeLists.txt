@@ -60,6 +60,7 @@ set(pa_sources
     src/alloc-aligned.c
     src/alloc-posix.c
     src/arena.c
+    src/arena_pomai.c
     src/bitmap.c
     src/heap.c
     src/init.c
@@ -402,7 +403,8 @@ endif()
 
 # Check /proc/cpuinfo for an SV39 MMU and limit the virtual address bits.
 # (this will skip the aligned hinting in that case. Issue #939, #949)
-if (EXISTS /proc/cpuinfo)
+# Only on Linux: /proc/cpuinfo does not exist on Windows/macOS.
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND EXISTS "/proc/cpuinfo")
   file(STRINGS /proc/cpuinfo pa_sv39_mmu REGEX "^mmu[ \t]+:[ \t]+sv39$")
   if (pa_sv39_mmu)
     MESSAGE( STATUS "Set virtual address bits to 39 (SV39 MMU detected)" )
@@ -629,11 +631,23 @@ if(PA_BUILD_SHARED)
       set(PALLOC_REDIRECT_SUFFIX "-${PA_ARCH}")  # -arm64 etc.
     endif()
 
-    target_link_libraries(palloc PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/bin/palloc-redirect${PALLOC_REDIRECT_SUFFIX}.lib)  # the DLL import library
-    add_custom_command(TARGET palloc POST_BUILD
-      COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_CURRENT_SOURCE_DIR}/bin/palloc-redirect${PALLOC_REDIRECT_SUFFIX}.dll" $<TARGET_FILE_DIR:palloc>
-      COMMENT "Copy palloc-redirect${PALLOC_REDIRECT_SUFFIX}.dll to output directory")
-    install(FILES "$<TARGET_FILE_DIR:palloc>/palloc-redirect${PALLOC_REDIRECT_SUFFIX}.dll" DESTINATION ${CMAKE_INSTALL_BINDIR})
+    # Build redirect DLL from bin/ (or use prebuilt .lib/.dll in bin/ if present)
+    set(PA_REDIRECT_PREBUILT_LIB "${CMAKE_CURRENT_SOURCE_DIR}/bin/palloc-redirect${PALLOC_REDIRECT_SUFFIX}.lib")
+    set(PA_REDIRECT_PREBUILT_DLL "${CMAKE_CURRENT_SOURCE_DIR}/bin/palloc-redirect${PALLOC_REDIRECT_SUFFIX}.dll")
+    if(EXISTS "${PA_REDIRECT_PREBUILT_LIB}" AND EXISTS "${PA_REDIRECT_PREBUILT_DLL}")
+      target_link_libraries(palloc PRIVATE "${PA_REDIRECT_PREBUILT_LIB}")
+      add_custom_command(TARGET palloc POST_BUILD
+        COMMAND "${CMAKE_COMMAND}" -E copy "${PA_REDIRECT_PREBUILT_DLL}" $<TARGET_FILE_DIR:palloc>
+        COMMENT "Copy palloc-redirect${PALLOC_REDIRECT_SUFFIX}.dll to output directory")
+      install(FILES "$<TARGET_FILE_DIR:palloc>/palloc-redirect${PALLOC_REDIRECT_SUFFIX}.dll" DESTINATION ${CMAKE_INSTALL_BINDIR})
+    else()
+      add_subdirectory(bin)
+      target_link_libraries(palloc PRIVATE palloc-redirect)
+      add_custom_command(TARGET palloc POST_BUILD
+        COMMAND "${CMAKE_COMMAND}" -E copy $<TARGET_FILE:palloc-redirect> $<TARGET_FILE_DIR:palloc>
+        COMMENT "Copy palloc-redirect DLL to output directory")
+      install(FILES $<TARGET_FILE:palloc-redirect> DESTINATION ${CMAKE_INSTALL_BINDIR})
+    endif()
   endif()
 endif()
 
@@ -659,6 +673,8 @@ install(FILES include/palloc.h DESTINATION ${pa_install_incdir})
 install(FILES include/palloc-override.h DESTINATION ${pa_install_incdir})
 install(FILES include/palloc-new-delete.h DESTINATION ${pa_install_incdir})
 install(FILES include/palloc-stats.h DESTINATION ${pa_install_incdir})
+install(FILES include/palloc_cxx_arena.h DESTINATION ${pa_install_incdir})
+install(FILES include/palloc/arena_pomai.h DESTINATION ${pa_install_incdir}/palloc)
 install(FILES cmake/palloc-config.cmake DESTINATION ${pa_install_cmakedir})
 install(FILES cmake/palloc-config-version.cmake DESTINATION ${pa_install_cmakedir})
 
@@ -724,7 +740,7 @@ if (PA_BUILD_TESTS)
   enable_testing()
 
   # static link tests
-  foreach(TEST_NAME api api-fill stress)
+  foreach(TEST_NAME api api-fill stress arena-pomai basic)
     add_executable(palloc-test-${TEST_NAME} test/test-${TEST_NAME}.c)
     target_compile_definitions(palloc-test-${TEST_NAME} PRIVATE ${pa_defines})
     target_compile_options(palloc-test-${TEST_NAME} PRIVATE ${pa_cflags})

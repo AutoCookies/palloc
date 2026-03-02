@@ -484,8 +484,11 @@ static void pa_segment_commit_mask(pa_segment_t* segment, bool conservative, uin
   pa_commit_mask_create(bitidx, bitcount, cm);
 }
 
-static bool pa_segment_commit(pa_segment_t* segment, uint8_t* p, size_t size) {
+// When we commit new OS memory, the OS may report it as zero-initialized (e.g. Linux).
+// Optional out_committed_is_zero: set to true iff we actually committed and OS reported zero.
+static bool pa_segment_commit(pa_segment_t* segment, uint8_t* p, size_t size, bool* out_committed_is_zero) {
   pa_assert_internal(pa_commit_mask_all_set(&segment->commit_mask, &segment->purge_mask));
+  if (out_committed_is_zero != NULL) *out_committed_is_zero = false;
 
   // commit liberal
   uint8_t* start = NULL;
@@ -502,6 +505,7 @@ static bool pa_segment_commit(pa_segment_t* segment, uint8_t* p, size_t size) {
     _pa_stat_decrease(&_pa_stats_main.committed, _pa_commit_mask_committed_size(&cmask, PA_SEGMENT_SIZE)); // adjust for overlap
     if (!_pa_os_commit(start, full_size, &is_zero)) return false;
     pa_commit_mask_set(&segment->commit_mask, &mask);
+    if (out_committed_is_zero != NULL && is_zero) *out_committed_is_zero = true;
   }
 
   // increase purge expiration when using part of delayed purges -- we assume more allocations are coming soon.
@@ -518,12 +522,12 @@ static bool pa_segment_commit(pa_segment_t* segment, uint8_t* p, size_t size) {
   return true;
 }
 
-static bool pa_segment_ensure_committed(pa_segment_t* segment, uint8_t* p, size_t size) {
+static bool pa_segment_ensure_committed(pa_segment_t* segment, uint8_t* p, size_t size, bool* out_committed_is_zero) {
   pa_assert_internal(pa_commit_mask_all_set(&segment->commit_mask, &segment->purge_mask));
   // note: assumes commit_mask is always full for huge segments as otherwise the commit mask bits can overflow
   if (pa_commit_mask_is_full(&segment->commit_mask) && pa_commit_mask_is_empty(&segment->purge_mask)) return true; // fully committed
   pa_assert_internal(segment->kind != PA_SEGMENT_HUGE);
-  return pa_segment_commit(segment, p, size);
+  return pa_segment_commit(segment, p, size, out_committed_is_zero);
 }
 
 static bool pa_segment_purge(pa_segment_t* segment, uint8_t* p, size_t size) {
@@ -744,8 +748,9 @@ static pa_page_t* pa_segment_span_allocate(pa_segment_t* segment, size_t slice_i
   pa_slice_t* const slice = &segment->slices[slice_index];
   pa_assert_internal(slice->block_size==0 || slice->block_size==1);
 
-  // commit before changing the slice data
-  if (!pa_segment_ensure_committed(segment, _pa_segment_page_start_from_slice(segment, slice, 0, NULL), slice_count * PA_SEGMENT_SLICE_SIZE)) {
+  // commit before changing the slice data; learn if newly committed memory is zero (calloc can skip memset)
+  bool committed_is_zero = false;
+  if (!pa_segment_ensure_committed(segment, _pa_segment_page_start_from_slice(segment, slice, 0, NULL), slice_count * PA_SEGMENT_SLICE_SIZE, &committed_is_zero)) {
     return NULL;  // commit failed!
   }
 
@@ -781,9 +786,9 @@ static pa_page_t* pa_segment_span_allocate(pa_segment_t* segment, size_t slice_i
     last->block_size = 1;
   }
 
-  // and initialize the page
+  // and initialize the page (freshly committed OS memory is zero; propagate so calloc can skip memset)
   page->is_committed = true;
-  page->is_zero_init = segment->free_is_zero;
+  page->is_zero_init = segment->free_is_zero || committed_is_zero;
   page->is_huge = (segment->kind == PA_SEGMENT_HUGE);
   segment->used++;
   return page;
@@ -799,6 +804,54 @@ static void pa_segment_slice_split(pa_segment_t* segment, pa_slice_t* slice, siz
   size_t next_count = slice->slice_count - slice_count;
   pa_segment_span_free(segment, next_index, next_count, false /* don't purge left-over part */, tld);
   slice->slice_count = (uint32_t)slice_count;
+}
+
+// Try to extend a large page in place by taking the next contiguous free span.
+// Returns true if extended; page->slice_count and page->block_size are updated.
+// Caller must zero the new tail if required (e.g. for realloc zero).
+bool _pa_segment_try_extend_span(pa_segment_t* segment, pa_page_t* page, size_t need_slices, pa_segments_tld_t* tld) {
+  pa_assert_internal(segment != NULL && page != NULL && need_slices > 0);
+  pa_assert_internal(segment->kind != PA_SEGMENT_HUGE);
+  pa_slice_t* const slice = pa_page_to_slice(page);
+  pa_assert_internal(_pa_ptr_segment(slice) == segment);
+  const size_t slice_index = pa_slice_index(slice);
+  const size_t current_count = page->slice_count;
+  pa_assert_internal(current_count > 0);
+
+  if (slice_index + current_count + need_slices > segment->slice_entries)
+    return false;
+
+  pa_slice_t* const next_slice = slice + current_count;
+  if (next_slice->block_size != 0)
+    return false;
+  if (next_slice->slice_count == 0 || next_slice->slice_count < need_slices)
+    return false;
+
+  pa_segment_span_remove_from_queue(next_slice, tld);
+
+  const size_t take_count = need_slices;
+  const size_t tail_count = next_slice->slice_count - take_count;
+  if (tail_count > 0)
+    pa_segment_span_free(segment, slice_index + current_count + take_count, tail_count, false, tld);
+
+  uint8_t* const new_start = (uint8_t*)segment + (slice_index + current_count) * PA_SEGMENT_SLICE_SIZE;
+  if (!pa_segment_ensure_committed(segment, new_start, take_count * PA_SEGMENT_SLICE_SIZE, NULL))
+    return false;
+
+  for (size_t i = 0; i < take_count; i++) {
+    pa_slice_t* s = slice + current_count + i;
+    s->slice_offset = (uint32_t)((current_count + i) * sizeof(pa_slice_t));
+    s->slice_count = 0;
+    s->block_size = 1;
+  }
+  pa_slice_t* const new_last = slice + current_count + take_count - 1;
+  pa_slice_t* const end = (pa_slice_t*)pa_segment_slices_end(segment);
+  if (new_last <= end)
+    new_last->slice_offset = (uint32_t)((current_count + take_count - 1) * sizeof(pa_slice_t));
+
+  page->slice_count = (uint32_t)(current_count + take_count);
+  page->block_size = (current_count + take_count) * PA_SEGMENT_SLICE_SIZE;
+  return true;
 }
 
 static pa_page_t* pa_segments_page_find_and_allocate(size_t slice_count, pa_arena_id_t req_arena_id, pa_segments_tld_t* tld) {
@@ -953,7 +1006,7 @@ static pa_segment_t* pa_segment_alloc(size_t required, size_t page_alignment, pa
     size_t os_pagesize = _pa_os_page_size();
     _pa_os_protect((uint8_t*)segment + pa_segment_info_size(segment) - os_pagesize, os_pagesize);
     uint8_t* end = (uint8_t*)segment + pa_segment_size(segment) - os_pagesize;
-    pa_segment_ensure_committed(segment, end, os_pagesize);
+    pa_segment_ensure_committed(segment, end, os_pagesize, NULL);
     _pa_os_protect(end, os_pagesize);
     if (slice_entries == segment_slices) segment->slice_entries--; // don't use the last slice :-(
     guard_slices = 1;

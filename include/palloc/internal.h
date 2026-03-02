@@ -228,6 +228,7 @@ void        _pa_segment_map_unsafe_destroy(void);
 pa_page_t* _pa_segment_page_alloc(pa_heap_t* heap, size_t block_size, size_t page_alignment, pa_segments_tld_t* tld);
 void       _pa_segment_page_free(pa_page_t* page, bool force, pa_segments_tld_t* tld);
 void       _pa_segment_page_abandon(pa_page_t* page, pa_segments_tld_t* tld);
+bool       _pa_segment_try_extend_span(pa_segment_t* segment, pa_page_t* page, size_t need_slices, pa_segments_tld_t* tld);
 bool       _pa_segment_try_reclaim_abandoned( pa_heap_t* heap, bool try_all, pa_segments_tld_t* tld);
 void       _pa_segment_collect(pa_segment_t* segment, bool force);
 
@@ -1121,7 +1122,8 @@ static inline void _pa_memcpy(void* dst, const void* src, size_t n) {
   }
 }
 static inline void _pa_memzero(void* dst, size_t n) {
-  if (_pa_cpu_has_fsrm && n <= 127) { // || (_pa_cpu_has_erms && n > 128)) {
+  /* rep stosb is often faster than memset for small–medium sizes on modern x64 (FSRM). */
+  if (_pa_cpu_has_fsrm && n <= 384) {
     __stosb((unsigned char*)dst, 0, n);
   }
   else {
@@ -1130,10 +1132,18 @@ static inline void _pa_memzero(void* dst, size_t n) {
 }
 #else
 static inline void _pa_memcpy(void* dst, const void* src, size_t n) {
+#if (defined(__GNUC__) && (__GNUC__ >= 4)) || defined(__clang__)
+  __builtin_memcpy(dst, src, n);
+#else
   memcpy(dst, src, n);
+#endif
 }
 static inline void _pa_memzero(void* dst, size_t n) {
+#if (defined(__GNUC__) && (__GNUC__ >= 4)) || defined(__clang__)
+  __builtin_memset(dst, 0, n);
+#else
   memset(dst, 0, n);
+#endif
 }
 #endif
 
@@ -1154,7 +1164,7 @@ static inline void _pa_memcpy_aligned(void* dst, const void* src, size_t n) {
 static inline void _pa_memzero_aligned(void* dst, size_t n) {
   pa_assert_internal((uintptr_t)dst % PA_INTPTR_SIZE == 0);
   #if (defined(_M_IX86) || defined(_M_X64) || defined(__x86_64__))
-  if (_pa_cpu_has_avx2 && n >= 64 && ((uintptr_t)dst % 32 == 0)) {
+  if (_pa_cpu_has_avx2 && n >= 32 && ((uintptr_t)dst % 32 == 0)) {
     _pa_memzero_aligned_avx2(dst, n);
     return;
   }
@@ -1172,7 +1182,7 @@ static inline void _pa_memcpy_aligned(void* dst, const void* src, size_t n) {
 static inline void _pa_memzero_aligned(void* dst, size_t n) {
   pa_assert_internal((uintptr_t)dst % PA_INTPTR_SIZE == 0);
   #if (defined(_M_IX86) || defined(_M_X64) || defined(__x86_64__))
-  if (_pa_cpu_has_avx2 && n >= 64 && ((uintptr_t)dst % 32 == 0)) {
+  if (_pa_cpu_has_avx2 && n >= 32 && ((uintptr_t)dst % 32 == 0)) {
     _pa_memzero_aligned_avx2(dst, n);
     return;
   }

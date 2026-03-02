@@ -17,10 +17,21 @@ message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 set(PALLOC_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/.."
     CACHE PATH "Root of the palloc source tree")
 
+# Search paths: Unix build dirs and Windows multi-config (Release/Debug)
+set(PALLOC_LIB_HINTS
+  "${PALLOC_ROOT}/out/release"
+  "${PALLOC_ROOT}/build"
+)
+if(WIN32)
+  list(APPEND PALLOC_LIB_HINTS
+    "${PALLOC_ROOT}/build/Release" "${PALLOC_ROOT}/build/Debug"
+    "${PALLOC_ROOT}/out/release/Release" "${PALLOC_ROOT}/out/release/Debug")
+endif()
+
 find_library(PALLOC_LIB
-  NAMES palloc
-  HINTS "${PALLOC_ROOT}/out/release" "${PALLOC_ROOT}/build"
-  DOC   "palloc shared library")
+  NAMES palloc palloc.dll
+  HINTS ${PALLOC_LIB_HINTS}
+  DOC   "palloc shared or static library")
 find_path(PALLOC_INCLUDE
   NAMES palloc.h
   HINTS "${PALLOC_ROOT}/include"
@@ -28,35 +39,47 @@ find_path(PALLOC_INCLUDE
 
 if(NOT PALLOC_LIB OR NOT PALLOC_INCLUDE)
   message(FATAL_ERROR "Could not find palloc library/headers. "
-    "Build palloc first ('cmake + make' in the repo root) "
+    "Build palloc first (e.g. 'cmake -B build && cmake --build build' in the repo root) "
     "or set PALLOC_ROOT.")
 endif()
 message(STATUS "palloc: ${PALLOC_LIB} (include: ${PALLOC_INCLUDE})")
 
 # ---------------------------------------------------------------------------
-# Common compile options
+# Common compile options (platform-specific)
 # ---------------------------------------------------------------------------
-set(BENCH_COMMON_FLAGS
-  -O3 -g -Wall -Wextra
-  -march=native          # enable AVX2 etc. if CPU supports it
-  -pthread
-)
-
-set(BENCH_COMMON_SOURCES
-  bench_scenarios.c
-  bench_main.c
-)
+set(BENCH_COMMON_SOURCES bench_scenarios.c bench_main.c)
 set(BENCH_COMMON_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR})
+
+# Benchmark suite uses pthread and POSIX timing; build on Unix and MinGW, skip on MSVC
+set(BENCH_BUILD_ENABLED ON)
+if(WIN32 AND MSVC)
+  set(BENCH_BUILD_ENABLED OFF)
+  message(STATUS "Benchmark suite skipped on Windows MSVC (requires pthread). Use MinGW to run benchmarks on Windows.")
+endif()
+
+if(BENCH_BUILD_ENABLED)
+  # Bench uses pthread and POSIX APIs; use Unix-style flags (GCC/Clang/MinGW)
+  if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" OR MINGW)
+    set(BENCH_COMMON_FLAGS -O3 -g -Wall -Wextra -march=native -pthread)
+    set(BENCH_LINK_LIBS m pthread)
+  else()
+    set(BENCH_COMMON_FLAGS -O3 -g -Wall -Wextra)
+    set(BENCH_LINK_LIBS m pthread)
+  endif()
+endif()
 
 # ---------------------------------------------------------------------------
 # Helper macro to register a benchmark target
 # ---------------------------------------------------------------------------
 macro(add_bench TARGET DEFINE LINK_LIBS)
+  if(NOT BENCH_BUILD_ENABLED)
+    return()
+  endif()
   add_executable(${TARGET} ${BENCH_COMMON_SOURCES})
   target_include_directories(${TARGET} PRIVATE ${BENCH_COMMON_INCLUDES} ${PALLOC_INCLUDE})
   target_compile_options(${TARGET} PRIVATE ${BENCH_COMMON_FLAGS})
   target_compile_definitions(${TARGET} PRIVATE ${DEFINE})
-  target_link_libraries(${TARGET} PRIVATE ${LINK_LIBS} m pthread)
+  target_link_libraries(${TARGET} PRIVATE ${LINK_LIBS} ${BENCH_LINK_LIBS})
   message(STATUS "Benchmark target: ${TARGET}  (${DEFINE})")
 endmacro()
 
@@ -112,20 +135,32 @@ endif()
 # ---------------------------------------------------------------------------
 # Install convenience copies
 # ---------------------------------------------------------------------------
-install(TARGETS bench-palloc bench-system DESTINATION bin)
+if(BENCH_BUILD_ENABLED)
+  install(TARGETS bench-palloc bench-system DESTINATION bin)
+endif()
 
 # ---------------------------------------------------------------------------
 # Summary
 # ---------------------------------------------------------------------------
 message(STATUS "")
-message(STATUS "Benchmark targets configured:")
-get_property(_targets DIRECTORY PROPERTY BUILDSYSTEM_TARGETS)
-foreach(_t ${_targets})
-  if(_t MATCHES "^bench-")
-    message(STATUS "  make ${_t}")
+if(BENCH_BUILD_ENABLED)
+  message(STATUS "Benchmark targets configured:")
+  get_property(_targets DIRECTORY PROPERTY BUILDSYSTEM_TARGETS)
+  foreach(_t ${_targets})
+    if(_t MATCHES "^bench-")
+      message(STATUS "  cmake --build . --target ${_t}")
+    endif()
+  endforeach()
+  message(STATUS "")
+  message(STATUS "Quick start (Linux/macOS/MinGW):")
+  if(UNIX AND NOT MINGW)
+    message(STATUS "  cmake -B build -S . && cmake --build build -j$(nproc)")
+    message(STATUS "  cd build && bash ../run_bench.sh")
+  else()
+    message(STATUS "  cmake -B build -S . && cmake --build build")
+    message(STATUS "  cd build && run_bench.sh (or run bench-palloc.exe manually)")
   endif()
-endforeach()
+else()
+  message(STATUS "Benchmark suite not built on this platform.")
+endif()
 message(STATUS "")
-message(STATUS "Quick start:")
-message(STATUS "  cmake -B build -S . && cmake --build build -j$(nproc)")
-message(STATUS "  cd build && bash ../run_bench.sh")

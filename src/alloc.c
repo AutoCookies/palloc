@@ -295,18 +295,29 @@ void* _pa_heap_realloc_zero(pa_heap_t* heap, void* p, size_t newsize, bool zero,
     size = _pa_usable_size(p,page);
     if (usable_pre!=NULL) { *usable_pre = pa_page_usable_block_size(page); }    
   }
-  if pa_unlikely(newsize <= size && newsize >= (size / 2) && newsize > 0) {  // note: newsize must be > 0 or otherwise we return NULL for realloc(NULL,0)
+  /* In-place: same pointer if shrink or moderate shrink (up to 25% waste). */
+  if pa_unlikely(newsize <= size && newsize > 0 && newsize >= (size - (size >> 2))) {  // newsize >= 3/4 * size
     pa_assert_internal(p!=NULL);
-    // todo: do not track as the usable size is still the same in the free; adjust potential padding?
-    // pa_track_resize(p,size,newsize)
-    // if (newsize < size) { pa_track_mem_noaccess((uint8_t*)p + newsize, size - newsize); }
     if (usable_post!=NULL) { *usable_post = pa_page_usable_block_size(page); }
-    return p;  // reallocation still fits and not more than 50% waste
+    return p;
+  }
+  /* In-place expand when the block is large and the segment has contiguous free space. */
+  if (p != NULL && newsize > size && newsize <= PA_LARGE_OBJ_SIZE_MAX && page->slice_count > 1) {
+    const size_t new_slices = (newsize + PA_SEGMENT_SLICE_SIZE - 1) / PA_SEGMENT_SLICE_SIZE;
+    const size_t need_slices = (new_slices > page->slice_count) ? (new_slices - page->slice_count) : 0;
+    if (need_slices > 0) {
+      pa_segment_t* const segment = _pa_ptr_segment(p);
+      if (_pa_segment_try_extend_span(segment, (pa_page_t*)page, need_slices, &heap->tld->segments)) {
+        if (zero)
+          _pa_memzero((uint8_t*)p + size, newsize - size);
+        if (usable_post != NULL) { *usable_post = pa_page_usable_block_size(page); }
+        return p;
+      }
+    }
   }
   void* newp = pa_heap_umalloc(heap,newsize,usable_post);
   if pa_likely(newp != NULL) {
     if (zero && newsize > size) {
-      // also set last word in the previous allocation to zero to ensure any padding is zero-initialized
       const size_t start = (size >= sizeof(intptr_t) ? size - sizeof(intptr_t) : 0);
       _pa_memzero((uint8_t*)newp + start, newsize - start);
     }
@@ -315,9 +326,12 @@ void* _pa_heap_realloc_zero(pa_heap_t* heap, void* p, size_t newsize, bool zero,
     }
     if pa_likely(p != NULL) {
       const size_t copysize = (newsize > size ? size : newsize);
-      pa_track_mem_defined(p,copysize);  // _pa_useable_size may be too large for byte precise memory tracking..
-      _pa_memcpy(newp, p, copysize);
-      pa_free(p); // only free the original pointer if successful
+      pa_track_mem_defined(p,copysize);
+      if (copysize >= sizeof(intptr_t) && ((uintptr_t)p % PA_INTPTR_SIZE == 0) && ((uintptr_t)newp % PA_INTPTR_SIZE == 0))
+        _pa_memcpy_aligned(newp, p, copysize);
+      else
+        _pa_memcpy(newp, p, copysize);
+      pa_free(p);
     }
   }
   return newp;

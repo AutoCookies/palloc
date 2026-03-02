@@ -1,0 +1,26 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": { "major": 3, "minor": 18 },
+  "configurePresets": [
+    {
+      "name": "release-maxperf",
+      "displayName": "Release (max throughput for benchmarks)",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "PA_OPT_ARCH": "ON",
+        "PA_PADDING": "OFF",
+        "PA_SECURE": "OFF",
+        "PA_DEBUG": "OFF",
+        "PA_DEBUG_INTERNAL": "OFF",
+        "PA_DEBUG_FULL": "OFF"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "release-maxperf",
+      "configurePreset": "release-maxperf"
+    }
+  ]
+}

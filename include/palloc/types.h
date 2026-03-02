@@ -223,6 +223,9 @@ typedef int32_t  pa_ssize_t;
 // Maximum slice count (255) for which we can find the page for interior pointers
 #define PA_MAX_SLICE_OFFSET_COUNT         ((PA_BLOCK_ALIGNMENT_MAX / PA_SEGMENT_SLICE_SIZE) - 1)
 
+// Process at most this many cross-thread delayed frees per partial call to reduce contention (alloc_free_mt / thread_scale)
+#define PA_DELAYED_FREE_BATCH             (32)
+
 // we never allocate more than PTRDIFF_MAX (see also <https://sourceware.org/ml/libc-announce/2019/msg00001.html>)
 // on 64-bit+ systems we also limit the maximum allocation size such that the slice count fits in 32-bits. (issue #877)
 #if (PTRDIFF_MAX > INT32_MAX) && (PTRDIFF_MAX >= (PA_SEGMENT_SLIZE_SIZE * UINT32_MAX))

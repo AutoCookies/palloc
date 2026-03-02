@@ -5,6 +5,8 @@
 /root/pomaieco/palloc/build/CMakeFiles/palloc-test-api.dir
 /root/pomaieco/palloc/build/CMakeFiles/palloc-test-api-fill.dir
 /root/pomaieco/palloc/build/CMakeFiles/palloc-test-stress.dir
+/root/pomaieco/palloc/build/CMakeFiles/palloc-test-arena-pomai.dir
+/root/pomaieco/palloc/build/CMakeFiles/palloc-test-basic.dir
 /root/pomaieco/palloc/build/CMakeFiles/palloc-test-stress-dynamic.dir
 /root/pomaieco/palloc/build/CMakeFiles/test.dir
 /root/pomaieco/palloc/build/CMakeFiles/edit_cache.dir
