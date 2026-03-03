@@ -40,6 +40,7 @@ option(PA_NO_PADDING        "Force no use of padding even in DEBUG mode etc." OF
 option(PA_INSTALL_TOPLEVEL  "Install directly into $CMAKE_INSTALL_PREFIX instead of PREFIX/lib/palloc-version" OFF)
 option(PA_NO_THP            "Disable transparent huge pages support on Linux/Android for the palloc process only" OFF)
 option(PA_EXTRA_CPPDEFS     "Extra pre-processor definitions (use as `-DPA_EXTRA_CPPDEFS=\"opt1=val1;opt2=val2\"`)" "")
+option(PA_VECTOR            "Build optional vector-oriented APIs (arenas, batch alloc, pool, SIMD alignment)" OFF)
 
 # negated options for vcpkg features
 option(PA_NO_USE_CXX        "Use plain C compilation (has priority over PA_USE_CXX)" OFF)
@@ -73,6 +74,10 @@ set(pa_sources
     src/segment-map.c
     src/stats.c
     src/prim/prim.c)
+
+if(PA_VECTOR)
+  list(APPEND pa_sources src/palloc_vector.c)
+endif()
 
 set(pa_cflags "")
 set(pa_cflags_static "")            # extra flags for a static library build
@@ -281,6 +286,11 @@ if(PA_GUARDED)
     message(STATUS "  Disabling padding due to guard pages (PA_NO_PADDING=ON)")
     set(PA_NO_PADDING ON)
   endif()
+endif()
+
+if(PA_VECTOR)
+  message(STATUS "Build vector extension (PA_VECTOR=ON)")
+  list(APPEND pa_defines PA_VECTOR=1)
 endif()
 
 if(PA_SEE_ASM)
@@ -677,6 +687,9 @@ install(FILES include/palloc-new-delete.h DESTINATION ${pa_install_incdir})
 install(FILES include/palloc-stats.h DESTINATION ${pa_install_incdir})
 install(FILES include/palloc_cxx_arena.h DESTINATION ${pa_install_incdir})
 install(FILES include/palloc/arena_pomai.h DESTINATION ${pa_install_incdir}/palloc)
+if(PA_VECTOR)
+  install(FILES include/palloc_vector.h DESTINATION ${pa_install_incdir})
+endif()
 install(FILES cmake/palloc-config.cmake DESTINATION ${pa_install_cmakedir})
 install(FILES cmake/palloc-config-version.cmake DESTINATION ${pa_install_cmakedir})
 

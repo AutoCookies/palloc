@@ -1024,6 +1024,12 @@ void* _pa_malloc_generic(pa_heap_t* heap, size_t size, bool zero, size_t huge_al
 {
   pa_assert_internal(heap != NULL);
 
+  if (heap->max_size != 0 && size > heap->max_size - heap->used_bytes) {
+    if (heap->pressure_cb != NULL)
+      heap->pressure_cb(heap->used_bytes, heap->max_size, heap->pressure_arg);
+    return NULL;
+  }
+
   // initialize if necessary
   if pa_unlikely(!pa_heap_is_initialized(heap)) {
     heap = pa_heap_get_default(); // calls pa_thread_init

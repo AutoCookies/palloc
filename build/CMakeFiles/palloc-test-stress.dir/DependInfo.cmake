@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/root/pomaieco/palloc/test/test-stress.c" "CMakeFiles/palloc-test-stress.dir/test/test-stress.c.o" "gcc" "CMakeFiles/palloc-test-stress.dir/test/test-stress.c.o.d"
+  "/home/autocookie/pomaieco/palloc/test/test-stress.c" "CMakeFiles/palloc-test-stress.dir/test/test-stress.c.o" "gcc" "CMakeFiles/palloc-test-stress.dir/test/test-stress.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

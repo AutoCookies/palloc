@@ -45,6 +45,11 @@ static inline void pa_free_block_local(pa_page_t* page, pa_block_t* block, bool 
   // Only cache when page->used > 1 so the last block goes to local_free; we flush this page from cache before retire.
   pa_heap_t* const heap = pa_page_heap(page);
   const size_t bsize = pa_page_block_size(page);
+  if (heap != NULL) {
+    const size_t usable = pa_page_usable_block_size(page);
+    if (heap->used_bytes >= usable) heap->used_bytes -= usable;
+    else heap->used_bytes = 0;
+  }
   const size_t bin = _pa_bin(bsize);
   if (bin < PA_CACHE_BINS && heap != NULL && page->used > 1 && heap->cache_count[bin] < PA_CACHE_MAX_PER_BIN) {
     pa_block_set_nextx(heap, block, heap->cache_head[bin], heap->keys);

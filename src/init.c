@@ -132,6 +132,9 @@ pa_decl_cache_align const pa_heap_t _pa_heap_empty = {
   NULL,             // next
   false,            // can reclaim
   0,                // tag
+  0,                // max_size
+  0,                // used_bytes
+  NULL, NULL,       // pressure_cb, pressure_arg
   #if PA_GUARDED
   0, 0, 0, 1,       // count is 1 so we never write to it (see `internal.h:pa_heap_malloc_use_guarded`)
   #endif
@@ -183,6 +186,9 @@ pa_decl_cache_align pa_heap_t _pa_heap_main = {
   NULL,             // next heap
   false,            // can reclaim
   0,                // tag
+  0,                // max_size
+  0,                // used_bytes
+  NULL, NULL,       // pressure_cb, pressure_arg
   #if PA_GUARDED
   0, 0, 0, 0,
   #endif

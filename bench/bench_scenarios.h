@@ -44,3 +44,4 @@ void bench_cross_thread          (bench_result_t* r, const bench_config_t* cfg);
 void bench_thread_scale          (bench_result_t* r, const bench_config_t* cfg);
 void bench_object_pool           (bench_result_t* r, const bench_config_t* cfg);
 void bench_peak_rss              (bench_result_t* r, const bench_config_t* cfg);
+void bench_vector_embedding_batch(bench_result_t* r, const bench_config_t* cfg);

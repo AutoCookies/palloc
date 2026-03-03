@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /root/pomaieco/palloc
+CMAKE_SOURCE_DIR = /home/autocookie/pomaieco/palloc
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /root/pomaieco/palloc/build
+CMAKE_BINARY_DIR = /home/autocookie/pomaieco/palloc/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -142,9 +142,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /root/pomaieco/palloc/build/CMakeFiles /root/pomaieco/palloc/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles /home/autocookie/pomaieco/palloc/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /root/pomaieco/palloc/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -625,6 +625,33 @@ src/page.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/page.c.s
 .PHONY : src/page.c.s
 
+src/palloc_vector.o: src/palloc_vector.c.o
+.PHONY : src/palloc_vector.o
+
+# target to build an object file
+src/palloc_vector.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/palloc_vector.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/palloc_vector.c.o
+.PHONY : src/palloc_vector.c.o
+
+src/palloc_vector.i: src/palloc_vector.c.i
+.PHONY : src/palloc_vector.i
+
+# target to preprocess a source file
+src/palloc_vector.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/palloc_vector.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/palloc_vector.c.i
+.PHONY : src/palloc_vector.c.i
+
+src/palloc_vector.s: src/palloc_vector.c.s
+.PHONY : src/palloc_vector.s
+
+# target to generate assembly for a file
+src/palloc_vector.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/palloc_vector.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/palloc_vector.c.s
+.PHONY : src/palloc_vector.c.s
+
 src/prim/prim.o: src/prim/prim.c.o
 .PHONY : src/prim/prim.o
 
@@ -966,6 +993,9 @@ help:
 	@echo "... src/page.o"
 	@echo "... src/page.i"
 	@echo "... src/page.s"
+	@echo "... src/palloc_vector.o"
+	@echo "... src/palloc_vector.i"
+	@echo "... src/palloc_vector.s"
 	@echo "... src/prim/prim.o"
 	@echo "... src/prim/prim.i"
 	@echo "... src/prim/prim.s"
