@@ -41,10 +41,23 @@ static inline void pa_free_block_local(pa_page_t* page, pa_block_t* block, bool 
   #endif
   if (track_stats) { pa_track_free_size(block, pa_page_usable_size_of(page, block)); } // faster then pa_usable_size as we already know the page and that p is unaligned
 
-  // actual free: push on the local free list
-  pa_block_set_next(page, block, page->local_free);
-  page->local_free = block;
+  // Thread cache (tcmalloc-style): push to per-bin cache when under limit, else to page.
+  // Only cache when page->used > 1 so the last block goes to local_free; we flush this page from cache before retire.
+  pa_heap_t* const heap = pa_page_heap(page);
+  const size_t bsize = pa_page_block_size(page);
+  const size_t bin = _pa_bin(bsize);
+  if (bin < PA_CACHE_BINS && heap != NULL && page->used > 1 && heap->cache_count[bin] < PA_CACHE_MAX_PER_BIN) {
+    pa_block_set_nextx(heap, block, heap->cache_head[bin], heap->keys);
+    heap->cache_head[bin] = block;
+    heap->cache_count[bin]++;
+  } else {
+    pa_block_set_next(page, block, page->local_free);
+    page->local_free = block;
+  }
   if pa_unlikely(--page->used == 0) {
+    // Flush any blocks from this page that are still in the thread cache so we don't retire with dangling cache entries
+    if (bin < PA_CACHE_BINS && heap->cache_count[bin] > 0)
+      pa_heap_cache_flush_page(heap, page);
     _pa_page_retire(page);
   }
   else if pa_unlikely(check_full && pa_page_is_in_full(page)) {

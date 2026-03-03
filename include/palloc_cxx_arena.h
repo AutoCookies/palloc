@@ -86,7 +86,7 @@ struct PomaiArenaAllocator {
   /** Bulk reclaim all arena memory (O(1)). Call at end of query lifecycle. */
   void reset() noexcept {
     if (arena_ != nullptr)
-      ::p_arena_reset(arena_);
+      ::p_arena_reset(static_cast<pa_arena_t*>(arena_));
   }
 
   [[nodiscard]] size_type max_size() const noexcept {

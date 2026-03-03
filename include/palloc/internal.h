@@ -272,6 +272,7 @@ size_t      _pa_bin(size_t size);                      // for stats
 // "heap.c"
 void        _pa_heap_init(pa_heap_t* heap, pa_tld_t* tld, pa_arena_id_t arena_id, bool noreclaim, uint8_t tag);
 void        _pa_heap_destroy_pages(pa_heap_t* heap);
+void        pa_heap_cache_flush_page(pa_heap_t* heap, pa_page_t* page);  // flush this page's blocks from thread cache before retire
 void        _pa_heap_collect_abandon(pa_heap_t* heap);
 void        _pa_heap_set_default_direct(pa_heap_t* heap);
 bool        _pa_heap_memid_is_suitable(pa_heap_t* heap, pa_memid_t memid);
@@ -289,6 +290,7 @@ pa_msecs_t  _pa_clock_start(void);
 
 // "alloc.c"
 void*       _pa_page_malloc_zero(pa_heap_t* heap, pa_page_t* page, size_t size, bool zero, size_t* usable) pa_attr_noexcept;  // called from `_pa_malloc_generic`
+void        _pa_page_finish_alloc(pa_heap_t* heap, pa_page_t* page, pa_block_t* block, size_t size, bool zero, size_t* usable);  // post-pop setup (zero, stats, padding)
 void*       _pa_page_malloc(pa_heap_t* heap, pa_page_t* page, size_t size) pa_attr_noexcept;                  // called from `_pa_heap_malloc_aligned`
 void*       _pa_page_malloc_zeroed(pa_heap_t* heap, pa_page_t* page, size_t size) pa_attr_noexcept;           // called from `_pa_heap_malloc_aligned`
 void*       _pa_heap_malloc_zero(pa_heap_t* heap, size_t size, bool zero) pa_attr_noexcept;
@@ -683,8 +685,17 @@ static inline bool pa_page_is_mostly_used(const pa_page_t* page) {
   return (page->reserved - page->used <= frac);
 }
 
+// Size-to-bin lookup table (filled at process init). Inline fast path for hot allocator.
+extern uint8_t pa_size2bin_tab[PA_SIZE2BIN_LOOKUP_MAX];
+void _pa_size2bin_table_init(void);
+
+static inline size_t _pa_bin_fast(size_t size) {
+  if (size < PA_SIZE2BIN_LOOKUP_MAX) return (size_t)pa_size2bin_tab[size];
+  return _pa_bin(size);
+}
+
 static inline pa_page_queue_t* pa_page_queue(const pa_heap_t* heap, size_t size) {
-  return &((pa_heap_t*)heap)->pages[_pa_bin(size)];
+  return &((pa_heap_t*)heap)->pages[_pa_bin_fast(size)];
 }
 
 

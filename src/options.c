@@ -170,7 +170,9 @@ static pa_option_desc_t options[_pa_option_last] =
   { 10000, UNINIT, PA_OPTION(generic_collect) },          // collect heaps every N (=10000) generic allocation calls
   { PA_DEFAULT_ALLOW_THP, 
          UNINIT, PA_OPTION(allow_thp) },                 // allow transparent huge pages?
-  { 0,   UNINIT, PA_OPTION(adaptive_purge) }
+  { 0,   UNINIT, PA_OPTION(adaptive_purge) },
+  { 0,   UNINIT, PA_OPTION(purge_background) },
+  { 1,   UNINIT, PA_OPTION(zero_background) }
 };
 
 static void pa_option_init(pa_option_desc_t* desc);

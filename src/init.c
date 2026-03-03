@@ -10,6 +10,12 @@ terms of the MIT license. A copy of the license can be found in the file
 
 #include <string.h>  // memcpy, memset
 #include <stdlib.h>  // atexit
+#include <stdatomic.h>
+
+#if defined(PA_USE_PTHREADS)
+#include <pthread.h>
+#include <unistd.h>
+#endif
 
 
 // Empty page used to initialize the small free pages array
@@ -130,7 +136,9 @@ pa_decl_cache_align const pa_heap_t _pa_heap_empty = {
   0, 0, 0, 1,       // count is 1 so we never write to it (see `internal.h:pa_heap_malloc_use_guarded`)
   #endif
   PA_SMALL_PAGES_EMPTY,
-  PA_PAGE_QUEUES_EMPTY
+  PA_PAGE_QUEUES_EMPTY,
+  { 0 },   // cache_head
+  { 0 }    // cache_count
 };
 
 static pa_decl_cache_align pa_subproc_t pa_subproc_default;
@@ -179,7 +187,9 @@ pa_decl_cache_align pa_heap_t _pa_heap_main = {
   0, 0, 0, 0,
   #endif
   PA_SMALL_PAGES_EMPTY,
-  PA_PAGE_QUEUES_EMPTY
+  PA_PAGE_QUEUES_EMPTY,
+  { 0 },   // cache_head
+  { 0 }    // cache_count
 };
 
 bool _pa_process_is_initialized = false;  // set to `true` in `pa_process_init`.
@@ -224,6 +234,33 @@ void _pa_heap_guarded_init(pa_heap_t* heap) {
 }
 #endif
 
+static _Atomic(bool) pa_process_done_started = false;
+
+#if defined(PA_USE_PTHREADS)
+static pthread_t pa_background_thread;
+static _Atomic(bool) pa_background_thread_running = false;
+
+static void _pa_purge_background(void) {
+  pa_heap_t* heap = pa_heap_get_default();
+  pa_segments_tld_t* tld = &heap->tld->segments;
+  
+  // Purge abandoned segments
+  _pa_abandoned_collect(heap, true /* force */, tld);
+  
+  // Purge arenas
+  _pa_arenas_collect(true /* force */);
+}
+
+static void* pa_background_purge_worker(void* arg) {
+  PA_UNUSED(arg);
+  while (!pa_atomic_load_relaxed(&pa_process_done_started)) {
+    _pa_purge_background();
+    long delay = pa_option_get_clamp(pa_option_purge_delay, 1, 10000);
+    usleep((useconds_t)delay * 1000);
+  }
+  return NULL;
+}
+#endif
 
 static void pa_heap_main_init(void) {
   if (_pa_heap_main.cookie == 0) {
@@ -638,12 +675,27 @@ __attribute__((target("avx2")))
 void _pa_memzero_aligned_avx2(void* dst, size_t n) {
   uint8_t* p = (uint8_t*)dst;
   __m256i z = _mm256_setzero_si256();
-  while (n >= 64) {
-    _mm256_store_si256((__m256i*)p, z);
-    _mm256_store_si256((__m256i*)(p+32), z);
-    p += 64;
-    n -= 64;
+  
+  // For very large blocks, use non-temporal stores to avoid cache pollution
+  if (n >= 128*1024) { 
+    while (n >= 64) {
+      _mm256_stream_si256((__m256i*)p, z);
+      _mm256_stream_si256((__m256i*)(p+32), z);
+      p += 64;
+      n -= 64;
+    }
+    _mm_sfence(); // Ensure stream stores are visible
   }
+  else {
+    // For smaller blocks, regular stores are better for cache locality
+    while (n >= 64) {
+      _mm256_store_si256((__m256i*)p, z);
+      _mm256_store_si256((__m256i*)(p+32), z);
+      p += 64;
+      n -= 64;
+    }
+  }
+
   if (n >= 32) {
     _mm256_store_si256((__m256i*)p, z);
     p += 32;
@@ -666,12 +718,12 @@ void pa_process_init(void) pa_attr_noexcept {
 	#endif
   if (!pa_atomic_once(&process_init)) return;
   _pa_process_is_initialized = true;
-  _pa_verbose_message("process init: 0x%zx\n", _pa_thread_id());
   pa_process_setup_auto_thread_done();
 
   pa_detect_cpu_features();
   _pa_os_init();
   pa_heap_main_init();
+  _pa_size2bin_table_init();  // O(1) size->bin lookup for common sizes
   pa_thread_init();
 
   #if defined(_WIN32)
@@ -699,6 +751,19 @@ void pa_process_init(void) pa_attr_noexcept {
       pa_reserve_os_memory((size_t)ksize*PA_KiB, true /* commit? */, true /* allow large pages? */);
     }
   }
+
+#if defined(PA_USE_PTHREADS)
+  if (pa_option_is_enabled(pa_option_purge_background)) {
+    int err = pthread_create(&pa_background_thread, NULL, pa_background_purge_worker, NULL);
+    if (err == 0) {
+      pa_atomic_store_release(&pa_background_thread_running, true);
+    } else {
+      _pa_error_message(err, "failed to create background purge thread\n");
+    }
+  } else {
+  }
+#else
+#endif
 }
 
 // Called when the process is done (cdecl as it is used with `at_exit` on some platforms)
@@ -709,6 +774,14 @@ void pa_cdecl pa_process_done(void) pa_attr_noexcept {
   static bool process_done = false;
   if (process_done) return;
   process_done = true;
+  pa_atomic_store_release(&pa_process_done_started, true);
+
+#if defined(PA_USE_PTHREADS)
+  if (pa_atomic_load_relaxed(&pa_background_thread_running)) {
+    pthread_join(pa_background_thread, NULL);
+    pa_atomic_store_release(&pa_background_thread_running, false);
+  }
+#endif
 
   // get the default heap so we don't need to acces thread locals anymore
   pa_heap_t* heap = pa_prim_get_default_heap();  // use prim to not initialize any heap
@@ -741,7 +814,6 @@ void pa_cdecl pa_process_done(void) pa_attr_noexcept {
     pa_stats_print(NULL);
   }
   _pa_allocator_done();
-  _pa_verbose_message("process done: 0x%zx\n", _pa_heap_main.thread_id);
   os_preloading = true; // don't call the C runtime anymore
 }
 

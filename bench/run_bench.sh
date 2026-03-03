@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# run_bench.sh — Build and run all available allocator benchmarks,
-#               merge results into results.json, print final comparison table.
+# run_bench.sh — Build and run the palloc vector-arena benchmark only.
+#               Output: results_palloc.json, results_all.json, and report table.
 #
 # Usage:
 #   cd /path/to/palloc/bench
 #   bash run_bench.sh [--threads N] [--iter N] [--output FORMAT] [scenario...]
 #
-# This script MUST be run from inside the bench build directory, OR from the
-# bench source directory (it will auto-create/enter 'build/').
+# Run from inside the bench build directory, OR from the bench source directory
+# (it will auto-create/enter 'build/').
 
 set -euo pipefail
 
@@ -42,9 +42,13 @@ elif [[ -d "${SCRIPT_DIR}/build" ]]; then
 else
   echo ">> No build directory found. Building now..."
   BUILD_DIR="${SCRIPT_DIR}/build"
-  cmake -B "${BUILD_DIR}" -S "${SCRIPT_DIR}" -DCMAKE_BUILD_TYPE=Release -Wno-dev
+  cmake -B "${BUILD_DIR}" -S "${SCRIPT_DIR}" -DCMAKE_BUILD_TYPE=Release -DPALLOC_ROOT="${SCRIPT_DIR}/.." -Wno-dev
   cmake --build "${BUILD_DIR}" -j"$(nproc)"
 fi
+
+# Build palloc benchmark only
+echo ">> Building bench-palloc..."
+cmake --build "${BUILD_DIR}" --target bench-palloc -j"$(nproc)" || true
 
 # ── Helper: run one allocator benchmark ───────────────────────────────────
 RESULTS_DIR="${BUILD_DIR}"
@@ -81,37 +85,33 @@ run_alloc() {
   echo "  Results written to: ${out_json}"
 }
 
-# ── Run all allocators ─────────────────────────────────────────────────────
+# ── Run palloc benchmark only ─────────────────────────────────────────────
 run_alloc bench-palloc    palloc
-run_alloc bench-mimalloc  mimalloc
-run_alloc bench-jemalloc  jemalloc
-run_alloc bench-tcmalloc  tcmalloc
-run_alloc bench-system    system
 
-# ── Merge JSON files ───────────────────────────────────────────────────────
+# ── Write results_all.json (single allocator) ─────────────────────────────
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo " Merging JSON results → ${MERGE_FILE}"
+echo " Writing results → ${MERGE_FILE}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 export BUILD_DIR
 python3 - <<'PYEOF'
-import json, glob, sys, os
+import json, sys, os
 
 build = os.environ.get("BUILD_DIR", ".")
-files = glob.glob(os.path.join(build, "results_*.json"))
+palloc_file = os.path.join(build, "results_palloc.json")
 merged = []
-for f in sorted(files):
+if os.path.isfile(palloc_file):
     try:
-        data = json.load(open(f))
+        data = json.load(open(palloc_file))
         merged.append(data)
     except Exception as e:
-        print(f"  Warning: skipping {f}: {e}", file=sys.stderr)
+        print(f"  Warning: skipping {palloc_file}: {e}", file=sys.stderr)
 
 with open(os.path.join(build, "results_all.json"), "w") as out:
     json.dump(merged, out, indent=2)
 
-print(f"  Merged {len(merged)} allocator results into results_all.json")
+print(f"  Wrote palloc results to results_all.json")
 PYEOF
 
 export BUILD_DIR

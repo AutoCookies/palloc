@@ -1,20 +1,17 @@
 #!/usr/bin/env python3
 """
-bench_report.py — Parse results_all.json and print a comparison table.
+bench_report.py — Parse results_all.json and print the palloc benchmark results.
 
 Usage:
   python3 bench_report.py [results_all.json]
 
-The script renders:
-  1. A per-scenario comparison table (all allocators side-by-side)
-  2. ASCII bar charts for throughput and p99 latency
-  3. A summary ranking for each category
+Renders a results table (scenario, ops/sec, p99 latency, RSS) and optionally
+exports CSV and Markdown. No comparison, ranking, or bar charts.
 """
 
 import json
 import sys
 import os
-import math
 from collections import defaultdict
 
 # ── ANSI helpers ────────────────────────────────────────────────────────────
@@ -24,10 +21,7 @@ def c(code, s):
     return f"\033[{code}m{s}\033[0m" if USE_COLOR else s
 
 bold   = lambda s: c("1", s)
-green  = lambda s: c("32", s)
-yellow = lambda s: c("33", s)
 cyan   = lambda s: c("36", s)
-red    = lambda s: c("31", s)
 
 # ── Formatters ──────────────────────────────────────────────────────────────
 def fmt_ops(v):
@@ -47,10 +41,6 @@ def fmt_bytes(v):
     if v >= 1 << 20: return f"{v/(1<<20):.1f} MiB"
     if v >= 1 << 10: return f"{v/(1<<10):.1f} KiB"
     return f"{v} B"
-
-def bar(value, max_value, width=30, char="█"):
-    filled = int(round(value / max_value * width)) if max_value > 0 else 0
-    return char * filled + "░" * (width - filled)
 
 # ── Load data ────────────────────────────────────────────────────────────────
 def load(path):
@@ -78,34 +68,21 @@ def group_by_scenario(rows):
         by_scenario[scenario][alloc] = r
     return by_scenario
 
-# ── Print comparison table ────────────────────────────────────────────────────
+# ── Print results table (single allocator, no comparison) ───────────────────────
 def print_table(by_scenario, allocators):
-    # Header
     alloc_hdr = "  ".join(f"{a:>14}" for a in allocators)
     print(bold(f"\n{'Scenario':<34}  {'Metric':<10}  {alloc_hdr}"))
     print("─" * (40 + 18 * len(allocators)))
 
     for scenario, alloc_map in sorted(by_scenario.items()):
-        # ops/sec row
-        ops_vals = {a: alloc_map[a].get("ops_per_sec", 0) for a in allocators if a in alloc_map}
-        best_ops = max(ops_vals.values()) if ops_vals else 0
-
         ops_cells = []
         for a in allocators:
             if a not in alloc_map:
                 ops_cells.append(f"{'N/A':>14}")
                 continue
             v = alloc_map[a].get("ops_per_sec", 0)
-            s = fmt_ops(v)
-            if v == best_ops and best_ops > 0:
-                ops_cells.append(green(f"{s:>14}") + "*")
-            else:
-                ops_cells.append(f"{s:>14} ")
+            ops_cells.append(f"{fmt_ops(v):>14} ")
         print(f"  {cyan(scenario):<34}  {'ops/sec':<10}  {'  '.join(ops_cells)}")
-
-        # p99 latency row
-        p99_vals = {a: alloc_map[a].get("p99_ns", float('inf')) for a in allocators if a in alloc_map}
-        best_p99 = min(p99_vals.values()) if p99_vals else float('inf')
 
         p99_cells = []
         for a in allocators:
@@ -113,14 +90,9 @@ def print_table(by_scenario, allocators):
                 p99_cells.append(f"{'N/A':>14}")
                 continue
             v = alloc_map[a].get("p99_ns", 0)
-            s = fmt_ns(v)
-            if v == best_p99 and best_p99 < float('inf'):
-                p99_cells.append(green(f"{s:>14}") + "*")
-            else:
-                p99_cells.append(f"{s:>14} ")
+            p99_cells.append(f"{fmt_ns(v):>14} ")
         print(f"  {'':34}  {'p99 lat':<10}  {'  '.join(p99_cells)}")
 
-        # RSS row
         rss_cells = []
         for a in allocators:
             if a not in alloc_map:
@@ -132,46 +104,6 @@ def print_table(by_scenario, allocators):
             rss_cells.append(f"{fmt_bytes(delta):>14} ")
         print(f"  {'':34}  {'RSS Δ':<10}  {'  '.join(rss_cells)}")
         print()
-
-# ── Bar chart ─────────────────────────────────────────────────────────────────
-def print_bar_chart(by_scenario, allocators):
-    print(bold("\n── Throughput bar chart (ops/sec, higher=better) ─────────────────────\n"))
-
-    for scenario, alloc_map in sorted(by_scenario.items()):
-        ops_vals = {a: alloc_map[a].get("ops_per_sec", 0) for a in allocators if a in alloc_map}
-        if not ops_vals:
-            continue
-        max_ops = max(ops_vals.values())
-        print(f"  {cyan(scenario)}")
-        for a in sorted(ops_vals, key=lambda x: ops_vals[x], reverse=True):
-            v = ops_vals[a]
-            b = bar(v, max_ops)
-            marker = green("★") if v == max_ops else " "
-            print(f"    {a:>12}  {b}  {fmt_ops(v)} {marker}")
-        print()
-
-# ── Scoring / ranking ─────────────────────────────────────────────────────────
-def print_ranking(by_scenario, allocators):
-    print(bold("\n── Overall ranking (wins per allocator) ─────────────────────────────\n"))
-
-    wins = defaultdict(int)
-    total = 0
-    for scenario, alloc_map in by_scenario.items():
-        ops_vals = {a: alloc_map[a].get("ops_per_sec", 0) for a in allocators if a in alloc_map}
-        if not ops_vals:
-            continue
-        best = max(ops_vals, key=lambda x: ops_vals[x])
-        wins[best] += 1
-        total += 1
-
-    ranked = sorted(allocators, key=lambda a: wins[a], reverse=True)
-    for i, a in enumerate(ranked):
-        w = wins[a]
-        pct = 100 * w / total if total > 0 else 0
-        medal = ["🥇","🥈","🥉","  ","  "][min(i, 4)]
-        b = bar(w, total, width=20)
-        print(f"  {medal} {a:<14} {b}  {w}/{total} scenarios ({pct:.0f}%)")
-    print()
 
 # ── CSV export ───────────────────────────────────────────────────────────────
 CSV_HEADER = "allocator,scenario,ops_per_sec,min_ns,p50_ns,p90_ns,p99_ns,max_ns,mean_ns,stddev_ns,rss_before,rss_after"
@@ -235,21 +167,16 @@ def main():
 
     print(bold(f"\n{'═'*80}"))
     print(bold(f"  palloc Benchmark Report"))
-    print(bold(f"  Allocators: {', '.join(allocators)}"))
-    print(bold(f"  Scenarios:  {len(by_scenario)}"))
+    print(bold(f"  Scenarios: {len(by_scenario)}"))
     print(bold(f"{'═'*80}"))
 
     print_table(by_scenario, allocators)
-    print_bar_chart(by_scenario, allocators)
-    print_ranking(by_scenario, allocators)
 
     out_dir = os.path.dirname(path)
     md_path = os.path.join(out_dir, "results_report.md")
     csv_path = os.path.join(out_dir, "results.csv")
     export_markdown(by_scenario, allocators, md_path)
     export_csv(rows, csv_path)
-
-    print(bold("\n  * = best in category\n"))
 
 if __name__ == "__main__":
     main()

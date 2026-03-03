@@ -101,6 +101,16 @@ size_t _pa_bin(size_t size) {
   return pa_bin(size);
 }
 
+// O(1) size-to-bin lookup table (jemalloc-style); filled at init, used via _pa_bin_fast in internal.h.
+uint8_t pa_size2bin_tab[PA_SIZE2BIN_LOOKUP_MAX];
+
+void _pa_size2bin_table_init(void) {
+  for (size_t s = 0; s < PA_SIZE2BIN_LOOKUP_MAX; s++) {
+    size_t b = pa_bin(s);
+    pa_size2bin_tab[s] = (uint8_t)(b >= PA_BIN_HUGE ? PA_BIN_HUGE : b);
+  }
+}
+
 size_t _pa_bin_size(size_t bin) {
   return _pa_heap_empty.pages[bin].block_size;
 }
