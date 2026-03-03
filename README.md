@@ -117,54 +117,6 @@ bash run_bench.sh                    # full run (or --iter=50000 for a quick run
 # Outputs: build/results.csv, build/results_all.json, build/results_report.md
 ```
 
-### Benchmark Results
-
-# palloc Benchmark Results
-
-| Scenario                           | Metric     |         palloc |
-|------------------------------------|------------|----------------|
-| alloc_free_batch                   | ops/sec    |    55.40 Mop/s |
-| alloc_free_batch                   | p99 ns     |        32.0 ns |
-| alloc_free_batch                   | RSS        |       21.4 MiB |
-| alloc_free_mt                      | ops/sec    |   832.12 Kop/s |
-| alloc_free_mt                      | p99 ns     |        1.30 µs |
-| alloc_free_mt                      | RSS        |      522.6 MiB |
-| alloc_free_same_thread             | ops/sec    |     1.48 Mop/s |
-| alloc_free_same_thread             | p99 ns     |        1.00 µs |
-| alloc_free_same_thread             | RSS        |       13.4 MiB |
-| calloc_bench                       | ops/sec    |    13.40 Mop/s |
-| calloc_bench                       | p99 ns     |       100.0 ns |
-| calloc_bench                       | RSS        |      522.6 MiB |
-| cross_thread                       | ops/sec    |     8.18 Mop/s |
-| cross_thread                       | p99 ns     |       100.0 ns |
-| cross_thread                       | RSS        |      522.6 MiB |
-| fragmentation_churn                | ops/sec    |    18.55 Mop/s |
-| fragmentation_churn                | p99 ns     |       100.0 ns |
-| fragmentation_churn                | RSS        |      522.6 MiB |
-| latency_large                      | ops/sec    |     3.84 Mop/s |
-| latency_large                      | p99 ns     |        1.20 µs |
-| latency_large                      | RSS        |      522.6 MiB |
-| latency_small                      | ops/sec    |    24.80 Mop/s |
-| latency_small                      | p99 ns     |       100.0 ns |
-| latency_small                      | RSS        |       21.4 MiB |
-| mixed_sizes                        | ops/sec    |    16.34 Mop/s |
-| mixed_sizes                        | p99 ns     |       300.0 ns |
-| mixed_sizes                        | RSS        |      522.6 MiB |
-| object_pool                        | ops/sec    |     1.26 Mop/s |
-| object_pool                        | p99 ns     |        1.00 µs |
-| object_pool                        | RSS        |      522.6 MiB |
-| peak_rss                           | ops/sec    |    738.23 op/s |
-| peak_rss                           | p99 ns     |        1.35 ms |
-| peak_rss                           | RSS        |      580.0 MiB |
-| realloc_bench                      | ops/sec    |    12.32 Mop/s |
-| realloc_bench                      | p99 ns     |       100.0 ns |
-| realloc_bench                      | RSS        |      522.6 MiB |
-| thread_scale                       | ops/sec    |     1.54 Mop/s |
-| thread_scale                       | p99 ns     |       700.0 ns |
-| thread_scale                       | RSS        |      522.6 MiB |
-
-*Bars are scaled to the best result in each scenario. Results from a typical run on a multi-core Linux machine.*
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

@@ -737,6 +737,44 @@ void bench_peak_rss(bench_result_t* r, const bench_config_t* cfg) {
 }
 
 /* =========================================================================
+ * Scenario — vector_embedding_batch (many fixed-dim vectors, e.g. 768 floats)
+ * Throughput and RSS for embedding-style batch alloc + reset.
+ * ====================================================================== */
+void bench_vector_embedding_batch(bench_result_t* r, const bench_config_t* cfg) {
+  const size_t dim = (cfg->size_lo > 0) ? (size_t)cfg->size_lo : 768;
+  const size_t vec_bytes = dim * BENCH_VECTOR_ELEMSZ;
+  const size_t arena_cap = bench_arena_cap(64 * 1024 * 1024);  /* 64 MiB usable */
+  r->rss_bytes_before = bench_rss_bytes();
+
+  g_bench_arena = bench_arena_create(arena_cap);
+  if (!g_bench_arena) { r->n = 0; r->rss_bytes_after = bench_rss_bytes(); return; }
+
+  size_t rounds = cfg->iterations;
+  if (rounds == 0) rounds = 1000;
+  if (rounds > BENCH_MAX_SAMPLES) rounds = BENCH_MAX_SAMPLES;
+
+  for (size_t i = 0; i < cfg->warmup; i++) {
+    bench_reset_arena();
+    size_t count = 0;
+    while (bench_arena_alloc_vector(g_bench_arena, dim, BENCH_VECTOR_ELEMSZ) != NULL) count++;
+    (void)count;
+  }
+
+  for (size_t round = 0; round < rounds; round++) {
+    bench_reset_arena();
+    uint64_t t0 = bench_clock_ns();
+    size_t count = 0;
+    while (bench_arena_alloc_vector(g_bench_arena, dim, BENCH_VECTOR_ELEMSZ) != NULL) count++;
+    uint64_t t1 = bench_clock_ns();
+    r->samples[round] = (count > 0) ? ((t1 - t0) / count) : 0;
+  }
+  r->n = rounds;
+  bench_arena_destroy(g_bench_arena);
+  g_bench_arena = NULL;
+  r->rss_bytes_after = bench_rss_bytes();
+}
+
+/* =========================================================================
  * Scenario table (exported)
  * size_lo/size_hi = vector dimensions (number of floats)
  * ====================================================================== */
@@ -754,6 +792,7 @@ bench_scenario_entry_t g_scenarios[] = {
   { "thread_scale",            bench_thread_scale,             "Thread scaling 1->32 (vector p50)",              8,    256     },
   { "object_pool",             bench_object_pool,              "Fixed vector 16 floats / 64B",                    16,   16      },
   { "peak_rss",                bench_peak_rss,                 "Peak RSS N vectors (256-64K dim)",               256,  65536   },
+  { "vector_embedding_batch",   bench_vector_embedding_batch,   "1M x 768-float vectors (embedding batch)",       768,  768     },
   { NULL, NULL, NULL, 0, 0 }
 };
 

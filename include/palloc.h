@@ -216,6 +216,12 @@ pa_decl_export pa_heap_t* pa_heap_get_default(void);
 pa_decl_export pa_heap_t* pa_heap_get_backing(void);
 pa_decl_export void       pa_heap_collect(pa_heap_t* heap, bool force) pa_attr_noexcept;
 
+/** Callback when heap usage approaches or exceeds max_size (current and max in bytes, arg = user pointer). */
+typedef void (pa_cdecl *pa_heap_pressure_fun)(size_t current, size_t max, void* arg);
+pa_decl_export void       pa_heap_set_max_size(pa_heap_t* heap, size_t max_bytes);
+pa_decl_nodiscard pa_decl_export size_t pa_heap_get_used(pa_heap_t* heap);
+pa_decl_export void       pa_heap_set_pressure_callback(pa_heap_t* heap, pa_heap_pressure_fun cb, void* arg);
+
 pa_decl_nodiscard pa_decl_export pa_decl_restrict void* pa_heap_malloc(pa_heap_t* heap, size_t size) pa_attr_noexcept pa_attr_malloc pa_attr_alloc_size(2);
 pa_decl_nodiscard pa_decl_export pa_decl_restrict void* pa_heap_zalloc(pa_heap_t* heap, size_t size) pa_attr_noexcept pa_attr_malloc pa_attr_alloc_size(2);
 pa_decl_nodiscard pa_decl_export pa_decl_restrict void* pa_heap_calloc(pa_heap_t* heap, size_t count, size_t size) pa_attr_noexcept pa_attr_malloc pa_attr_alloc_size2(2, 3);

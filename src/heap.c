@@ -259,6 +259,21 @@ pa_decl_nodiscard pa_heap_t* pa_heap_new(void) {
   return pa_heap_new_ex(0 /* default heap tag */, true /* no reclaim */, _pa_arena_id_none());
 }
 
+void pa_heap_set_max_size(pa_heap_t* heap, size_t max_bytes) {
+  if (heap != NULL) heap->max_size = max_bytes;
+}
+
+size_t pa_heap_get_used(pa_heap_t* heap) {
+  return (heap != NULL) ? heap->used_bytes : 0;
+}
+
+void pa_heap_set_pressure_callback(pa_heap_t* heap, pa_heap_pressure_fun cb, void* arg) {
+  if (heap != NULL) {
+    heap->pressure_cb = cb;
+    heap->pressure_arg = arg;
+  }
+}
+
 bool _pa_heap_memid_is_suitable(pa_heap_t* heap, pa_memid_t memid) {
   return _pa_arena_memid_is_suitable(memid, heap->arena_id);
 }

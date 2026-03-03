@@ -92,6 +92,7 @@ void _pa_page_finish_alloc(pa_heap_t* heap, pa_page_t* page, pa_block_t* block, 
     #endif
   }
   #endif
+  heap->used_bytes += pa_page_usable_block_size(page);
   #if PA_PADDING
   {
     pa_padding_t* const padding = (pa_padding_t*)((uint8_t*)block + pa_page_usable_block_size(page));
@@ -140,6 +141,12 @@ static inline pa_decl_restrict void* pa_heap_malloc_small_zero(pa_heap_t* heap, 
     return _pa_heap_malloc_guarded(heap, size, zero);
   }
   #endif
+
+  if (heap->max_size != 0 && (size + PA_PADDING_SIZE) > heap->max_size - heap->used_bytes) {
+    if (heap->pressure_cb != NULL)
+      heap->pressure_cb(heap->used_bytes, heap->max_size, heap->pressure_arg);
+    return NULL;
+  }
 
   // get page in constant time, and allocate from it
   pa_page_t* page = _pa_heap_get_free_small_page(heap, size + PA_PADDING_SIZE);

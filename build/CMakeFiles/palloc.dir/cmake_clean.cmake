@@ -24,6 +24,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/palloc.dir/src/os.c.o.d"
   "CMakeFiles/palloc.dir/src/page.c.o"
   "CMakeFiles/palloc.dir/src/page.c.o.d"
+  "CMakeFiles/palloc.dir/src/palloc_vector.c.o"
+  "CMakeFiles/palloc.dir/src/palloc_vector.c.o.d"
   "CMakeFiles/palloc.dir/src/prim/prim.c.o"
   "CMakeFiles/palloc.dir/src/prim/prim.c.o.d"
   "CMakeFiles/palloc.dir/src/random.c.o"

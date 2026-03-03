@@ -583,6 +583,10 @@ struct pa_heap_s {
   pa_heap_t*            next;                                // list of heaps per thread
   bool                  no_reclaim;                          // `true` if this heap should not reclaim abandoned pages
   uint8_t               tag;                                 // custom tag, can be used for separating heaps based on the object types
+  size_t                max_size;                            // optional cap (0 = no cap); alloc fails when used_bytes + size > max_size
+  size_t                used_bytes;                          // sum of allocated block sizes for this heap (for cap and callback)
+  void                  (*pressure_cb)(size_t current, size_t max, void* arg);  // optional callback when approaching/exceeding max_size
+  void*                 pressure_arg;                        // user argument for pressure_cb
   #if PA_GUARDED
   size_t                guarded_size_min;                    // minimal size for guarded objects
   size_t                guarded_size_max;                    // maximal size for guarded objects

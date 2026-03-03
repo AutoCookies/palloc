@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/root/pomaieco/palloc/src/static.c" "CMakeFiles/palloc-obj.dir/src/static.c.o" "gcc" "CMakeFiles/palloc-obj.dir/src/static.c.o.d"
+  "/home/autocookie/pomaieco/palloc/src/static.c" "CMakeFiles/palloc-obj.dir/src/static.c.o" "gcc" "CMakeFiles/palloc-obj.dir/src/static.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
