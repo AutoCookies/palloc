@@ -1,22 +1,20 @@
-<!-- BEGIN MICROSOFT SECURITY.MD V0.0.9 BLOCK -->
-
 ## Security
 
-Microsoft takes the security of our software products and services seriously, which includes all source code repositories managed through our GitHub organizations, which include [Microsoft](https://github.com/Microsoft), [Azure](https://github.com/Azure), [DotNet](https://github.com/dotnet), [AspNet](https://github.com/aspnet) and [Xamarin](https://github.com/xamarin).
+**palloc** is maintained by **Pomai Eco**. 
 
-If you believe you have found a security vulnerability in any Microsoft-owned repository that meets [Microsoft's definition of a security vulnerability](https://aka.ms/security.md/definition), please report it to us as described below.
+We take the security of this project seriously. If you believe you have found a security vulnerability, please report it as described below.
+
+*Note: Pomai Eco does not currently have a public website.*
 
 ## Reporting Security Issues
 
 **Please do not report security vulnerabilities through public GitHub issues.**
 
-Instead, please report them to the Microsoft Security Response Center (MSRC) at [https://msrc.microsoft.com/create-report](https://aka.ms/security.md/msrc/create-report).
+Instead, please report them by opening a **private security advisory** on this repository:
 
-If you prefer to submit without logging in, send email to [secure@microsoft.com](mailto:secure@microsoft.com).  If possible, encrypt your message with our PGP key; please download it from the [Microsoft Security Response Center PGP Key page](https://aka.ms/security.md/msrc/pgp).
-
-You should receive a response within 24 hours. If for some reason you do not, please follow up via email to ensure we received your original message. Additional information can be found at [microsoft.com/msrc](https://www.microsoft.com/msrc). 
-
-Please include the requested information listed below (as much as you can provide) to help us better understand the nature and scope of the possible issue:
+1. Go to the **Security** tab of this repository.
+2. Click **Advisories** → **Report a vulnerability** (or **New draft security advisory**).
+3. Describe the issue and include as much of the following as you can:
 
   * Type of issue (e.g. buffer overflow, SQL injection, cross-site scripting, etc.)
   * Full paths of source file(s) related to the manifestation of the issue
@@ -26,16 +24,12 @@ Please include the requested information listed below (as much as you can provid
   * Proof-of-concept or exploit code (if possible)
   * Impact of the issue, including how an attacker might exploit the issue
 
-This information will help us triage your report more quickly.
-
-If you are reporting for a bug bounty, more complete reports can contribute to a higher bounty award. Please visit our [Microsoft Bug Bounty Program](https://aka.ms/security.md/msrc/bounty) page for more details about our active programs.
+This information helps us triage and address the report.
 
 ## Preferred Languages
 
-We prefer all communications to be in English.
+We prefer communications in English.
 
 ## Policy
 
-Microsoft follows the principle of [Coordinated Vulnerability Disclosure](https://aka.ms/security.md/cvd).
-
-<!-- END MICROSOFT SECURITY.MD BLOCK -->
+We follow the principle of coordinated vulnerability disclosure: we ask that you report issues privately and allow a reasonable time to address them before any public disclosure.
