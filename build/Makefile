@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/autocookie/pomaieco/palloc
+CMAKE_SOURCE_DIR = /root/pomaieco/palloc
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/autocookie/pomaieco/palloc/build
+CMAKE_BINARY_DIR = /root/pomaieco/palloc/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -142,9 +142,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles /home/autocookie/pomaieco/palloc/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/pomaieco/palloc/build/CMakeFiles /root/pomaieco/palloc/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/pomaieco/palloc/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -185,754 +185,150 @@ palloc/fast:
 .PHONY : palloc/fast
 
 #=============================================================================
-# Target rules for targets named palloc-static
+# Target rules for targets named palloc-test-user-core
 
 # Build rule for target.
-palloc-static: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 palloc-static
-.PHONY : palloc-static
+palloc-test-user-core: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 palloc-test-user-core
+.PHONY : palloc-test-user-core
 
 # fast build rule for target.
-palloc-static/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/build
-.PHONY : palloc-static/fast
+palloc-test-user-core/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-user-core.dir/build.make CMakeFiles/palloc-test-user-core.dir/build
+.PHONY : palloc-test-user-core/fast
 
 #=============================================================================
-# Target rules for targets named palloc-obj
+# Target rules for targets named bench-user-core
 
 # Build rule for target.
-palloc-obj: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 palloc-obj
-.PHONY : palloc-obj
+bench-user-core: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 bench-user-core
+.PHONY : bench-user-core
 
 # fast build rule for target.
-palloc-obj/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-obj.dir/build.make CMakeFiles/palloc-obj.dir/build
-.PHONY : palloc-obj/fast
+bench-user-core/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bench-user-core.dir/build.make CMakeFiles/bench-user-core.dir/build
+.PHONY : bench-user-core/fast
 
-#=============================================================================
-# Target rules for targets named palloc-obj-target
-
-# Build rule for target.
-palloc-obj-target: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 palloc-obj-target
-.PHONY : palloc-obj-target
-
-# fast build rule for target.
-palloc-obj-target/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-obj-target.dir/build.make CMakeFiles/palloc-obj-target.dir/build
-.PHONY : palloc-obj-target/fast
-
-#=============================================================================
-# Target rules for targets named palloc-test-api
-
-# Build rule for target.
-palloc-test-api: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 palloc-test-api
-.PHONY : palloc-test-api
-
-# fast build rule for target.
-palloc-test-api/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-api.dir/build.make CMakeFiles/palloc-test-api.dir/build
-.PHONY : palloc-test-api/fast
-
-#=============================================================================
-# Target rules for targets named palloc-test-api-fill
-
-# Build rule for target.
-palloc-test-api-fill: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 palloc-test-api-fill
-.PHONY : palloc-test-api-fill
-
-# fast build rule for target.
-palloc-test-api-fill/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-api-fill.dir/build.make CMakeFiles/palloc-test-api-fill.dir/build
-.PHONY : palloc-test-api-fill/fast
-
-#=============================================================================
-# Target rules for targets named palloc-test-stress
-
-# Build rule for target.
-palloc-test-stress: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 palloc-test-stress
-.PHONY : palloc-test-stress
-
-# fast build rule for target.
-palloc-test-stress/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-stress.dir/build.make CMakeFiles/palloc-test-stress.dir/build
-.PHONY : palloc-test-stress/fast
-
-#=============================================================================
-# Target rules for targets named palloc-test-arena-pomai
-
-# Build rule for target.
-palloc-test-arena-pomai: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 palloc-test-arena-pomai
-.PHONY : palloc-test-arena-pomai
-
-# fast build rule for target.
-palloc-test-arena-pomai/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-arena-pomai.dir/build.make CMakeFiles/palloc-test-arena-pomai.dir/build
-.PHONY : palloc-test-arena-pomai/fast
-
-#=============================================================================
-# Target rules for targets named palloc-test-basic
-
-# Build rule for target.
-palloc-test-basic: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 palloc-test-basic
-.PHONY : palloc-test-basic
-
-# fast build rule for target.
-palloc-test-basic/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-basic.dir/build.make CMakeFiles/palloc-test-basic.dir/build
-.PHONY : palloc-test-basic/fast
-
-#=============================================================================
-# Target rules for targets named palloc-test-stress-dynamic
-
-# Build rule for target.
-palloc-test-stress-dynamic: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 palloc-test-stress-dynamic
-.PHONY : palloc-test-stress-dynamic
-
-# fast build rule for target.
-palloc-test-stress-dynamic/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-stress-dynamic.dir/build.make CMakeFiles/palloc-test-stress-dynamic.dir/build
-.PHONY : palloc-test-stress-dynamic/fast
-
-src/alloc-aligned.o: src/alloc-aligned.c.o
-.PHONY : src/alloc-aligned.o
+bench/bench_core.o: bench/bench_core.c.o
+.PHONY : bench/bench_core.o
 
 # target to build an object file
-src/alloc-aligned.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/alloc-aligned.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/alloc-aligned.c.o
-.PHONY : src/alloc-aligned.c.o
+bench/bench_core.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bench-user-core.dir/build.make CMakeFiles/bench-user-core.dir/bench/bench_core.c.o
+.PHONY : bench/bench_core.c.o
 
-src/alloc-aligned.i: src/alloc-aligned.c.i
-.PHONY : src/alloc-aligned.i
+bench/bench_core.i: bench/bench_core.c.i
+.PHONY : bench/bench_core.i
 
 # target to preprocess a source file
-src/alloc-aligned.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/alloc-aligned.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/alloc-aligned.c.i
-.PHONY : src/alloc-aligned.c.i
+bench/bench_core.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bench-user-core.dir/build.make CMakeFiles/bench-user-core.dir/bench/bench_core.c.i
+.PHONY : bench/bench_core.c.i
 
-src/alloc-aligned.s: src/alloc-aligned.c.s
-.PHONY : src/alloc-aligned.s
+bench/bench_core.s: bench/bench_core.c.s
+.PHONY : bench/bench_core.s
 
 # target to generate assembly for a file
-src/alloc-aligned.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/alloc-aligned.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/alloc-aligned.c.s
-.PHONY : src/alloc-aligned.c.s
+bench/bench_core.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bench-user-core.dir/build.make CMakeFiles/bench-user-core.dir/bench/bench_core.c.s
+.PHONY : bench/bench_core.c.s
 
-src/alloc-posix.o: src/alloc-posix.c.o
-.PHONY : src/alloc-posix.o
+src/backends/backend_user.o: src/backends/backend_user.c.o
+.PHONY : src/backends/backend_user.o
 
 # target to build an object file
-src/alloc-posix.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/alloc-posix.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/alloc-posix.c.o
-.PHONY : src/alloc-posix.c.o
+src/backends/backend_user.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/backends/backend_user.c.o
+.PHONY : src/backends/backend_user.c.o
 
-src/alloc-posix.i: src/alloc-posix.c.i
-.PHONY : src/alloc-posix.i
+src/backends/backend_user.i: src/backends/backend_user.c.i
+.PHONY : src/backends/backend_user.i
 
 # target to preprocess a source file
-src/alloc-posix.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/alloc-posix.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/alloc-posix.c.i
-.PHONY : src/alloc-posix.c.i
+src/backends/backend_user.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/backends/backend_user.c.i
+.PHONY : src/backends/backend_user.c.i
 
-src/alloc-posix.s: src/alloc-posix.c.s
-.PHONY : src/alloc-posix.s
+src/backends/backend_user.s: src/backends/backend_user.c.s
+.PHONY : src/backends/backend_user.s
 
 # target to generate assembly for a file
-src/alloc-posix.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/alloc-posix.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/alloc-posix.c.s
-.PHONY : src/alloc-posix.c.s
+src/backends/backend_user.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/backends/backend_user.c.s
+.PHONY : src/backends/backend_user.c.s
 
-src/alloc.o: src/alloc.c.o
-.PHONY : src/alloc.o
+src/core/alloc_core.o: src/core/alloc_core.c.o
+.PHONY : src/core/alloc_core.o
 
 # target to build an object file
-src/alloc.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/alloc.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/alloc.c.o
-.PHONY : src/alloc.c.o
+src/core/alloc_core.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/core/alloc_core.c.o
+.PHONY : src/core/alloc_core.c.o
 
-src/alloc.i: src/alloc.c.i
-.PHONY : src/alloc.i
+src/core/alloc_core.i: src/core/alloc_core.c.i
+.PHONY : src/core/alloc_core.i
 
 # target to preprocess a source file
-src/alloc.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/alloc.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/alloc.c.i
-.PHONY : src/alloc.c.i
+src/core/alloc_core.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/core/alloc_core.c.i
+.PHONY : src/core/alloc_core.c.i
 
-src/alloc.s: src/alloc.c.s
-.PHONY : src/alloc.s
+src/core/alloc_core.s: src/core/alloc_core.c.s
+.PHONY : src/core/alloc_core.s
 
 # target to generate assembly for a file
-src/alloc.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/alloc.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/alloc.c.s
-.PHONY : src/alloc.c.s
+src/core/alloc_core.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/core/alloc_core.c.s
+.PHONY : src/core/alloc_core.c.s
 
-src/arena.o: src/arena.c.o
-.PHONY : src/arena.o
+src/core/vector_core.o: src/core/vector_core.c.o
+.PHONY : src/core/vector_core.o
 
 # target to build an object file
-src/arena.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/arena.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/arena.c.o
-.PHONY : src/arena.c.o
+src/core/vector_core.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/core/vector_core.c.o
+.PHONY : src/core/vector_core.c.o
 
-src/arena.i: src/arena.c.i
-.PHONY : src/arena.i
+src/core/vector_core.i: src/core/vector_core.c.i
+.PHONY : src/core/vector_core.i
 
 # target to preprocess a source file
-src/arena.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/arena.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/arena.c.i
-.PHONY : src/arena.c.i
+src/core/vector_core.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/core/vector_core.c.i
+.PHONY : src/core/vector_core.c.i
 
-src/arena.s: src/arena.c.s
-.PHONY : src/arena.s
+src/core/vector_core.s: src/core/vector_core.c.s
+.PHONY : src/core/vector_core.s
 
 # target to generate assembly for a file
-src/arena.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/arena.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/arena.c.s
-.PHONY : src/arena.c.s
+src/core/vector_core.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/core/vector_core.c.s
+.PHONY : src/core/vector_core.c.s
 
-src/arena_pomai.o: src/arena_pomai.c.o
-.PHONY : src/arena_pomai.o
+test/test-user-core.o: test/test-user-core.c.o
+.PHONY : test/test-user-core.o
 
 # target to build an object file
-src/arena_pomai.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/arena_pomai.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/arena_pomai.c.o
-.PHONY : src/arena_pomai.c.o
+test/test-user-core.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-user-core.dir/build.make CMakeFiles/palloc-test-user-core.dir/test/test-user-core.c.o
+.PHONY : test/test-user-core.c.o
 
-src/arena_pomai.i: src/arena_pomai.c.i
-.PHONY : src/arena_pomai.i
-
-# target to preprocess a source file
-src/arena_pomai.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/arena_pomai.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/arena_pomai.c.i
-.PHONY : src/arena_pomai.c.i
-
-src/arena_pomai.s: src/arena_pomai.c.s
-.PHONY : src/arena_pomai.s
-
-# target to generate assembly for a file
-src/arena_pomai.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/arena_pomai.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/arena_pomai.c.s
-.PHONY : src/arena_pomai.c.s
-
-src/bitmap.o: src/bitmap.c.o
-.PHONY : src/bitmap.o
-
-# target to build an object file
-src/bitmap.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/bitmap.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/bitmap.c.o
-.PHONY : src/bitmap.c.o
-
-src/bitmap.i: src/bitmap.c.i
-.PHONY : src/bitmap.i
+test/test-user-core.i: test/test-user-core.c.i
+.PHONY : test/test-user-core.i
 
 # target to preprocess a source file
-src/bitmap.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/bitmap.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/bitmap.c.i
-.PHONY : src/bitmap.c.i
+test/test-user-core.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-user-core.dir/build.make CMakeFiles/palloc-test-user-core.dir/test/test-user-core.c.i
+.PHONY : test/test-user-core.c.i
 
-src/bitmap.s: src/bitmap.c.s
-.PHONY : src/bitmap.s
-
-# target to generate assembly for a file
-src/bitmap.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/bitmap.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/bitmap.c.s
-.PHONY : src/bitmap.c.s
-
-src/heap.o: src/heap.c.o
-.PHONY : src/heap.o
-
-# target to build an object file
-src/heap.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/heap.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/heap.c.o
-.PHONY : src/heap.c.o
-
-src/heap.i: src/heap.c.i
-.PHONY : src/heap.i
-
-# target to preprocess a source file
-src/heap.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/heap.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/heap.c.i
-.PHONY : src/heap.c.i
-
-src/heap.s: src/heap.c.s
-.PHONY : src/heap.s
+test/test-user-core.s: test/test-user-core.c.s
+.PHONY : test/test-user-core.s
 
 # target to generate assembly for a file
-src/heap.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/heap.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/heap.c.s
-.PHONY : src/heap.c.s
-
-src/init.o: src/init.c.o
-.PHONY : src/init.o
-
-# target to build an object file
-src/init.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/init.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/init.c.o
-.PHONY : src/init.c.o
-
-src/init.i: src/init.c.i
-.PHONY : src/init.i
-
-# target to preprocess a source file
-src/init.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/init.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/init.c.i
-.PHONY : src/init.c.i
-
-src/init.s: src/init.c.s
-.PHONY : src/init.s
-
-# target to generate assembly for a file
-src/init.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/init.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/init.c.s
-.PHONY : src/init.c.s
-
-src/libc.o: src/libc.c.o
-.PHONY : src/libc.o
-
-# target to build an object file
-src/libc.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/libc.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/libc.c.o
-.PHONY : src/libc.c.o
-
-src/libc.i: src/libc.c.i
-.PHONY : src/libc.i
-
-# target to preprocess a source file
-src/libc.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/libc.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/libc.c.i
-.PHONY : src/libc.c.i
-
-src/libc.s: src/libc.c.s
-.PHONY : src/libc.s
-
-# target to generate assembly for a file
-src/libc.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/libc.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/libc.c.s
-.PHONY : src/libc.c.s
-
-src/options.o: src/options.c.o
-.PHONY : src/options.o
-
-# target to build an object file
-src/options.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/options.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/options.c.o
-.PHONY : src/options.c.o
-
-src/options.i: src/options.c.i
-.PHONY : src/options.i
-
-# target to preprocess a source file
-src/options.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/options.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/options.c.i
-.PHONY : src/options.c.i
-
-src/options.s: src/options.c.s
-.PHONY : src/options.s
-
-# target to generate assembly for a file
-src/options.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/options.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/options.c.s
-.PHONY : src/options.c.s
-
-src/os.o: src/os.c.o
-.PHONY : src/os.o
-
-# target to build an object file
-src/os.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/os.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/os.c.o
-.PHONY : src/os.c.o
-
-src/os.i: src/os.c.i
-.PHONY : src/os.i
-
-# target to preprocess a source file
-src/os.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/os.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/os.c.i
-.PHONY : src/os.c.i
-
-src/os.s: src/os.c.s
-.PHONY : src/os.s
-
-# target to generate assembly for a file
-src/os.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/os.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/os.c.s
-.PHONY : src/os.c.s
-
-src/page.o: src/page.c.o
-.PHONY : src/page.o
-
-# target to build an object file
-src/page.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/page.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/page.c.o
-.PHONY : src/page.c.o
-
-src/page.i: src/page.c.i
-.PHONY : src/page.i
-
-# target to preprocess a source file
-src/page.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/page.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/page.c.i
-.PHONY : src/page.c.i
-
-src/page.s: src/page.c.s
-.PHONY : src/page.s
-
-# target to generate assembly for a file
-src/page.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/page.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/page.c.s
-.PHONY : src/page.c.s
-
-src/palloc_vector.o: src/palloc_vector.c.o
-.PHONY : src/palloc_vector.o
-
-# target to build an object file
-src/palloc_vector.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/palloc_vector.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/palloc_vector.c.o
-.PHONY : src/palloc_vector.c.o
-
-src/palloc_vector.i: src/palloc_vector.c.i
-.PHONY : src/palloc_vector.i
-
-# target to preprocess a source file
-src/palloc_vector.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/palloc_vector.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/palloc_vector.c.i
-.PHONY : src/palloc_vector.c.i
-
-src/palloc_vector.s: src/palloc_vector.c.s
-.PHONY : src/palloc_vector.s
-
-# target to generate assembly for a file
-src/palloc_vector.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/palloc_vector.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/palloc_vector.c.s
-.PHONY : src/palloc_vector.c.s
-
-src/prim/prim.o: src/prim/prim.c.o
-.PHONY : src/prim/prim.o
-
-# target to build an object file
-src/prim/prim.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/prim/prim.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/prim/prim.c.o
-.PHONY : src/prim/prim.c.o
-
-src/prim/prim.i: src/prim/prim.c.i
-.PHONY : src/prim/prim.i
-
-# target to preprocess a source file
-src/prim/prim.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/prim/prim.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/prim/prim.c.i
-.PHONY : src/prim/prim.c.i
-
-src/prim/prim.s: src/prim/prim.c.s
-.PHONY : src/prim/prim.s
-
-# target to generate assembly for a file
-src/prim/prim.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/prim/prim.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/prim/prim.c.s
-.PHONY : src/prim/prim.c.s
-
-src/random.o: src/random.c.o
-.PHONY : src/random.o
-
-# target to build an object file
-src/random.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/random.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/random.c.o
-.PHONY : src/random.c.o
-
-src/random.i: src/random.c.i
-.PHONY : src/random.i
-
-# target to preprocess a source file
-src/random.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/random.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/random.c.i
-.PHONY : src/random.c.i
-
-src/random.s: src/random.c.s
-.PHONY : src/random.s
-
-# target to generate assembly for a file
-src/random.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/random.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/random.c.s
-.PHONY : src/random.c.s
-
-src/segment-map.o: src/segment-map.c.o
-.PHONY : src/segment-map.o
-
-# target to build an object file
-src/segment-map.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/segment-map.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/segment-map.c.o
-.PHONY : src/segment-map.c.o
-
-src/segment-map.i: src/segment-map.c.i
-.PHONY : src/segment-map.i
-
-# target to preprocess a source file
-src/segment-map.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/segment-map.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/segment-map.c.i
-.PHONY : src/segment-map.c.i
-
-src/segment-map.s: src/segment-map.c.s
-.PHONY : src/segment-map.s
-
-# target to generate assembly for a file
-src/segment-map.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/segment-map.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/segment-map.c.s
-.PHONY : src/segment-map.c.s
-
-src/segment.o: src/segment.c.o
-.PHONY : src/segment.o
-
-# target to build an object file
-src/segment.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/segment.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/segment.c.o
-.PHONY : src/segment.c.o
-
-src/segment.i: src/segment.c.i
-.PHONY : src/segment.i
-
-# target to preprocess a source file
-src/segment.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/segment.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/segment.c.i
-.PHONY : src/segment.c.i
-
-src/segment.s: src/segment.c.s
-.PHONY : src/segment.s
-
-# target to generate assembly for a file
-src/segment.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/segment.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/segment.c.s
-.PHONY : src/segment.c.s
-
-src/static.o: src/static.c.o
-.PHONY : src/static.o
-
-# target to build an object file
-src/static.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-obj.dir/build.make CMakeFiles/palloc-obj.dir/src/static.c.o
-.PHONY : src/static.c.o
-
-src/static.i: src/static.c.i
-.PHONY : src/static.i
-
-# target to preprocess a source file
-src/static.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-obj.dir/build.make CMakeFiles/palloc-obj.dir/src/static.c.i
-.PHONY : src/static.c.i
-
-src/static.s: src/static.c.s
-.PHONY : src/static.s
-
-# target to generate assembly for a file
-src/static.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-obj.dir/build.make CMakeFiles/palloc-obj.dir/src/static.c.s
-.PHONY : src/static.c.s
-
-src/stats.o: src/stats.c.o
-.PHONY : src/stats.o
-
-# target to build an object file
-src/stats.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/stats.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/stats.c.o
-.PHONY : src/stats.c.o
-
-src/stats.i: src/stats.c.i
-.PHONY : src/stats.i
-
-# target to preprocess a source file
-src/stats.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/stats.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/stats.c.i
-.PHONY : src/stats.c.i
-
-src/stats.s: src/stats.c.s
-.PHONY : src/stats.s
-
-# target to generate assembly for a file
-src/stats.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/src/stats.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/src/stats.c.s
-.PHONY : src/stats.c.s
-
-test/test-api-fill.o: test/test-api-fill.c.o
-.PHONY : test/test-api-fill.o
-
-# target to build an object file
-test/test-api-fill.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-api-fill.dir/build.make CMakeFiles/palloc-test-api-fill.dir/test/test-api-fill.c.o
-.PHONY : test/test-api-fill.c.o
-
-test/test-api-fill.i: test/test-api-fill.c.i
-.PHONY : test/test-api-fill.i
-
-# target to preprocess a source file
-test/test-api-fill.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-api-fill.dir/build.make CMakeFiles/palloc-test-api-fill.dir/test/test-api-fill.c.i
-.PHONY : test/test-api-fill.c.i
-
-test/test-api-fill.s: test/test-api-fill.c.s
-.PHONY : test/test-api-fill.s
-
-# target to generate assembly for a file
-test/test-api-fill.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-api-fill.dir/build.make CMakeFiles/palloc-test-api-fill.dir/test/test-api-fill.c.s
-.PHONY : test/test-api-fill.c.s
-
-test/test-api.o: test/test-api.c.o
-.PHONY : test/test-api.o
-
-# target to build an object file
-test/test-api.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-api.dir/build.make CMakeFiles/palloc-test-api.dir/test/test-api.c.o
-.PHONY : test/test-api.c.o
-
-test/test-api.i: test/test-api.c.i
-.PHONY : test/test-api.i
-
-# target to preprocess a source file
-test/test-api.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-api.dir/build.make CMakeFiles/palloc-test-api.dir/test/test-api.c.i
-.PHONY : test/test-api.c.i
-
-test/test-api.s: test/test-api.c.s
-.PHONY : test/test-api.s
-
-# target to generate assembly for a file
-test/test-api.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-api.dir/build.make CMakeFiles/palloc-test-api.dir/test/test-api.c.s
-.PHONY : test/test-api.c.s
-
-test/test-arena-pomai.o: test/test-arena-pomai.c.o
-.PHONY : test/test-arena-pomai.o
-
-# target to build an object file
-test/test-arena-pomai.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-arena-pomai.dir/build.make CMakeFiles/palloc-test-arena-pomai.dir/test/test-arena-pomai.c.o
-.PHONY : test/test-arena-pomai.c.o
-
-test/test-arena-pomai.i: test/test-arena-pomai.c.i
-.PHONY : test/test-arena-pomai.i
-
-# target to preprocess a source file
-test/test-arena-pomai.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-arena-pomai.dir/build.make CMakeFiles/palloc-test-arena-pomai.dir/test/test-arena-pomai.c.i
-.PHONY : test/test-arena-pomai.c.i
-
-test/test-arena-pomai.s: test/test-arena-pomai.c.s
-.PHONY : test/test-arena-pomai.s
-
-# target to generate assembly for a file
-test/test-arena-pomai.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-arena-pomai.dir/build.make CMakeFiles/palloc-test-arena-pomai.dir/test/test-arena-pomai.c.s
-.PHONY : test/test-arena-pomai.c.s
-
-test/test-basic.o: test/test-basic.c.o
-.PHONY : test/test-basic.o
-
-# target to build an object file
-test/test-basic.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-basic.dir/build.make CMakeFiles/palloc-test-basic.dir/test/test-basic.c.o
-.PHONY : test/test-basic.c.o
-
-test/test-basic.i: test/test-basic.c.i
-.PHONY : test/test-basic.i
-
-# target to preprocess a source file
-test/test-basic.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-basic.dir/build.make CMakeFiles/palloc-test-basic.dir/test/test-basic.c.i
-.PHONY : test/test-basic.c.i
-
-test/test-basic.s: test/test-basic.c.s
-.PHONY : test/test-basic.s
-
-# target to generate assembly for a file
-test/test-basic.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-basic.dir/build.make CMakeFiles/palloc-test-basic.dir/test/test-basic.c.s
-.PHONY : test/test-basic.c.s
-
-test/test-stress.o: test/test-stress.c.o
-.PHONY : test/test-stress.o
-
-# target to build an object file
-test/test-stress.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-stress.dir/build.make CMakeFiles/palloc-test-stress.dir/test/test-stress.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-stress-dynamic.dir/build.make CMakeFiles/palloc-test-stress-dynamic.dir/test/test-stress.c.o
-.PHONY : test/test-stress.c.o
-
-test/test-stress.i: test/test-stress.c.i
-.PHONY : test/test-stress.i
-
-# target to preprocess a source file
-test/test-stress.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-stress.dir/build.make CMakeFiles/palloc-test-stress.dir/test/test-stress.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-stress-dynamic.dir/build.make CMakeFiles/palloc-test-stress-dynamic.dir/test/test-stress.c.i
-.PHONY : test/test-stress.c.i
-
-test/test-stress.s: test/test-stress.c.s
-.PHONY : test/test-stress.s
-
-# target to generate assembly for a file
-test/test-stress.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-stress.dir/build.make CMakeFiles/palloc-test-stress.dir/test/test-stress.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-stress-dynamic.dir/build.make CMakeFiles/palloc-test-stress-dynamic.dir/test/test-stress.c.s
-.PHONY : test/test-stress.c.s
+test/test-user-core.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-user-core.dir/build.make CMakeFiles/palloc-test-user-core.dir/test/test-user-core.c.s
+.PHONY : test/test-user-core.c.s
 
 # Help Target
 help:
@@ -947,88 +343,24 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... test"
-	@echo "... palloc-obj-target"
+	@echo "... bench-user-core"
 	@echo "... palloc"
-	@echo "... palloc-obj"
-	@echo "... palloc-static"
-	@echo "... palloc-test-api"
-	@echo "... palloc-test-api-fill"
-	@echo "... palloc-test-arena-pomai"
-	@echo "... palloc-test-basic"
-	@echo "... palloc-test-stress"
-	@echo "... palloc-test-stress-dynamic"
-	@echo "... src/alloc-aligned.o"
-	@echo "... src/alloc-aligned.i"
-	@echo "... src/alloc-aligned.s"
-	@echo "... src/alloc-posix.o"
-	@echo "... src/alloc-posix.i"
-	@echo "... src/alloc-posix.s"
-	@echo "... src/alloc.o"
-	@echo "... src/alloc.i"
-	@echo "... src/alloc.s"
-	@echo "... src/arena.o"
-	@echo "... src/arena.i"
-	@echo "... src/arena.s"
-	@echo "... src/arena_pomai.o"
-	@echo "... src/arena_pomai.i"
-	@echo "... src/arena_pomai.s"
-	@echo "... src/bitmap.o"
-	@echo "... src/bitmap.i"
-	@echo "... src/bitmap.s"
-	@echo "... src/heap.o"
-	@echo "... src/heap.i"
-	@echo "... src/heap.s"
-	@echo "... src/init.o"
-	@echo "... src/init.i"
-	@echo "... src/init.s"
-	@echo "... src/libc.o"
-	@echo "... src/libc.i"
-	@echo "... src/libc.s"
-	@echo "... src/options.o"
-	@echo "... src/options.i"
-	@echo "... src/options.s"
-	@echo "... src/os.o"
-	@echo "... src/os.i"
-	@echo "... src/os.s"
-	@echo "... src/page.o"
-	@echo "... src/page.i"
-	@echo "... src/page.s"
-	@echo "... src/palloc_vector.o"
-	@echo "... src/palloc_vector.i"
-	@echo "... src/palloc_vector.s"
-	@echo "... src/prim/prim.o"
-	@echo "... src/prim/prim.i"
-	@echo "... src/prim/prim.s"
-	@echo "... src/random.o"
-	@echo "... src/random.i"
-	@echo "... src/random.s"
-	@echo "... src/segment-map.o"
-	@echo "... src/segment-map.i"
-	@echo "... src/segment-map.s"
-	@echo "... src/segment.o"
-	@echo "... src/segment.i"
-	@echo "... src/segment.s"
-	@echo "... src/static.o"
-	@echo "... src/static.i"
-	@echo "... src/static.s"
-	@echo "... src/stats.o"
-	@echo "... src/stats.i"
-	@echo "... src/stats.s"
-	@echo "... test/test-api-fill.o"
-	@echo "... test/test-api-fill.i"
-	@echo "... test/test-api-fill.s"
-	@echo "... test/test-api.o"
-	@echo "... test/test-api.i"
-	@echo "... test/test-api.s"
-	@echo "... test/test-arena-pomai.o"
-	@echo "... test/test-arena-pomai.i"
-	@echo "... test/test-arena-pomai.s"
-	@echo "... test/test-basic.o"
-	@echo "... test/test-basic.i"
-	@echo "... test/test-basic.s"
-	@echo "... test/test-stress.o"
-	@echo "... test/test-stress.i"
-	@echo "... test/test-stress.s"
+	@echo "... palloc-test-user-core"
+	@echo "... bench/bench_core.o"
+	@echo "... bench/bench_core.i"
+	@echo "... bench/bench_core.s"
+	@echo "... src/backends/backend_user.o"
+	@echo "... src/backends/backend_user.i"
+	@echo "... src/backends/backend_user.s"
+	@echo "... src/core/alloc_core.o"
+	@echo "... src/core/alloc_core.i"
+	@echo "... src/core/alloc_core.s"
+	@echo "... src/core/vector_core.o"
+	@echo "... src/core/vector_core.i"
+	@echo "... src/core/vector_core.s"
+	@echo "... test/test-user-core.o"
+	@echo "... test/test-user-core.i"
+	@echo "... test/test-user-core.s"
 .PHONY : help
 
 
