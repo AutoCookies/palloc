@@ -7,13 +7,11 @@ set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
-  "/home/autocookie/pomaieco/palloc/CMakeLists.txt"
+  "/root/pomaieco/palloc/CMakeLists.txt"
   "CMakeFiles/3.28.3/CMakeCCompiler.cmake"
   "CMakeFiles/3.28.3/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.28.3/CMakeSystem.cmake"
-  "/home/autocookie/pomaieco/palloc/cmake/JoinPaths.cmake"
-  "/home/autocookie/pomaieco/palloc/cmake/palloc-config-version.cmake"
-  "/home/autocookie/pomaieco/palloc/palloc.pc.in"
+  "/root/pomaieco/palloc/cmake/palloc-config-version.cmake"
   "/usr/share/cmake-3.28/Modules/CMakeCInformation.cmake"
   "/usr/share/cmake-3.28/Modules/CMakeCXXInformation.cmake"
   "/usr/share/cmake-3.28/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake"
@@ -52,20 +50,12 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
-  "palloc.pc"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/palloc.dir/DependInfo.cmake"
-  "CMakeFiles/palloc-static.dir/DependInfo.cmake"
-  "CMakeFiles/palloc-obj.dir/DependInfo.cmake"
-  "CMakeFiles/palloc-obj-target.dir/DependInfo.cmake"
-  "CMakeFiles/palloc-test-api.dir/DependInfo.cmake"
-  "CMakeFiles/palloc-test-api-fill.dir/DependInfo.cmake"
-  "CMakeFiles/palloc-test-stress.dir/DependInfo.cmake"
-  "CMakeFiles/palloc-test-arena-pomai.dir/DependInfo.cmake"
-  "CMakeFiles/palloc-test-basic.dir/DependInfo.cmake"
-  "CMakeFiles/palloc-test-stress-dynamic.dir/DependInfo.cmake"
+  "CMakeFiles/palloc-test-user-core.dir/DependInfo.cmake"
+  "CMakeFiles/bench-user-core.dir/DependInfo.cmake"
   )

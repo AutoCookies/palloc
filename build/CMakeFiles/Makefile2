@@ -54,25 +54,18 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/autocookie/pomaieco/palloc
+CMAKE_SOURCE_DIR = /root/pomaieco/palloc
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/autocookie/pomaieco/palloc/build
+CMAKE_BINARY_DIR = /root/pomaieco/palloc/build
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
 all: CMakeFiles/palloc.dir/all
-all: CMakeFiles/palloc-static.dir/all
-all: CMakeFiles/palloc-obj.dir/all
-all: CMakeFiles/palloc-obj-target.dir/all
-all: CMakeFiles/palloc-test-api.dir/all
-all: CMakeFiles/palloc-test-api-fill.dir/all
-all: CMakeFiles/palloc-test-stress.dir/all
-all: CMakeFiles/palloc-test-arena-pomai.dir/all
-all: CMakeFiles/palloc-test-basic.dir/all
-all: CMakeFiles/palloc-test-stress-dynamic.dir/all
+all: CMakeFiles/palloc-test-user-core.dir/all
+all: CMakeFiles/bench-user-core.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -81,15 +74,8 @@ preinstall:
 
 # The main recursive "clean" target.
 clean: CMakeFiles/palloc.dir/clean
-clean: CMakeFiles/palloc-static.dir/clean
-clean: CMakeFiles/palloc-obj.dir/clean
-clean: CMakeFiles/palloc-obj-target.dir/clean
-clean: CMakeFiles/palloc-test-api.dir/clean
-clean: CMakeFiles/palloc-test-api-fill.dir/clean
-clean: CMakeFiles/palloc-test-stress.dir/clean
-clean: CMakeFiles/palloc-test-arena-pomai.dir/clean
-clean: CMakeFiles/palloc-test-basic.dir/clean
-clean: CMakeFiles/palloc-test-stress-dynamic.dir/clean
+clean: CMakeFiles/palloc-test-user-core.dir/clean
+clean: CMakeFiles/bench-user-core.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -99,14 +85,14 @@ clean: CMakeFiles/palloc-test-stress-dynamic.dir/clean
 CMakeFiles/palloc.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc.dir/build.make CMakeFiles/palloc.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/autocookie/pomaieco/palloc/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19 "Built target palloc"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/root/pomaieco/palloc/build/CMakeFiles --progress-num=3,4,5,6 "Built target palloc"
 .PHONY : CMakeFiles/palloc.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/palloc.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 19
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/pomaieco/palloc/build/CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/palloc.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/pomaieco/palloc/build/CMakeFiles 0
 .PHONY : CMakeFiles/palloc.dir/rule
 
 # Convenience name for target.
@@ -119,238 +105,56 @@ CMakeFiles/palloc.dir/clean:
 .PHONY : CMakeFiles/palloc.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/palloc-static.dir
+# Target rules for target CMakeFiles/palloc-test-user-core.dir
 
 # All Build rule for target.
-CMakeFiles/palloc-static.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/autocookie/pomaieco/palloc/build/CMakeFiles --progress-num=22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40 "Built target palloc-static"
-.PHONY : CMakeFiles/palloc-static.dir/all
+CMakeFiles/palloc-test-user-core.dir/all: CMakeFiles/palloc.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-user-core.dir/build.make CMakeFiles/palloc-test-user-core.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-user-core.dir/build.make CMakeFiles/palloc-test-user-core.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/root/pomaieco/palloc/build/CMakeFiles --progress-num=7,8 "Built target palloc-test-user-core"
+.PHONY : CMakeFiles/palloc-test-user-core.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/palloc-static.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 19
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/palloc-static.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 0
-.PHONY : CMakeFiles/palloc-static.dir/rule
+CMakeFiles/palloc-test-user-core.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/pomaieco/palloc/build/CMakeFiles 6
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/palloc-test-user-core.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/pomaieco/palloc/build/CMakeFiles 0
+.PHONY : CMakeFiles/palloc-test-user-core.dir/rule
 
 # Convenience name for target.
-palloc-static: CMakeFiles/palloc-static.dir/rule
-.PHONY : palloc-static
+palloc-test-user-core: CMakeFiles/palloc-test-user-core.dir/rule
+.PHONY : palloc-test-user-core
 
 # clean rule for target.
-CMakeFiles/palloc-static.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-static.dir/build.make CMakeFiles/palloc-static.dir/clean
-.PHONY : CMakeFiles/palloc-static.dir/clean
+CMakeFiles/palloc-test-user-core.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-user-core.dir/build.make CMakeFiles/palloc-test-user-core.dir/clean
+.PHONY : CMakeFiles/palloc-test-user-core.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/palloc-obj.dir
+# Target rules for target CMakeFiles/bench-user-core.dir
 
 # All Build rule for target.
-CMakeFiles/palloc-obj.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-obj.dir/build.make CMakeFiles/palloc-obj.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-obj.dir/build.make CMakeFiles/palloc-obj.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/autocookie/pomaieco/palloc/build/CMakeFiles --progress-num=20 "Built target palloc-obj"
-.PHONY : CMakeFiles/palloc-obj.dir/all
+CMakeFiles/bench-user-core.dir/all: CMakeFiles/palloc.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bench-user-core.dir/build.make CMakeFiles/bench-user-core.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bench-user-core.dir/build.make CMakeFiles/bench-user-core.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/root/pomaieco/palloc/build/CMakeFiles --progress-num=1,2 "Built target bench-user-core"
+.PHONY : CMakeFiles/bench-user-core.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/palloc-obj.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 1
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/palloc-obj.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 0
-.PHONY : CMakeFiles/palloc-obj.dir/rule
+CMakeFiles/bench-user-core.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/pomaieco/palloc/build/CMakeFiles 6
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/bench-user-core.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/pomaieco/palloc/build/CMakeFiles 0
+.PHONY : CMakeFiles/bench-user-core.dir/rule
 
 # Convenience name for target.
-palloc-obj: CMakeFiles/palloc-obj.dir/rule
-.PHONY : palloc-obj
+bench-user-core: CMakeFiles/bench-user-core.dir/rule
+.PHONY : bench-user-core
 
 # clean rule for target.
-CMakeFiles/palloc-obj.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-obj.dir/build.make CMakeFiles/palloc-obj.dir/clean
-.PHONY : CMakeFiles/palloc-obj.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/palloc-obj-target.dir
-
-# All Build rule for target.
-CMakeFiles/palloc-obj-target.dir/all: CMakeFiles/palloc-obj.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-obj-target.dir/build.make CMakeFiles/palloc-obj-target.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-obj-target.dir/build.make CMakeFiles/palloc-obj-target.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/autocookie/pomaieco/palloc/build/CMakeFiles --progress-num=21 "Built target palloc-obj-target"
-.PHONY : CMakeFiles/palloc-obj-target.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/palloc-obj-target.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/palloc-obj-target.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 0
-.PHONY : CMakeFiles/palloc-obj-target.dir/rule
-
-# Convenience name for target.
-palloc-obj-target: CMakeFiles/palloc-obj-target.dir/rule
-.PHONY : palloc-obj-target
-
-# clean rule for target.
-CMakeFiles/palloc-obj-target.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-obj-target.dir/build.make CMakeFiles/palloc-obj-target.dir/clean
-.PHONY : CMakeFiles/palloc-obj-target.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/palloc-test-api.dir
-
-# All Build rule for target.
-CMakeFiles/palloc-test-api.dir/all: CMakeFiles/palloc-static.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-api.dir/build.make CMakeFiles/palloc-test-api.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-api.dir/build.make CMakeFiles/palloc-test-api.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/autocookie/pomaieco/palloc/build/CMakeFiles --progress-num=41,42 "Built target palloc-test-api"
-.PHONY : CMakeFiles/palloc-test-api.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/palloc-test-api.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 21
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/palloc-test-api.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 0
-.PHONY : CMakeFiles/palloc-test-api.dir/rule
-
-# Convenience name for target.
-palloc-test-api: CMakeFiles/palloc-test-api.dir/rule
-.PHONY : palloc-test-api
-
-# clean rule for target.
-CMakeFiles/palloc-test-api.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-api.dir/build.make CMakeFiles/palloc-test-api.dir/clean
-.PHONY : CMakeFiles/palloc-test-api.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/palloc-test-api-fill.dir
-
-# All Build rule for target.
-CMakeFiles/palloc-test-api-fill.dir/all: CMakeFiles/palloc-static.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-api-fill.dir/build.make CMakeFiles/palloc-test-api-fill.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-api-fill.dir/build.make CMakeFiles/palloc-test-api-fill.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/autocookie/pomaieco/palloc/build/CMakeFiles --progress-num=43,44 "Built target palloc-test-api-fill"
-.PHONY : CMakeFiles/palloc-test-api-fill.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/palloc-test-api-fill.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 21
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/palloc-test-api-fill.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 0
-.PHONY : CMakeFiles/palloc-test-api-fill.dir/rule
-
-# Convenience name for target.
-palloc-test-api-fill: CMakeFiles/palloc-test-api-fill.dir/rule
-.PHONY : palloc-test-api-fill
-
-# clean rule for target.
-CMakeFiles/palloc-test-api-fill.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-api-fill.dir/build.make CMakeFiles/palloc-test-api-fill.dir/clean
-.PHONY : CMakeFiles/palloc-test-api-fill.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/palloc-test-stress.dir
-
-# All Build rule for target.
-CMakeFiles/palloc-test-stress.dir/all: CMakeFiles/palloc-static.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-stress.dir/build.make CMakeFiles/palloc-test-stress.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-stress.dir/build.make CMakeFiles/palloc-test-stress.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/autocookie/pomaieco/palloc/build/CMakeFiles --progress-num=49,50 "Built target palloc-test-stress"
-.PHONY : CMakeFiles/palloc-test-stress.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/palloc-test-stress.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 21
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/palloc-test-stress.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 0
-.PHONY : CMakeFiles/palloc-test-stress.dir/rule
-
-# Convenience name for target.
-palloc-test-stress: CMakeFiles/palloc-test-stress.dir/rule
-.PHONY : palloc-test-stress
-
-# clean rule for target.
-CMakeFiles/palloc-test-stress.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-stress.dir/build.make CMakeFiles/palloc-test-stress.dir/clean
-.PHONY : CMakeFiles/palloc-test-stress.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/palloc-test-arena-pomai.dir
-
-# All Build rule for target.
-CMakeFiles/palloc-test-arena-pomai.dir/all: CMakeFiles/palloc-static.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-arena-pomai.dir/build.make CMakeFiles/palloc-test-arena-pomai.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-arena-pomai.dir/build.make CMakeFiles/palloc-test-arena-pomai.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/autocookie/pomaieco/palloc/build/CMakeFiles --progress-num=45,46 "Built target palloc-test-arena-pomai"
-.PHONY : CMakeFiles/palloc-test-arena-pomai.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/palloc-test-arena-pomai.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 21
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/palloc-test-arena-pomai.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 0
-.PHONY : CMakeFiles/palloc-test-arena-pomai.dir/rule
-
-# Convenience name for target.
-palloc-test-arena-pomai: CMakeFiles/palloc-test-arena-pomai.dir/rule
-.PHONY : palloc-test-arena-pomai
-
-# clean rule for target.
-CMakeFiles/palloc-test-arena-pomai.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-arena-pomai.dir/build.make CMakeFiles/palloc-test-arena-pomai.dir/clean
-.PHONY : CMakeFiles/palloc-test-arena-pomai.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/palloc-test-basic.dir
-
-# All Build rule for target.
-CMakeFiles/palloc-test-basic.dir/all: CMakeFiles/palloc-static.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-basic.dir/build.make CMakeFiles/palloc-test-basic.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-basic.dir/build.make CMakeFiles/palloc-test-basic.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/autocookie/pomaieco/palloc/build/CMakeFiles --progress-num=47,48 "Built target palloc-test-basic"
-.PHONY : CMakeFiles/palloc-test-basic.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/palloc-test-basic.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 21
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/palloc-test-basic.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 0
-.PHONY : CMakeFiles/palloc-test-basic.dir/rule
-
-# Convenience name for target.
-palloc-test-basic: CMakeFiles/palloc-test-basic.dir/rule
-.PHONY : palloc-test-basic
-
-# clean rule for target.
-CMakeFiles/palloc-test-basic.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-basic.dir/build.make CMakeFiles/palloc-test-basic.dir/clean
-.PHONY : CMakeFiles/palloc-test-basic.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/palloc-test-stress-dynamic.dir
-
-# All Build rule for target.
-CMakeFiles/palloc-test-stress-dynamic.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-stress-dynamic.dir/build.make CMakeFiles/palloc-test-stress-dynamic.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-stress-dynamic.dir/build.make CMakeFiles/palloc-test-stress-dynamic.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/autocookie/pomaieco/palloc/build/CMakeFiles --progress-num=51,52 "Built target palloc-test-stress-dynamic"
-.PHONY : CMakeFiles/palloc-test-stress-dynamic.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/palloc-test-stress-dynamic.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/palloc-test-stress-dynamic.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/autocookie/pomaieco/palloc/build/CMakeFiles 0
-.PHONY : CMakeFiles/palloc-test-stress-dynamic.dir/rule
-
-# Convenience name for target.
-palloc-test-stress-dynamic: CMakeFiles/palloc-test-stress-dynamic.dir/rule
-.PHONY : palloc-test-stress-dynamic
-
-# clean rule for target.
-CMakeFiles/palloc-test-stress-dynamic.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/palloc-test-stress-dynamic.dir/build.make CMakeFiles/palloc-test-stress-dynamic.dir/clean
-.PHONY : CMakeFiles/palloc-test-stress-dynamic.dir/clean
+CMakeFiles/bench-user-core.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bench-user-core.dir/build.make CMakeFiles/bench-user-core.dir/clean
+.PHONY : CMakeFiles/bench-user-core.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

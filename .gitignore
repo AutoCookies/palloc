@@ -4,6 +4,7 @@ out/
 bench/build/
 cmake-build-*/
 BenchmarkResults/
+build*
 
 # ── CMake generated ───────────────────────────────────────────────────────
 CMakeCache.txt
