@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /root/pomaieco/palloc
+CMAKE_SOURCE_DIR = /root/palloc
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /root/pomaieco/palloc/build
+CMAKE_BINARY_DIR = /root/palloc/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/palloc.dir/depend.make
@@ -69,68 +69,298 @@ include CMakeFiles/palloc.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/palloc.dir/flags.make
 
-CMakeFiles/palloc.dir/src/core/alloc_core.c.o: CMakeFiles/palloc.dir/flags.make
-CMakeFiles/palloc.dir/src/core/alloc_core.c.o: /root/pomaieco/palloc/src/core/alloc_core.c
-CMakeFiles/palloc.dir/src/core/alloc_core.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/pomaieco/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/palloc.dir/src/core/alloc_core.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/core/alloc_core.c.o -MF CMakeFiles/palloc.dir/src/core/alloc_core.c.o.d -o CMakeFiles/palloc.dir/src/core/alloc_core.c.o -c /root/pomaieco/palloc/src/core/alloc_core.c
+CMakeFiles/palloc.dir/src/alloc.c.o: CMakeFiles/palloc.dir/flags.make
+CMakeFiles/palloc.dir/src/alloc.c.o: /root/palloc/src/alloc.c
+CMakeFiles/palloc.dir/src/alloc.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/palloc.dir/src/alloc.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/alloc.c.o -MF CMakeFiles/palloc.dir/src/alloc.c.o.d -o CMakeFiles/palloc.dir/src/alloc.c.o -c /root/palloc/src/alloc.c
 
-CMakeFiles/palloc.dir/src/core/alloc_core.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/core/alloc_core.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/pomaieco/palloc/src/core/alloc_core.c > CMakeFiles/palloc.dir/src/core/alloc_core.c.i
+CMakeFiles/palloc.dir/src/alloc.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/alloc.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/palloc/src/alloc.c > CMakeFiles/palloc.dir/src/alloc.c.i
 
-CMakeFiles/palloc.dir/src/core/alloc_core.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/core/alloc_core.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/pomaieco/palloc/src/core/alloc_core.c -o CMakeFiles/palloc.dir/src/core/alloc_core.c.s
+CMakeFiles/palloc.dir/src/alloc.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/alloc.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/palloc/src/alloc.c -o CMakeFiles/palloc.dir/src/alloc.c.s
 
-CMakeFiles/palloc.dir/src/core/vector_core.c.o: CMakeFiles/palloc.dir/flags.make
-CMakeFiles/palloc.dir/src/core/vector_core.c.o: /root/pomaieco/palloc/src/core/vector_core.c
-CMakeFiles/palloc.dir/src/core/vector_core.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/pomaieco/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/palloc.dir/src/core/vector_core.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/core/vector_core.c.o -MF CMakeFiles/palloc.dir/src/core/vector_core.c.o.d -o CMakeFiles/palloc.dir/src/core/vector_core.c.o -c /root/pomaieco/palloc/src/core/vector_core.c
+CMakeFiles/palloc.dir/src/alloc-aligned.c.o: CMakeFiles/palloc.dir/flags.make
+CMakeFiles/palloc.dir/src/alloc-aligned.c.o: /root/palloc/src/alloc-aligned.c
+CMakeFiles/palloc.dir/src/alloc-aligned.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/palloc.dir/src/alloc-aligned.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/alloc-aligned.c.o -MF CMakeFiles/palloc.dir/src/alloc-aligned.c.o.d -o CMakeFiles/palloc.dir/src/alloc-aligned.c.o -c /root/palloc/src/alloc-aligned.c
 
-CMakeFiles/palloc.dir/src/core/vector_core.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/core/vector_core.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/pomaieco/palloc/src/core/vector_core.c > CMakeFiles/palloc.dir/src/core/vector_core.c.i
+CMakeFiles/palloc.dir/src/alloc-aligned.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/alloc-aligned.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/palloc/src/alloc-aligned.c > CMakeFiles/palloc.dir/src/alloc-aligned.c.i
 
-CMakeFiles/palloc.dir/src/core/vector_core.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/core/vector_core.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/pomaieco/palloc/src/core/vector_core.c -o CMakeFiles/palloc.dir/src/core/vector_core.c.s
+CMakeFiles/palloc.dir/src/alloc-aligned.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/alloc-aligned.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/palloc/src/alloc-aligned.c -o CMakeFiles/palloc.dir/src/alloc-aligned.c.s
 
-CMakeFiles/palloc.dir/src/backends/backend_user.c.o: CMakeFiles/palloc.dir/flags.make
-CMakeFiles/palloc.dir/src/backends/backend_user.c.o: /root/pomaieco/palloc/src/backends/backend_user.c
-CMakeFiles/palloc.dir/src/backends/backend_user.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/pomaieco/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/palloc.dir/src/backends/backend_user.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/backends/backend_user.c.o -MF CMakeFiles/palloc.dir/src/backends/backend_user.c.o.d -o CMakeFiles/palloc.dir/src/backends/backend_user.c.o -c /root/pomaieco/palloc/src/backends/backend_user.c
+CMakeFiles/palloc.dir/src/alloc-posix.c.o: CMakeFiles/palloc.dir/flags.make
+CMakeFiles/palloc.dir/src/alloc-posix.c.o: /root/palloc/src/alloc-posix.c
+CMakeFiles/palloc.dir/src/alloc-posix.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/palloc.dir/src/alloc-posix.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/alloc-posix.c.o -MF CMakeFiles/palloc.dir/src/alloc-posix.c.o.d -o CMakeFiles/palloc.dir/src/alloc-posix.c.o -c /root/palloc/src/alloc-posix.c
 
-CMakeFiles/palloc.dir/src/backends/backend_user.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/backends/backend_user.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/pomaieco/palloc/src/backends/backend_user.c > CMakeFiles/palloc.dir/src/backends/backend_user.c.i
+CMakeFiles/palloc.dir/src/alloc-posix.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/alloc-posix.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/palloc/src/alloc-posix.c > CMakeFiles/palloc.dir/src/alloc-posix.c.i
 
-CMakeFiles/palloc.dir/src/backends/backend_user.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/backends/backend_user.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/pomaieco/palloc/src/backends/backend_user.c -o CMakeFiles/palloc.dir/src/backends/backend_user.c.s
+CMakeFiles/palloc.dir/src/alloc-posix.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/alloc-posix.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/palloc/src/alloc-posix.c -o CMakeFiles/palloc.dir/src/alloc-posix.c.s
+
+CMakeFiles/palloc.dir/src/arena.c.o: CMakeFiles/palloc.dir/flags.make
+CMakeFiles/palloc.dir/src/arena.c.o: /root/palloc/src/arena.c
+CMakeFiles/palloc.dir/src/arena.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/palloc.dir/src/arena.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/arena.c.o -MF CMakeFiles/palloc.dir/src/arena.c.o.d -o CMakeFiles/palloc.dir/src/arena.c.o -c /root/palloc/src/arena.c
+
+CMakeFiles/palloc.dir/src/arena.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/arena.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/palloc/src/arena.c > CMakeFiles/palloc.dir/src/arena.c.i
+
+CMakeFiles/palloc.dir/src/arena.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/arena.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/palloc/src/arena.c -o CMakeFiles/palloc.dir/src/arena.c.s
+
+CMakeFiles/palloc.dir/src/arena_pomai.c.o: CMakeFiles/palloc.dir/flags.make
+CMakeFiles/palloc.dir/src/arena_pomai.c.o: /root/palloc/src/arena_pomai.c
+CMakeFiles/palloc.dir/src/arena_pomai.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/palloc.dir/src/arena_pomai.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/arena_pomai.c.o -MF CMakeFiles/palloc.dir/src/arena_pomai.c.o.d -o CMakeFiles/palloc.dir/src/arena_pomai.c.o -c /root/palloc/src/arena_pomai.c
+
+CMakeFiles/palloc.dir/src/arena_pomai.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/arena_pomai.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/palloc/src/arena_pomai.c > CMakeFiles/palloc.dir/src/arena_pomai.c.i
+
+CMakeFiles/palloc.dir/src/arena_pomai.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/arena_pomai.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/palloc/src/arena_pomai.c -o CMakeFiles/palloc.dir/src/arena_pomai.c.s
+
+CMakeFiles/palloc.dir/src/bitmap.c.o: CMakeFiles/palloc.dir/flags.make
+CMakeFiles/palloc.dir/src/bitmap.c.o: /root/palloc/src/bitmap.c
+CMakeFiles/palloc.dir/src/bitmap.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/palloc.dir/src/bitmap.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/bitmap.c.o -MF CMakeFiles/palloc.dir/src/bitmap.c.o.d -o CMakeFiles/palloc.dir/src/bitmap.c.o -c /root/palloc/src/bitmap.c
+
+CMakeFiles/palloc.dir/src/bitmap.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/bitmap.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/palloc/src/bitmap.c > CMakeFiles/palloc.dir/src/bitmap.c.i
+
+CMakeFiles/palloc.dir/src/bitmap.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/bitmap.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/palloc/src/bitmap.c -o CMakeFiles/palloc.dir/src/bitmap.c.s
+
+CMakeFiles/palloc.dir/src/heap.c.o: CMakeFiles/palloc.dir/flags.make
+CMakeFiles/palloc.dir/src/heap.c.o: /root/palloc/src/heap.c
+CMakeFiles/palloc.dir/src/heap.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/palloc.dir/src/heap.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/heap.c.o -MF CMakeFiles/palloc.dir/src/heap.c.o.d -o CMakeFiles/palloc.dir/src/heap.c.o -c /root/palloc/src/heap.c
+
+CMakeFiles/palloc.dir/src/heap.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/heap.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/palloc/src/heap.c > CMakeFiles/palloc.dir/src/heap.c.i
+
+CMakeFiles/palloc.dir/src/heap.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/heap.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/palloc/src/heap.c -o CMakeFiles/palloc.dir/src/heap.c.s
+
+CMakeFiles/palloc.dir/src/init.c.o: CMakeFiles/palloc.dir/flags.make
+CMakeFiles/palloc.dir/src/init.c.o: /root/palloc/src/init.c
+CMakeFiles/palloc.dir/src/init.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/palloc.dir/src/init.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/init.c.o -MF CMakeFiles/palloc.dir/src/init.c.o.d -o CMakeFiles/palloc.dir/src/init.c.o -c /root/palloc/src/init.c
+
+CMakeFiles/palloc.dir/src/init.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/init.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/palloc/src/init.c > CMakeFiles/palloc.dir/src/init.c.i
+
+CMakeFiles/palloc.dir/src/init.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/init.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/palloc/src/init.c -o CMakeFiles/palloc.dir/src/init.c.s
+
+CMakeFiles/palloc.dir/src/libc.c.o: CMakeFiles/palloc.dir/flags.make
+CMakeFiles/palloc.dir/src/libc.c.o: /root/palloc/src/libc.c
+CMakeFiles/palloc.dir/src/libc.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/palloc.dir/src/libc.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/libc.c.o -MF CMakeFiles/palloc.dir/src/libc.c.o.d -o CMakeFiles/palloc.dir/src/libc.c.o -c /root/palloc/src/libc.c
+
+CMakeFiles/palloc.dir/src/libc.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/libc.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/palloc/src/libc.c > CMakeFiles/palloc.dir/src/libc.c.i
+
+CMakeFiles/palloc.dir/src/libc.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/libc.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/palloc/src/libc.c -o CMakeFiles/palloc.dir/src/libc.c.s
+
+CMakeFiles/palloc.dir/src/options.c.o: CMakeFiles/palloc.dir/flags.make
+CMakeFiles/palloc.dir/src/options.c.o: /root/palloc/src/options.c
+CMakeFiles/palloc.dir/src/options.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/palloc.dir/src/options.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/options.c.o -MF CMakeFiles/palloc.dir/src/options.c.o.d -o CMakeFiles/palloc.dir/src/options.c.o -c /root/palloc/src/options.c
+
+CMakeFiles/palloc.dir/src/options.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/options.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/palloc/src/options.c > CMakeFiles/palloc.dir/src/options.c.i
+
+CMakeFiles/palloc.dir/src/options.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/options.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/palloc/src/options.c -o CMakeFiles/palloc.dir/src/options.c.s
+
+CMakeFiles/palloc.dir/src/os.c.o: CMakeFiles/palloc.dir/flags.make
+CMakeFiles/palloc.dir/src/os.c.o: /root/palloc/src/os.c
+CMakeFiles/palloc.dir/src/os.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/palloc.dir/src/os.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/os.c.o -MF CMakeFiles/palloc.dir/src/os.c.o.d -o CMakeFiles/palloc.dir/src/os.c.o -c /root/palloc/src/os.c
+
+CMakeFiles/palloc.dir/src/os.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/os.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/palloc/src/os.c > CMakeFiles/palloc.dir/src/os.c.i
+
+CMakeFiles/palloc.dir/src/os.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/os.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/palloc/src/os.c -o CMakeFiles/palloc.dir/src/os.c.s
+
+CMakeFiles/palloc.dir/src/page.c.o: CMakeFiles/palloc.dir/flags.make
+CMakeFiles/palloc.dir/src/page.c.o: /root/palloc/src/page.c
+CMakeFiles/palloc.dir/src/page.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/palloc.dir/src/page.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/page.c.o -MF CMakeFiles/palloc.dir/src/page.c.o.d -o CMakeFiles/palloc.dir/src/page.c.o -c /root/palloc/src/page.c
+
+CMakeFiles/palloc.dir/src/page.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/page.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/palloc/src/page.c > CMakeFiles/palloc.dir/src/page.c.i
+
+CMakeFiles/palloc.dir/src/page.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/page.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/palloc/src/page.c -o CMakeFiles/palloc.dir/src/page.c.s
+
+CMakeFiles/palloc.dir/src/random.c.o: CMakeFiles/palloc.dir/flags.make
+CMakeFiles/palloc.dir/src/random.c.o: /root/palloc/src/random.c
+CMakeFiles/palloc.dir/src/random.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/palloc.dir/src/random.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/random.c.o -MF CMakeFiles/palloc.dir/src/random.c.o.d -o CMakeFiles/palloc.dir/src/random.c.o -c /root/palloc/src/random.c
+
+CMakeFiles/palloc.dir/src/random.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/random.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/palloc/src/random.c > CMakeFiles/palloc.dir/src/random.c.i
+
+CMakeFiles/palloc.dir/src/random.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/random.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/palloc/src/random.c -o CMakeFiles/palloc.dir/src/random.c.s
+
+CMakeFiles/palloc.dir/src/segment.c.o: CMakeFiles/palloc.dir/flags.make
+CMakeFiles/palloc.dir/src/segment.c.o: /root/palloc/src/segment.c
+CMakeFiles/palloc.dir/src/segment.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/palloc.dir/src/segment.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/segment.c.o -MF CMakeFiles/palloc.dir/src/segment.c.o.d -o CMakeFiles/palloc.dir/src/segment.c.o -c /root/palloc/src/segment.c
+
+CMakeFiles/palloc.dir/src/segment.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/segment.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/palloc/src/segment.c > CMakeFiles/palloc.dir/src/segment.c.i
+
+CMakeFiles/palloc.dir/src/segment.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/segment.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/palloc/src/segment.c -o CMakeFiles/palloc.dir/src/segment.c.s
+
+CMakeFiles/palloc.dir/src/segment-map.c.o: CMakeFiles/palloc.dir/flags.make
+CMakeFiles/palloc.dir/src/segment-map.c.o: /root/palloc/src/segment-map.c
+CMakeFiles/palloc.dir/src/segment-map.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object CMakeFiles/palloc.dir/src/segment-map.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/segment-map.c.o -MF CMakeFiles/palloc.dir/src/segment-map.c.o.d -o CMakeFiles/palloc.dir/src/segment-map.c.o -c /root/palloc/src/segment-map.c
+
+CMakeFiles/palloc.dir/src/segment-map.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/segment-map.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/palloc/src/segment-map.c > CMakeFiles/palloc.dir/src/segment-map.c.i
+
+CMakeFiles/palloc.dir/src/segment-map.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/segment-map.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/palloc/src/segment-map.c -o CMakeFiles/palloc.dir/src/segment-map.c.s
+
+CMakeFiles/palloc.dir/src/stats.c.o: CMakeFiles/palloc.dir/flags.make
+CMakeFiles/palloc.dir/src/stats.c.o: /root/palloc/src/stats.c
+CMakeFiles/palloc.dir/src/stats.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object CMakeFiles/palloc.dir/src/stats.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/stats.c.o -MF CMakeFiles/palloc.dir/src/stats.c.o.d -o CMakeFiles/palloc.dir/src/stats.c.o -c /root/palloc/src/stats.c
+
+CMakeFiles/palloc.dir/src/stats.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/stats.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/palloc/src/stats.c > CMakeFiles/palloc.dir/src/stats.c.i
+
+CMakeFiles/palloc.dir/src/stats.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/stats.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/palloc/src/stats.c -o CMakeFiles/palloc.dir/src/stats.c.s
+
+CMakeFiles/palloc.dir/src/prim/prim.c.o: CMakeFiles/palloc.dir/flags.make
+CMakeFiles/palloc.dir/src/prim/prim.c.o: /root/palloc/src/prim/prim.c
+CMakeFiles/palloc.dir/src/prim/prim.c.o: CMakeFiles/palloc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object CMakeFiles/palloc.dir/src/prim/prim.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/palloc.dir/src/prim/prim.c.o -MF CMakeFiles/palloc.dir/src/prim/prim.c.o.d -o CMakeFiles/palloc.dir/src/prim/prim.c.o -c /root/palloc/src/prim/prim.c
+
+CMakeFiles/palloc.dir/src/prim/prim.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/palloc.dir/src/prim/prim.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /root/palloc/src/prim/prim.c > CMakeFiles/palloc.dir/src/prim/prim.c.i
+
+CMakeFiles/palloc.dir/src/prim/prim.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/palloc.dir/src/prim/prim.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /root/palloc/src/prim/prim.c -o CMakeFiles/palloc.dir/src/prim/prim.c.s
 
 # Object files for target palloc
 palloc_OBJECTS = \
-"CMakeFiles/palloc.dir/src/core/alloc_core.c.o" \
-"CMakeFiles/palloc.dir/src/core/vector_core.c.o" \
-"CMakeFiles/palloc.dir/src/backends/backend_user.c.o"
+"CMakeFiles/palloc.dir/src/alloc.c.o" \
+"CMakeFiles/palloc.dir/src/alloc-aligned.c.o" \
+"CMakeFiles/palloc.dir/src/alloc-posix.c.o" \
+"CMakeFiles/palloc.dir/src/arena.c.o" \
+"CMakeFiles/palloc.dir/src/arena_pomai.c.o" \
+"CMakeFiles/palloc.dir/src/bitmap.c.o" \
+"CMakeFiles/palloc.dir/src/heap.c.o" \
+"CMakeFiles/palloc.dir/src/init.c.o" \
+"CMakeFiles/palloc.dir/src/libc.c.o" \
+"CMakeFiles/palloc.dir/src/options.c.o" \
+"CMakeFiles/palloc.dir/src/os.c.o" \
+"CMakeFiles/palloc.dir/src/page.c.o" \
+"CMakeFiles/palloc.dir/src/random.c.o" \
+"CMakeFiles/palloc.dir/src/segment.c.o" \
+"CMakeFiles/palloc.dir/src/segment-map.c.o" \
+"CMakeFiles/palloc.dir/src/stats.c.o" \
+"CMakeFiles/palloc.dir/src/prim/prim.c.o"
 
 # External object files for target palloc
 palloc_EXTERNAL_OBJECTS =
 
-libpalloc.a: CMakeFiles/palloc.dir/src/core/alloc_core.c.o
-libpalloc.a: CMakeFiles/palloc.dir/src/core/vector_core.c.o
-libpalloc.a: CMakeFiles/palloc.dir/src/backends/backend_user.c.o
-libpalloc.a: CMakeFiles/palloc.dir/build.make
-libpalloc.a: CMakeFiles/palloc.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/root/pomaieco/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C static library libpalloc.a"
-	$(CMAKE_COMMAND) -P CMakeFiles/palloc.dir/cmake_clean_target.cmake
+libpalloc.so.2.2: CMakeFiles/palloc.dir/src/alloc.c.o
+libpalloc.so.2.2: CMakeFiles/palloc.dir/src/alloc-aligned.c.o
+libpalloc.so.2.2: CMakeFiles/palloc.dir/src/alloc-posix.c.o
+libpalloc.so.2.2: CMakeFiles/palloc.dir/src/arena.c.o
+libpalloc.so.2.2: CMakeFiles/palloc.dir/src/arena_pomai.c.o
+libpalloc.so.2.2: CMakeFiles/palloc.dir/src/bitmap.c.o
+libpalloc.so.2.2: CMakeFiles/palloc.dir/src/heap.c.o
+libpalloc.so.2.2: CMakeFiles/palloc.dir/src/init.c.o
+libpalloc.so.2.2: CMakeFiles/palloc.dir/src/libc.c.o
+libpalloc.so.2.2: CMakeFiles/palloc.dir/src/options.c.o
+libpalloc.so.2.2: CMakeFiles/palloc.dir/src/os.c.o
+libpalloc.so.2.2: CMakeFiles/palloc.dir/src/page.c.o
+libpalloc.so.2.2: CMakeFiles/palloc.dir/src/random.c.o
+libpalloc.so.2.2: CMakeFiles/palloc.dir/src/segment.c.o
+libpalloc.so.2.2: CMakeFiles/palloc.dir/src/segment-map.c.o
+libpalloc.so.2.2: CMakeFiles/palloc.dir/src/stats.c.o
+libpalloc.so.2.2: CMakeFiles/palloc.dir/src/prim/prim.c.o
+libpalloc.so.2.2: CMakeFiles/palloc.dir/build.make
+libpalloc.so.2.2: CMakeFiles/palloc.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/root/palloc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking C shared library libpalloc.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/palloc.dir/link.txt --verbose=$(VERBOSE)
+	$(CMAKE_COMMAND) -E cmake_symlink_library libpalloc.so.2.2 libpalloc.so.2 libpalloc.so
+
+libpalloc.so.2: libpalloc.so.2.2
+	@$(CMAKE_COMMAND) -E touch_nocreate libpalloc.so.2
+
+libpalloc.so: libpalloc.so.2.2
+	@$(CMAKE_COMMAND) -E touch_nocreate libpalloc.so
 
 # Rule to build all files generated by this target.
-CMakeFiles/palloc.dir/build: libpalloc.a
+CMakeFiles/palloc.dir/build: libpalloc.so
 .PHONY : CMakeFiles/palloc.dir/build
 
 CMakeFiles/palloc.dir/clean:
@@ -138,6 +368,6 @@ CMakeFiles/palloc.dir/clean:
 .PHONY : CMakeFiles/palloc.dir/clean
 
 CMakeFiles/palloc.dir/depend:
-	cd /root/pomaieco/palloc/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/pomaieco/palloc /root/pomaieco/palloc /root/pomaieco/palloc/build /root/pomaieco/palloc/build /root/pomaieco/palloc/build/CMakeFiles/palloc.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /root/palloc/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/palloc /root/palloc /root/palloc/build /root/palloc/build /root/palloc/build/CMakeFiles/palloc.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/palloc.dir/depend
 

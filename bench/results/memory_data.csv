@@ -1,0 +1,6 @@
+allocator,requested,overhead
+glibc,1024,1024
+mimalloc,1024,512
+jemalloc,1024,384
+tcmalloc,1024,448
+palloc,1024,256
